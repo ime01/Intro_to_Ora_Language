@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Intro to Ora Language</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="oraNumsText">Numbers</string>
+    <string name="oraNumbers">Ora Numbers</string>
+    <string name="household">HouseHold</string>
+    <string name="OutdoorText">Outdoor</string>
+    <string name="TravelText">Travel</string>
+    <string name="enter_english_word">Enter English Word(s)</string>
+    <string name="enter_ora_word">Enter Ora Word(s)</string>
+    <string name="add_audio_of_spoken_words">Add audio of written words</string>
+    <string name="somewhere_down_in_edo_state_nigeria_resides_the_people_of_owan_west">SOMEWHERE DOWN IN EDO STATE NIGERIA RESIDES THE PEOPLE OF THE OWAN WEST</string>
+    <string name="these_are_the_ora_s_and_here_lies_an_introduction_to_their_language">THESE ARE THE ORA\'S! AND HERE LIES AN INTRODUCTION TO THEIR LANGUAGE</string>
+    <string name="record_audio">Record audio</string>
+    <string name="get_audio_file">Get audio file</string>
+    <string name="alert_tilte">Create New Ora Item</string>
+    <string name="alert_submit">Submit</string>
+    <string name="alert_cancel">CANCLEL</string>
+</resources>
