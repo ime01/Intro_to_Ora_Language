@@ -12,6 +12,7 @@
         android:id="@+id/parentOutdoor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:nextFocusRight="@+id/parentHouse"
         app:cardBackgroundColor="@color/design_default_color_secondary_variant"
         app:cardCornerRadius="18dp"
         app:cardUseCompatPadding="true"
