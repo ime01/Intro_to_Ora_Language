@@ -36,6 +36,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'androidx.cardview:cardview:1.0.0'
 
+//    recyclerView Animator
+    implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
+
     //materialDesign
     implementation "com.google.android.material:material:1.1.0-alpha02"
 
@@ -51,4 +54,5 @@ dependencies {
 
     implementation "androidx.room:room-runtime:2.0.0"
 //    kapt "androidx.room:room-compiler:2.0.0"
+
 }
