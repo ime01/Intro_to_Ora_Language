@@ -5,7 +5,7 @@
     android:id="@+id/numParentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".display.OraLangNumbersFragment">
+    tools:context=".display.numbers.OraLangNumbersFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ora_num_recycler"

@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.flowz.introtooralanguage.R
 import com.flowz.introtooralanguage.adapters.OraNumAdapter
 import com.flowz.introtooralanguage.data.OraLangNums
-import com.flowz.introtooralanguage.data.numList
 import com.flowz.introtooralanguage.recyclerviewlistener.RecyclerItemClickListener
 import kotlinx.android.synthetic.main.fragment_ora_lang_house.*
 import kotlinx.android.synthetic.main.fragment_ora_lang_travel.*

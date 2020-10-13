@@ -15,7 +15,14 @@
     <string name="record_audio">Record audio</string>
     <string name="get_audio_file">Get audio file</string>
     <string name="alert_tilte">Create New Ora Item</string>
+    <string name="select_time_dialog_title">Select date and time to add new ora word </string>
     <string name="alert_submit">Submit</string>
+    <string name="date_picker_alert_positive">Submit Reminder</string>
+    <string name="date_picker_alert_negative">Cancel Reminder</string>
     <string name="alert_cancel">CANCLEL</string>
     <string name="household">household</string>
+    <string name="remind_me_to_add_ora_word_later">remind me to add ora word later</string>
+    <string name="search_for_ora_word">Search for ora word</string>
+    <string name="notification_title">Ora Num Reminder</string>
+    <string name="notification_text">Reminder to add new ora word</string>
 </resources>

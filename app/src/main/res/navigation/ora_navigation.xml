@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/oraLangNumbersFragment"
-        android:name="com.flowz.introtooralanguage.display.OraLangNumbersFragment"
+        android:name="com.flowz.introtooralanguage.display.numbers.OraLangNumbersFragment"
         android:label="Numbers"
         tools:layout="@layout/ora_lang_numbers" >
         <action

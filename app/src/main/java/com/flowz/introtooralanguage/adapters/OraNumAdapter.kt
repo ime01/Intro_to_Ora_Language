@@ -15,7 +15,7 @@ class OraNumAdapter  (private val oraLangNumList: ArrayList<OraLangNums>)  : Rec
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OraNumViewHolder {
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.ora_num, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.ora_num2, parent, false)
         return OraNumViewHolder(view)
 
     }
