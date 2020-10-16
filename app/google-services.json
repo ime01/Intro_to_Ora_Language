@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "647621642893",
+    "firebase_url": "https://introtooralanguage.firebaseio.com",
+    "project_id": "introtooralanguage",
+    "storage_bucket": "introtooralanguage.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:647621642893:android:5da4a81cbab127912870c4",
+        "android_client_info": {
+          "package_name": "com.flowz.introtooralanguage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "647621642893-qqk1fmlcik3pgk80ilfkf4eulnohkfr5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.flowz.introtooralanguage",
+            "certificate_hash": "276b3fc5a3c644635a1f0c41ea4323db4653e74c"
+          }
+        },
+        {
+          "client_id": "647621642893-p4jgh0511ea7563dj3idp8glkmbia4hn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDc8w3rbw-z63vnAgI9G5r0AJUZd_xrQdQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "647621642893-p4jgh0511ea7563dj3idp8glkmbia4hn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

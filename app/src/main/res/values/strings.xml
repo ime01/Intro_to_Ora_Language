@@ -25,4 +25,41 @@
     <string name="search_for_ora_word">Search for ora word</string>
     <string name="notification_title">Ora Num Reminder</string>
     <string name="notification_text">Reminder to add new ora word</string>
+    <string name="text_forgot_password_title">forgot you password ?</string>
+    <string name="text_forgot_password_message">Enter your email to retrieve password</string>
+
+    <string name="button_sign_in">Sign in</string>
+    <string name="button_sign_up">Sign up</string>
+    <string name="button_send">Send</string>
+    <string name="text_forgot_password">Forgot password?</string>
+    <string name="text_signin_message">Hello, sign in to your account</string>
+    <string name="text_signin_social_media">Or Sign in using Gmail</string>
+    <string name="text_signup_social_media">Or Sign up using Gmail</string>
+    <string name="text_signin_signup">Don\'t have an account? <b>Sign up</b></string>
+    <string name="text_signup_terms">By signing up, you agree to our <b>terms and conditions</b></string>
+    <string name="text_signup_message">Hello, let\'s set up your account</string>
+
+    <string name="hint_email">Email</string>
+    <string name="hint_phone">Phone</string>
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_confirm_password">Confirm Password</string>
+    <string name="forgotpassword">o! you forgot your password! don\'t worry, enter your email and we\'ll send you a link to reset your password</string>
+    <string name="retieveemail">enter your registered email</string>
+    <string name="sendreset">Send Reset Email</string>
+    <string name="welcome">Enter your details and lets get you started</string>
+    <string name="name">Enter your name</string>
+    <string name="enter_email">Enter email</string>
+    <string name="enter_phone">Enter Phone Number</string>
+    <string name="enter_password">Enter Chosen Password</string>
+    <string name="confirm_password">Confirm Chosen Password</string>
+    <string name="register">Register</string>
+    <string name="account_holder">Already have an account? just login</string>
+    <string name="signin">Log Into Your Account</string>
+    <string name="login">LOGIN</string>
+    <string name="create_new">Don\'t have an account? Create One</string>
+    <string name="forgottenpassword">Forgotten Password?</string>
+    <string name="welcome_profile">Welcome to your profile</string>
+    <string name="logout">LOGOUT</string>
+    <string name="ora_user_profile">Ora User Profile</string>
 </resources>

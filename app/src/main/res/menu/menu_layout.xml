@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/remind_me"
+        android:icon="@drawable/ic_notifications_none_black_24dp"
+        android:title="@string/remind_me_to_add_ora_word_later"
+        app:showAsAction="ifRoom"
+       />
+    <item
+        android:id="@+id/search_oraword"
+        android:icon="@drawable/ic_search_black_24dp"
+        android:title="@string/search_for_ora_word"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="ifRoom"/>
+</menu>

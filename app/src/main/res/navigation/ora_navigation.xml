@@ -36,6 +36,9 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_oraLangHomeFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/oraLangNumbersFragment"
@@ -70,4 +73,17 @@
         android:name="com.flowz.introtooralanguage.display.AddWordsFragment"
         android:label="AddWords"
         tools:layout="@layout/fragment_add_words" />
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="com.flowz.introtooralanguage.display.profile.UserProfileFragment"
+        android:label="User Profile"
+        tools:layout="@layout/fragment_user_profile" >
+        <action
+            android:id="@+id/action_userProfileFragment_to_loginActivity"
+            app:destination="@id/loginActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.flowz.introtooralanguage.firebase.LoginActivity"
+        android:label="LoginActivity" />
 </navigation>

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import com.flowz.introtooralanguage.MainActivity
 import com.flowz.introtooralanguage.R
+import com.flowz.introtooralanguage.firebase.LoginActivity
 
 class SplashScreenActivity : AppCompatActivity() {
 
@@ -16,10 +17,10 @@ class SplashScreenActivity : AppCompatActivity() {
 
         Handler().postDelayed({
 
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
 
-        }, 1000)
+        }, 3000)
     }
 }
