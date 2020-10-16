@@ -5,4 +5,5 @@
     <dimen name="button_corner">16dp</dimen>
     <dimen name="icon_size">30dp</dimen>
     <dimen name="text_size">16sp</dimen>
+    <dimen name="textpadding">8dp</dimen>
 </resources>

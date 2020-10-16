@@ -446,7 +446,7 @@ class OraLangNumbersFragment : ScopedFragment() {
 
             }
 
-            val alertDialog = MaterialAlertDialogBuilder(this.context)
+            val alertDialog = MaterialAlertDialogBuilder(this.context!!)
             alertDialog.setView(alertView)
             alertDialog.setTitle(getString(R.string.alert_tilte))
             alertDialog.setCancelable(false)
@@ -577,7 +577,7 @@ class OraLangNumbersFragment : ScopedFragment() {
          val enteredTime = setTimeDialogView.findViewById<ru.ifr0z.timepickercompact.TimePickerCompact>(R.id.time_p)
 
 
-        val alertDialog = MaterialAlertDialogBuilder(this.context)
+        val alertDialog = MaterialAlertDialogBuilder(this.context!!)
         alertDialog.setView(setTimeDialogView)
         alertDialog.setTitle(getString(R.string.select_time_dialog_title))
         alertDialog.setCancelable(false)
