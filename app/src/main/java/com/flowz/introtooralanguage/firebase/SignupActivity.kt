@@ -12,11 +12,13 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import com.flowz.introtooralanguage.MainActivity
 import com.flowz.introtooralanguage.R
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.android.synthetic.main.forgotpassword.*
 //import kotlinx.android.synthetic.main.activity_signup.*
 import kotlinx.android.synthetic.main.register.*
 import kotlinx.android.synthetic.main.signin.*
@@ -123,7 +125,8 @@ class SignupActivity : AppCompatActivity() {
                     currentUserDb?.child("phonenumber")?.setValue(user_phone_number.text.toString())
 
                     Log.d(Tag, "created User with Email Successfully")
-                    Toast.makeText(baseContext, "User account created Successfully", Toast.LENGTH_LONG).show()
+//                    Toast.makeText(baseContext, "User account created Successfully", Toast.LENGTH_LONG).show()
+                    Snackbar.make(rg_user_name, "User account created Successfully", Snackbar.LENGTH_LONG).show()
 
                     startActivity(Intent(this, LoginActivity::class.java))
                     finish()
@@ -132,7 +135,8 @@ class SignupActivity : AppCompatActivity() {
                 }else{
 
                     Log.w(Tag, "User creation failed", it.exception)
-                    Toast.makeText(baseContext, "Authentication failed, Try again later", Toast.LENGTH_LONG).show()
+//                    Toast.makeText(baseContext, "Authentication failed, Try again later", Toast.LENGTH_LONG).show()
+                    Snackbar.make(button_send_reset_email, "User account creation failed", Snackbar.LENGTH_LONG).show()
 //                    updateUI(null)
                 }
             }
