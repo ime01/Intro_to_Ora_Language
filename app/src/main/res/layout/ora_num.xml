@@ -50,7 +50,7 @@
             app:srcCompat="@mipmap/ic_launcher_round" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/play"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -60,6 +60,17 @@
             app:layout_constraintStart_toEndOf="@+id/ora_numIcon"
             app:layout_constraintTop_toBottomOf="@+id/eng_num"
             app:srcCompat="@drawable/ic_play_circle_filled_black_24dp" />
+
+        <TextView
+            android:id="@+id/ora_options_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="24dp"
+            android:textColor="@color/md_black_1000"
+            android:text="&#8942;"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

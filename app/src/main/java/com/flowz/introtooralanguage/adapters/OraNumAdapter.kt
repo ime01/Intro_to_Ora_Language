@@ -1,21 +1,34 @@
 package com.flowz.introtooralanguage.adapters
 
+import android.content.Context
+import android.media.AudioAttributes
+import android.media.MediaPlayer
+import android.net.Uri
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
+import android.widget.PopupMenu
+import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.flowz.introtooralanguage.R
 import com.flowz.introtooralanguage.data.OraLangNums
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.ora_num.view.*
+import java.io.IOException
 import javax.xml.transform.Templates
 
-class OraNumAdapter  (private val oraLangNumList: ArrayList<OraLangNums>)  : RecyclerView.Adapter<OraNumAdapter.OraNumViewHolder> () {
+class OraNumAdapter  (private val context: Context, private val oraLangNumList: ArrayList<OraLangNums>)  : RecyclerView.Adapter<OraNumAdapter.OraNumViewHolder> () {
 
+    var mediaPlayer: MediaPlayer? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OraNumViewHolder {
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.ora_num2, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.ora_num, parent, false)
         return OraNumViewHolder(view)
 
     }
@@ -30,10 +43,58 @@ class OraNumAdapter  (private val oraLangNumList: ArrayList<OraLangNums>)  : Rec
     override fun onBindViewHolder(holder: OraNumViewHolder, position: Int) {
 
         holder.bind(oraLangNumList[position])
+
+        holder.oraMenu?.setOnClickListener {
+
+            val popMenu = PopupMenu(context, holder.oraMenu)
+            popMenu.menuInflater.inflate(R.menu.ora_words_options_menu, popMenu.menu)
+            popMenu.setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener {
+                override fun onMenuItemClick(item: MenuItem?): Boolean {
+                    when(item!!.itemId){
+                        R.id.edit->{
+                            Snackbar.make(holder.oraMenu, "Edit Clicked", Snackbar.LENGTH_LONG).show()
+                        }
+                        R.id.delete->{
+
+                            Snackbar.make(holder.oraMenu, "Delete Clicked", Snackbar.LENGTH_LONG).show()
+                        }
+                    }
+                    return true
+                }
+
+            })
+            popMenu.show()
+
+        }
+
+        holder.play?.setOnClickListener {
+
+            val animation = AnimationUtils.loadAnimation(context, R.anim.play_icon_blink)
+            holder.play.startAnimation(animation)
+
+            if(position<=27){
+
+                val  sound = oraLangNumList[position].numIcon.toString()
+                val  played = Uri.parse(sound)
+
+                playContentInt(oraLangNumList[position].numIcon!!)
+//                playContentUri(Uri.parse(oraLangNumList[position].numIcon.toString()))
+
+            }else{
+
+                val played1 = oraLangNumList[position].recordedAudio
+                playContentUri(played1!!)
+            }
+
+            Snackbar.make(holder.play, "Delete Clicked", Snackbar.LENGTH_LONG).show()
+        }
     }
 
 
     class OraNumViewHolder(view: View): RecyclerView.ViewHolder(view){
+
+        val oraMenu = itemView.findViewById<TextView?>(R.id.ora_options_menu)
+        val play = itemView.findViewById<ImageView>(R.id.play)
 
         fun bind(oraWords: OraLangNums){
 
@@ -41,14 +102,81 @@ class OraNumAdapter  (private val oraLangNumList: ArrayList<OraLangNums>)  : Rec
             itemView.ora_num.text = oraWords.oraNum
 
 //            Picasso.get().load(oraWords.numIcon!!).into(itemView.ora_numIcon)
-
         }
 
     }
 
+    fun playContentUri(uri: Uri) {
+//        val mMediaPlayer = MediaPlayer().apply {
+
+        if (mediaPlayer != null) {
+
+            mediaPlayer?.stop()
+
+            try {
+                mediaPlayer = MediaPlayer().apply {
+                    setDataSource(context!!, uri)
+                    setAudioAttributes(
+                        AudioAttributes.Builder()
+                            .setUsage(AudioAttributes.USAGE_MEDIA)
+                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                            .build()
+                    )
+                    prepare()
+                }
+                mediaPlayer?.start()
+            } catch (e: IOException) {
+
+                mediaPlayer = null
+                mediaPlayer?.release()
+            }
+        } else {
+
+            try {
+                mediaPlayer = MediaPlayer().apply {
+
+                    setDataSource(context!!, uri)
+
+                    setAudioAttributes(
+                        AudioAttributes.Builder()
+                            .setUsage(AudioAttributes.USAGE_MEDIA)
+                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                            .build()
+                    )
+                    prepare()
+                }
+                mediaPlayer?.start()
+            } catch (e: IOException) {
+
+                mediaPlayer = null
+                mediaPlayer?.release()
+            }
+
+        }
+    }
+
+
+    fun playContentInt(int: Int) {
+
+        if (mediaPlayer == null) {
+                                mediaPlayer = MediaPlayer.create(context, int)
+                                mediaPlayer?.start()
+
+                            } else {
+                                mediaPlayer?.stop()
+                                mediaPlayer = MediaPlayer.create(context, int)
+                                mediaPlayer?.start()
+                            }
+
+    }
     fun addOraNumber(oraWord: OraLangNums){
         oraLangNumList.add(oraWord)
         notifyItemInserted(oraLangNumList.size-1)
+    }
+
+    fun deleteOraNumber(position: Int, oraWord: OraLangNums){
+        oraLangNumList.remove(oraWord)
+        notifyItemRemoved(position)
     }
 
 

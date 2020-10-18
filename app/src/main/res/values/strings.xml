@@ -62,4 +62,6 @@
     <string name="welcome_profile">Welcome to your profile</string>
     <string name="logout">LOGOUT</string>
     <string name="ora_user_profile">Ora User Profile</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 </resources>

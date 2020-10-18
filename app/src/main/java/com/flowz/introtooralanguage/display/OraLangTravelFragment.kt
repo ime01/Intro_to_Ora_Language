@@ -47,7 +47,7 @@ class OraLangTravelFragment : Fragment() {
 
         ora_travel_recycler.layoutManager = LinearLayoutManager(this.context)
 
-        ora_travel_recycler.adapter = OraNumAdapter(travelList)
+        ora_travel_recycler.adapter = OraNumAdapter(this.requireContext(), travelList)
 
         ora_travel_recycler.addOnItemTouchListener(
             RecyclerItemClickListener(this.requireContext(), ora_travel_recycler, object : RecyclerItemClickListener.OnItemClickListener {

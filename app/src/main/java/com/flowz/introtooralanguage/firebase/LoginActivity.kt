@@ -16,9 +16,11 @@ import android.view.WindowManager
 import android.widget.Toast
 import com.flowz.introtooralanguage.MainActivity
 import com.flowz.introtooralanguage.R
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.android.synthetic.main.register.*
 import kotlinx.android.synthetic.main.signin.*
 
 class LoginActivity : AppCompatActivity() {
@@ -56,17 +58,19 @@ class LoginActivity : AppCompatActivity() {
 
                     if (it.isSuccessful){
 
-                        Toast.makeText(baseContext, "Logged In Successfully", Toast.LENGTH_LONG).show()
+//                        Toast.makeText(baseContext, "Logged In Successfully", Toast.LENGTH_LONG).show()
+                        Snackbar.make(lg_user_email, "Logged In Successfully", Snackbar.LENGTH_LONG).show()
 
                         startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                         finish()
                     }else{
 
-                        Toast.makeText(baseContext, "User login failed, try again!", Toast.LENGTH_LONG).show()
+//                        Toast.makeText(baseContext, "User login failed, try again!", Toast.LENGTH_LONG).show()
+                        Snackbar.make(lg_user_email, "User login failed, try again!", Snackbar.LENGTH_LONG).show()
+
                     }
                 }
         }
-
     }
 
     private fun setStatusBarTransparent(activity: AppCompatActivity){

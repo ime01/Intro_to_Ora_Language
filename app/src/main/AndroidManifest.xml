@@ -11,7 +11,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/backgrounda"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -19,13 +19,15 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name=".welcomesplashscreen.SplashScreenActivity">
+
+        </activity>
+        <activity android:name=".MainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".MainActivity">
 
         </activity>
         <activity android:name=".firebase.LoginActivity"
