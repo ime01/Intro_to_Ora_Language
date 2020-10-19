@@ -61,7 +61,6 @@ class LoginActivity : AppCompatActivity() {
 //                        Toast.makeText(baseContext, "Logged In Successfully", Toast.LENGTH_LONG).show()
                         Snackbar.make(lg_user_email, "Logged In Successfully", Snackbar.LENGTH_LONG).show()
 
-
                         startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                         finish()
                     }else{
@@ -72,7 +71,6 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
         }
-
     }
 
     private fun setStatusBarTransparent(activity: AppCompatActivity){

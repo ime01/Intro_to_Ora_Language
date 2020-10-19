@@ -47,7 +47,7 @@ class OraLangHouseFragment : Fragment() {
 
         ora_house_recycler.layoutManager = LinearLayoutManager(this.context)
 
-        ora_house_recycler.adapter = OraNumAdapter(houseList)
+        ora_house_recycler.adapter = OraNumAdapter(this.requireContext(), houseList)
 
         ora_house_recycler.addOnItemTouchListener(
             RecyclerItemClickListener(this.requireContext(),  ora_house_recycler, object : RecyclerItemClickListener.OnItemClickListener {

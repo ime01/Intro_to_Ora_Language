@@ -252,8 +252,6 @@ class OraLangNumbersFragment : ScopedFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
-
-
         if (!(resultCode == Activity.RESULT_OK || data != null || data?.data != null)) {
             Toast.makeText(this.context, "Error in getting music file", Toast.LENGTH_LONG).show()
         }
@@ -278,8 +276,6 @@ class OraLangNumbersFragment : ScopedFragment() {
             }
         }
     }
-
-
 
 
     fun initializeList() {
@@ -315,7 +311,6 @@ class OraLangNumbersFragment : ScopedFragment() {
         numList.add(26, OraLangNums("Ninety", "Egbo-enee-bi-igbe", R.raw.ninety))
         numList.add(27, OraLangNums("One Hundred", "Egbo-eheen", R.raw.hundred))
 
-
 //            val words = getSavedOraWords()
 //
 //            numList.add(words)
@@ -323,7 +318,7 @@ class OraLangNumbersFragment : ScopedFragment() {
 
         ora_num_recycler.layoutManager = LinearLayoutManager(this.context)
 
-        oraAdapter = OraNumAdapter(numList)
+        oraAdapter = OraNumAdapter(this.requireContext(), numList)
 
         val alphaAdapter = AlphaInAnimationAdapter(oraAdapter)
         ora_num_recycler.adapter = ScaleInAnimationAdapter(alphaAdapter)
@@ -335,41 +330,41 @@ class OraLangNumbersFragment : ScopedFragment() {
             removeDuration = 500
         }
 
-        ora_num_recycler.addOnItemTouchListener(RecyclerItemClickListener(this.requireContext(), ora_num_recycler, object : RecyclerItemClickListener.OnItemClickListener {
-
-                    override fun onItemClick(view: View, position: Int) {
-
-                        val soundPlayed = numList.get(position)
-
-                        if (position <= 27) {
-
-//                                val playa = soundPlayed.numIcon!!.toString()
+//        ora_num_recycler.addOnItemTouchListener(RecyclerItemClickListener(this.requireContext(), ora_num_recycler, object : RecyclerItemClickListener.OnItemClickListener {
 //
-//                                val play = Uri.parse(playa)
+//                    override fun onItemClick(view: View, position: Int) {
 //
-//                                playContentUri(Uri.parse(soundPlayed.numIcon.toString()))
-
-                            if (mediaPlayer == null) {
-                                mediaPlayer = MediaPlayer.create(context, soundPlayed.numIcon!!)
-                                mediaPlayer?.start()
-
-                            } else {
-                                mediaPlayer?.stop()
-                                mediaPlayer = MediaPlayer.create(context, soundPlayed.numIcon!!)
-                                mediaPlayer?.start()
-                            }
-                            Toast.makeText(activity, "LESS THAN 27", Toast.LENGTH_LONG).show()
-
-                        } else {
-
-                            playContentUri(soundPlayed.recordedAudio!!)
-                        }
-                    }
-
-                    override fun onItemLongClick(view: View?, position: Int) {
-                    }
-                })
-        )
+//                        val soundPlayed = numList.get(position)
+//
+//                        if (position <= 27) {
+//
+////                                val playa = soundPlayed.numIcon!!.toString()
+////
+////                                val play = Uri.parse(playa)
+////
+////                                playContentUri(Uri.parse(soundPlayed.numIcon.toString()))
+//
+//                            if (mediaPlayer == null) {
+//                                mediaPlayer = MediaPlayer.create(context, soundPlayed.numIcon!!)
+//                                mediaPlayer?.start()
+//
+//                            } else {
+//                                mediaPlayer?.stop()
+//                                mediaPlayer = MediaPlayer.create(context, soundPlayed.numIcon!!)
+//                                mediaPlayer?.start()
+//                            }
+//                            Toast.makeText(activity, "LESS THAN 27", Toast.LENGTH_LONG).show()
+//
+//                        } else {
+//
+//                            playContentUri(soundPlayed.recordedAudio!!)
+//                        }
+//                    }
+//
+//                    override fun onItemLongClick(view: View?, position: Int) {
+//                    }
+//                })
+//        )
     }
 
 

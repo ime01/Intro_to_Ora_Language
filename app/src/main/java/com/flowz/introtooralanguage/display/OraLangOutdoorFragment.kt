@@ -46,7 +46,7 @@ class OraLangOutdoorFragment : Fragment() {
 
         ora_outdoor_recycler.layoutManager = LinearLayoutManager(this.context)
 
-        ora_outdoor_recycler.adapter = OraNumAdapter(OutdoorList)
+        ora_outdoor_recycler.adapter = OraNumAdapter(this.requireContext(), OutdoorList)
 
         ora_outdoor_recycler.addOnItemTouchListener(
             RecyclerItemClickListener(this.requireContext(),ora_outdoor_recycler, object : RecyclerItemClickListener.OnItemClickListener {
