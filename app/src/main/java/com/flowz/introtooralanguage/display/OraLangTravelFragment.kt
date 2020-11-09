@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.flowz.introtooralanguage.R
 import com.flowz.introtooralanguage.adapters.OraNumAdapter
 import com.flowz.introtooralanguage.data.OraLangNums
+import com.flowz.introtooralanguage.data.room.OraWordsDatabase
 import com.flowz.introtooralanguage.recyclerviewlistener.RecyclerItemClickListener
 import kotlinx.android.synthetic.main.fragment_ora_lang_house.*
 import kotlinx.android.synthetic.main.fragment_ora_lang_travel.*
@@ -47,7 +48,7 @@ class OraLangTravelFragment : Fragment() {
 
         ora_travel_recycler.layoutManager = LinearLayoutManager(this.context)
 
-        ora_travel_recycler.adapter = OraNumAdapter(this.requireContext(), travelList)
+        ora_travel_recycler.adapter = OraNumAdapter(this.requireContext(), OraWordsDatabase.invoke(this.context!!), travelList)
 
         ora_travel_recycler.addOnItemTouchListener(
             RecyclerItemClickListener(this.requireContext(), ora_travel_recycler, object : RecyclerItemClickListener.OnItemClickListener {

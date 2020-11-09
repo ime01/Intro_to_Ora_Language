@@ -11,6 +11,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
@@ -18,6 +19,7 @@ import com.flowz.introtooralanguage.MainActivity
 import com.flowz.introtooralanguage.R
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.register.*
@@ -28,6 +30,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private var databaseReference: DatabaseReference? = null
     private var database: FirebaseDatabase? = null
+    private lateinit var firebaseAuthStateListener : FirebaseAuth.AuthStateListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +39,28 @@ class LoginActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
+        firebaseAuthStateListener = FirebaseAuth.AuthStateListener {
+
+            val oraUser : FirebaseUser? = it.currentUser
+
+            if (oraUser!= null){
+                startActivity(Intent(this, MainActivity::class.java))
+                Log.e("loginActivity",  oraUser.toString())
+                finish()
+            }
+        }
+
         login()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        FirebaseAuth.getInstance().addAuthStateListener(firebaseAuthStateListener)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        FirebaseAuth.getInstance().removeAuthStateListener(firebaseAuthStateListener)
     }
 
     private fun login(){

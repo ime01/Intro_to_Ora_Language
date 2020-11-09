@@ -12,10 +12,13 @@ interface OraWordsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert (dboraLang: OraLangNums)
 
+    @Update
+    fun  update(dboraLang: OraLangNums)
+
     @TypeConverters(UriConverters::class)
-    @Query("select * from myoraWords_table where id = id ")
+//    @Query("select * from myoraWords_table where id = oraid ")
+    @Query("SELECT * FROM  myoraWords_table")
     fun getOraWords(): LiveData<List<OraLangNums>>
-//    fun getOraWords(): LiveData<ArrayList<OraLangNums>>
 
     @Delete
     fun delete (dboraLang: OraLangNums)

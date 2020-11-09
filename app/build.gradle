@@ -51,6 +51,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'androidx.cardview:cardview:1.0.0'
 
+    testImplementation "com.google.truth:truth:1.0.1"
+    androidTestImplementation "com.google.truth:truth:1.0.1"
+
 //    recyclerView Animator
     implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
 

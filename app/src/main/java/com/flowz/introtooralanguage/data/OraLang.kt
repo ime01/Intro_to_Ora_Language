@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import java.io.File
 
+
 @Entity(tableName = "myoraWords_table")
 data class OraLangNums (
     @ColumnInfo(name ="engNum")
@@ -20,10 +21,9 @@ data class OraLangNums (
 
     @ColumnInfo(name ="recordedAudio")
     val recordedAudio: Uri? = null)
-
 {
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0
+    var oraid: Int = 0
 
 }
 
