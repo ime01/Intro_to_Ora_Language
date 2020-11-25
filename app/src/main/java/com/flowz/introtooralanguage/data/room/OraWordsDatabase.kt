@@ -5,7 +5,7 @@ import androidx.room.*
 import com.flowz.introtooralanguage.data.OraLangNums
 import com.flowz.introtooralanguage.data.UriConverters
 
-@Database(entities = [OraLangNums::class], version = 1)
+@Database(entities = [OraLangNums::class], version = 6)
 @TypeConverters(UriConverters::class)
 abstract class OraWordsDatabase : RoomDatabase(){
 
@@ -23,7 +23,7 @@ abstract class OraWordsDatabase : RoomDatabase(){
             }
         }
 
-        private fun buidDatabase(context: Context) = Room.databaseBuilder(context.applicationContext, OraWordsDatabase::class.java, "orawords.db").build()
+        private fun buidDatabase(context: Context) = Room.databaseBuilder(context.applicationContext, OraWordsDatabase::class.java, "orawords.db").fallbackToDestructiveMigration().build()
 
 
     }

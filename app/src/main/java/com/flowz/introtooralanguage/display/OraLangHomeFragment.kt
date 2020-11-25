@@ -10,7 +10,7 @@ import androidx.navigation.ActivityNavigator
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
+//import androidx.navigation.fragment.findNavController
 
 import com.flowz.introtooralanguage.R
 import kotlinx.android.synthetic.main.activity_main.*

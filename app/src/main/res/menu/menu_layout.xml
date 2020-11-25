@@ -13,6 +13,7 @@
         android:id="@+id/search_oraword"
         android:icon="@drawable/ic_search_black_24dp"
         android:title="@string/search_for_ora_word"
-        app:actionViewClass="android.widget.SearchView"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+       />
 </menu>

@@ -7,7 +7,7 @@
 
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/text_view2"
         style="@style/TextLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/ora_person"
         app:layout_constraintVertical_bias="0.084" />
 
     <EditText
@@ -33,7 +33,7 @@
         android:padding="@dimen/textpadding"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/text_view2" />
 
     <EditText
         android:id="@+id/lg_user_password"
@@ -88,7 +88,7 @@
         app:layout_constraintTop_toBottomOf="@+id/no_account" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/ora_person"
         android:layout_width="@dimen/img_dimens"
         android:layout_height="@dimen/img_dimens"
         android:layout_marginTop="32dp"

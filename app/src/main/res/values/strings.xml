@@ -27,7 +27,6 @@
     <string name="notification_text">Reminder to add new ora word</string>
     <string name="text_forgot_password_title">forgot you password ?</string>
     <string name="text_forgot_password_message">Enter your email to retrieve password</string>
-
     <string name="button_sign_in">Sign in</string>
     <string name="button_sign_up">Sign up</string>
     <string name="button_send">Send</string>
@@ -36,9 +35,7 @@
     <string name="text_signin_social_media">Or Sign in using Gmail</string>
     <string name="text_signup_social_media">Or Sign up using Gmail</string>
     <string name="text_signin_signup">Don\'t have an account? <b>Sign up</b></string>
-    <string name="text_signup_terms">By signing up, you agree to our <b>terms and conditions</b></string>
     <string name="text_signup_message">Hello, let\'s set up your account</string>
-
     <string name="hint_email">Email</string>
     <string name="hint_phone">Phone</string>
     <string name="hint_username">Username</string>
@@ -64,4 +61,16 @@
     <string name="ora_user_profile">Ora User Profile</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="edit_oraitem_tex">Edit your English or Ora words here</string>
+    <string name="change_audio">Change audio of spoken word</string>
+    <string name="save_updated_oraword">Update OraWord</string>
+    <string name="disgard_edit">Disgard Edit</string>
+    <string name="ora_home">Ora Home</string>
+    <string name="communicate">Communicate</string>
+    <string name="share">Share</string>
+    <string name="send">Send</string>
+    <string name="add_new">Add new OraItem</string>
+    <string name="play">play</string>
+    <string name="orasegmenticon">OraSegmentIcon</string>
+    <string name="textview">TextView</string>
 </resources>

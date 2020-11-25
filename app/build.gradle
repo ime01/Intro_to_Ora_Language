@@ -4,8 +4,9 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
-apply plugin: 'kotlin-kapt'
+apply plugin: 'androidx.navigation.safeargs'
 
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
@@ -38,6 +39,8 @@ android {
 
 dependencies {
 
+    implementation 'com.google.firebase:firebase-analytics:17.2.2'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:17.3.0'
     def work_version = "2.3.4"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -51,14 +54,19 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'androidx.cardview:cardview:1.0.0'
 
+    testImplementation "com.google.truth:truth:1.0.1"
+    androidTestImplementation "com.google.truth:truth:1.0.1"
+
 //    recyclerView Animator
     implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
 
     //materialDesign
     implementation "com.google.android.material:material:1.3.0-alpha03"
 
-    implementation "android.arch.navigation:navigation-fragment-ktx:1.0.0"
-    implementation "android.arch.navigation:navigation-ui-ktx:1.0.0"
+//    implementation "android.arch.navigation:navigation-fragment-ktx:1.0.0"
+//    implementation "android.arch.navigation:navigation-ui-ktx:1.0.0"
+    implementation 'androidx.navigation:navigation-fragment:2.0.0'
+    implementation 'androidx.navigation:navigation-ui:2.0.0'
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3"
@@ -84,3 +92,12 @@ dependencies {
 
 }
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+
+//Localolazy Libraary for automatic string localiazation to different languages
+apply plugin: 'com.localazy.gradle'
+
+localazy {
+    readKey "a8859262842446524896-12afd05b17905af3657fd3908a81b07e36d341db1c01e14d30d75477dc4b8936"
+    writeKey "a8859262842446524896-38bd6f765ee98a5309548091d428da8c4185e5a4f8751293d126981a7799ee98"
+}

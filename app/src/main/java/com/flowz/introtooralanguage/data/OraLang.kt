@@ -1,12 +1,12 @@
 package com.flowz.introtooralanguage.data
 
 import android.net.Uri
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.TypeConverter
-import java.io.File
+import android.os.Parcelable
+import androidx.room.*
+import kotlinx.android.parcel.Parcelize
+import java.io.Serializable
 
+@Parcelize
 @Entity(tableName = "myoraWords_table")
 data class OraLangNums (
     @ColumnInfo(name ="engNum")
@@ -19,13 +19,12 @@ data class OraLangNums (
     val numIcon : Int?= null,
 
     @ColumnInfo(name ="recordedAudio")
-    val recordedAudio: Uri? = null)
-
-{
+    val recordedAudio: Uri? = null):Parcelable {
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0
+    var oraid: Int = 0
 
 }
+
 
 class UriConverters {
     @TypeConverter

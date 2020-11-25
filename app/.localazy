@@ -1,0 +1,7 @@
+[packages]
+com.flowz.introtooralanguage = raa
+
+[localazy]
+allStringsUploaded = true
+showWelcomeMessage = false
+

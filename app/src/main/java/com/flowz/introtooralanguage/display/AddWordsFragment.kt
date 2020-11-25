@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 
 import com.flowz.introtooralanguage.R
-import com.flowz.introtooralanguage.adapters.OraNumAdapter
 import kotlinx.android.synthetic.main.fragment_add_words.*
 
 /**
