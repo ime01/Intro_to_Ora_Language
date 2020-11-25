@@ -14,9 +14,11 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import android.widget.ImageView
 import android.widget.Toast
 import com.flowz.introtooralanguage.MainActivity
 import com.flowz.introtooralanguage.R
+import com.flowz.introtooralanguage.extensions.playAnimation
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -36,6 +38,10 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.signin)
         setStatusBarTransparent(this@LoginActivity)
+
+        val oraWelcomePerson = findViewById<ImageView>(R.id.ora_person)
+
+        playAnimation(this, R.anim.bounce, oraWelcomePerson)
 
         auth = FirebaseAuth.getInstance()
 
@@ -111,6 +117,9 @@ class LoginActivity : AppCompatActivity() {
 
     fun onClick(view: View) {
          if(view.id == R.id.forgotten_password){
+//             The line of code below crashes the app, this was done intentionally to test the FIREBASE CRASHLYTICS i just added to the app to give useful info about any crash from users.
+//             throw RuntimeException("Test Crash")
+
             startActivity(Intent(this@LoginActivity, ForgotPasswordActivity::class.java))
         }
         else if(view.id == R.id.no_account){

@@ -46,33 +46,24 @@
         android:label="Numbers"
         tools:layout="@layout/ora_lang_numbers" >
         <action
-            android:id="@+id/action_oraLangNumbersFragment_to_addWordsFragment"
-            app:destination="@id/addWordsFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_enter_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            android:id="@+id/action_oraLangNumbersFragment_to_editOraWordFragment"
+            app:destination="@id/editOraWordFragment" />
     </fragment>
     <fragment
         android:id="@+id/oraLangOutdoorFragment"
-        android:name="com.flowz.introtooralanguage.display.OraLangOutdoorFragment"
+        android:name="com.flowz.introtooralanguage.display.outdoor.OraLangOutdoorFragment"
         android:label="OutdoorPhrases"
         tools:layout="@layout/fragment_ora_lang_outdoor" />
     <fragment
         android:id="@+id/oraLangHouseFragment"
-        android:name="com.flowz.introtooralanguage.display.OraLangHouseFragment"
+        android:name="com.flowz.introtooralanguage.display.house.OraLangHouseFragment"
         android:label="IndoorPhrases"
         tools:layout="@layout/fragment_ora_lang_house" />
     <fragment
         android:id="@+id/oraLangTravelFragment"
-        android:name="com.flowz.introtooralanguage.display.OraLangTravelFragment"
+        android:name="com.flowz.introtooralanguage.display.travel.OraLangTravelFragment"
         android:label="TravelPhrases"
         tools:layout="@layout/fragment_ora_lang_travel" />
-    <fragment
-        android:id="@+id/addWordsFragment"
-        android:name="com.flowz.introtooralanguage.display.AddWordsFragment"
-        android:label="AddWords"
-        tools:layout="@layout/fragment_add_words" />
     <fragment
         android:id="@+id/userProfileFragment"
         android:name="com.flowz.introtooralanguage.display.profile.UserProfileFragment"
@@ -86,4 +77,18 @@
         android:id="@+id/loginActivity"
         android:name="com.flowz.introtooralanguage.firebase.LoginActivity"
         android:label="LoginActivity" />
+    <fragment
+        android:id="@+id/editOraWordFragment"
+        android:name="com.flowz.introtooralanguage.display.EditOraWordFragment"
+        android:label="Update OraItem"
+        tools:layout="@layout/fragment_edit_ora_word" >
+        <argument
+            app:argType="com.flowz.introtooralanguage.data.OraLangNums"
+            android:name="OraLangNums"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_editOraWordFragment_to_oraLangNumbersFragment"
+            app:destination="@id/oraLangNumbersFragment" />
+    </fragment>
 </navigation>

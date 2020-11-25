@@ -12,41 +12,32 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.flowz.introtooralanguage.display.OraListDiffCallback
 import com.flowz.introtooralanguage.R
 import com.flowz.introtooralanguage.data.OraLangNums
 import com.flowz.introtooralanguage.data.room.OraWordsDatabase
+import com.flowz.introtooralanguage.utils.OraListDiffCallback
+import com.flowz.introtooralanguage.display.numbers.OraLangNumbersFragmentDirections
 import com.flowz.introtooralanguage.extensions.showSnackbar
 import kotlinx.android.synthetic.main.ora_num.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-class OraNumAdapter  (private val context: Context, private val oraDb: OraWordsDatabase, private val oraLangNumList: ArrayList<OraLangNums>)  : RecyclerView.Adapter<OraNumAdapter.OraNumViewHolder> () {
+
+class OraWordsAdapter  (private val context: Context, private val oraDb: OraWordsDatabase, private val oraLangNumList: ArrayList<OraLangNums>)  : RecyclerView.Adapter<OraWordsAdapter.OraNumViewHolder> () {
 
     var mediaPlayer: MediaPlayer? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OraNumViewHolder {
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.ora_num, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.ora_num2, parent, false)
         return OraNumViewHolder(view)
 
     }
 
-//    override fun getItemCount(): Int {
-//        return oraLangNumList.size
-//    }
-
-//    override fun getItemId(position: Int): Long {
-//        return oraLangNumList.get(position).oraid.toLong()
-////        return position.toLong()
-//    }
-//
-//    override fun getItemViewType(position: Int): Int {
-//        return oraLangNumList[position].oraid
-//    }
 
     override fun getItemCount(): Int = oraLangNumList.size
 
@@ -63,10 +54,21 @@ class OraNumAdapter  (private val context: Context, private val oraDb: OraWordsD
                     when(item!!.itemId){
                         R.id.edit->{
                             showSnackbar(holder.oraMenu,"Edit Clicked")
+                            if(position <= 10){
+                                showSnackbar(holder.oraMenu, "You can't edit preinstalled OraWords")
+                            }
+                            else{
+
+                                val action = OraLangNumbersFragmentDirections.actionOraLangNumbersFragmentToEditOraWordFragment()
+                                action.oraLangNums = oraLangNumList[position]
+                                Navigation.findNavController(holder.itemView).navigate(action)
+
+                            }
+
                         }
                         R.id.delete->{
 
-                            if(position <= 27){
+                            if(position <= 10){
                                 showSnackbar(holder.oraMenu, "You can't delete preinstalled OraWords")
                             }
                             else{
@@ -98,7 +100,7 @@ class OraNumAdapter  (private val context: Context, private val oraDb: OraWordsD
             val animation = AnimationUtils.loadAnimation(context, R.anim.play_icon_blink)
             holder.play.startAnimation(animation)
 
-            if(position<=27){
+            if(position<=10){
 
                 val  sound = oraLangNumList[position].numIcon.toString()
                 val  played = Uri.parse(sound)
@@ -202,6 +204,12 @@ class OraNumAdapter  (private val context: Context, private val oraDb: OraWordsD
 //        notifyItemInserted(oraLangNumList.size-1)
     }
 
+    fun updateEditedOraItem(oraWord: OraLangNums){
+//        deleteOraNumber(oraLangNumList[position])
+        oraDb.oraWordsDao().update(oraWord)
+        notifyDataSetChanged()
+    }
+
     fun addOraNumberList(oraWords: List<OraLangNums>){
         oraLangNumList.clear()
         oraLangNumList.addAll(oraWords)
@@ -212,7 +220,10 @@ class OraNumAdapter  (private val context: Context, private val oraDb: OraWordsD
     fun upDateData(newList: List<OraLangNums>){
 
         val diffCallback =
-            OraListDiffCallback(oraLangNumList, newList)
+            OraListDiffCallback(
+                oraLangNumList,
+                newList
+            )
         val diffResult = DiffUtil.calculateDiff(diffCallback)
 //        oraLangNumList.clear()
         oraLangNumList.addAll(newList)

@@ -1,4 +1,4 @@
-package com.flowz.introtooralanguage.display
+package com.flowz.introtooralanguage.utils
 
 import androidx.recyclerview.widget.DiffUtil
 import com.flowz.introtooralanguage.data.OraLangNums

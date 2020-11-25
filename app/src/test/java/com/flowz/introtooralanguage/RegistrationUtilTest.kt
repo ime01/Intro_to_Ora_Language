@@ -1,5 +1,6 @@
 package com.flowz.introtooralanguage
 
+import com.flowz.introtooralanguage.utils.RegistrationUtil
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 

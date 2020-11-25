@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="8dp"
+    tools:context=".display.EditOraWordFragment">
+
+    <EditText
+        android:id="@+id/entered_eng_words"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:autofillHints="@string/enter_english_word"
+        android:hint="@string/enter_english_word"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_edit" />
+
+    <EditText
+        android:id="@+id/entered_ora_words"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:autofillHints="@string/enter_ora_word"
+        android:hint="@string/enter_ora_word"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/entered_eng_words" />
+
+    <TextView
+        android:id="@+id/add_audio1"
+        style="@style/OraSegmentTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/change_audio"
+        android:textColor="@color/design_default_color_error"
+        android:textSize="16sp"
+        app:cornerRadius="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/entered_ora_words" />
+
+    <LinearLayout
+        android:id="@+id/recordIcons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:weightSum="100"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_audio1">
+
+        <ImageView
+            android:id="@+id/start_recording_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="25"
+            app:srcCompat="@drawable/ic_mic_black_24dp" />
+
+        <ImageView
+            android:id="@+id/stop_recording_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="25"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_stop_black_24dp" />
+
+        <ImageView
+            android:id="@+id/play_recording_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="25"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_play_arrow_black_24dp" />
+
+        <ImageView
+            android:id="@+id/delete_recording_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="25"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_delete_black_24dp" />
+
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/record_audio_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/record_audio"
+        android:textSize="10sp"
+        app:cornerRadius="@dimen/button_corner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recordIcons" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/internal_audio_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@string/get_audio_file"
+        android:textSize="10sp"
+        app:cornerRadius="@dimen/button_corner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/record_audio_update" />
+
+    <Button
+        android:id="@+id/update_oraword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/colorAccent"
+        android:text="@string/save_updated_oraword"
+        app:layout_constraintEnd_toEndOf="@+id/internal_audio_update"
+        app:layout_constraintStart_toEndOf="@+id/disgard_oraword_update"
+        app:layout_constraintTop_toBottomOf="@+id/internal_audio_update" />
+
+    <Button
+        android:id="@+id/disgard_oraword_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/colorAccent"
+        android:text="@string/disgard_edit"
+        app:layout_constraintStart_toStartOf="@+id/record_audio_update"
+        app:layout_constraintTop_toBottomOf="@+id/record_audio_update" />
+
+    <TextView
+        android:id="@+id/title_edit"
+        style="@style/OraSegmentTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/edit_oraitem_tex"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.flowz.introtooralanguage
+package com.flowz.introtooralanguage.utils
 
 object RegistrationUtil {
 
