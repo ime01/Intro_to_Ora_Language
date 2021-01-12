@@ -19,4 +19,14 @@ Localazy (app utilizes the plugin from LOCALAZY to automate the easy localizatio
 
 This app has a GOOGLE MAD SCORE OF 38 JETPACK LIBRARIES.
 
+app will soon be completed and made available on google playstore
+
+![Screenshot_2021-01-12-12-42-28](https://user-images.githubusercontent.com/44091450/104312162-15ed6980-548b-11eb-9beb-04afbdba24df.png)
+![Screenshot_2021-01-12-12-42-40](https://user-images.githubusercontent.com/44091450/104312170-184fc380-548b-11eb-89d2-f5d42ba1eed3.png)
+![Screenshot_2021-01-12-12-39-42](https://user-images.githubusercontent.com/44091450/104312189-21d92b80-548b-11eb-885b-a7917ede735f.png)
+![Screenshot_2021-01-12-12-39-56](https://user-images.githubusercontent.com/44091450/104312209-269ddf80-548b-11eb-9fe1-7a501a17adbe.png)
+![Screenshot_2021-01-12-12-42-08](https://user-images.githubusercontent.com/44091450/104312223-2d2c5700-548b-11eb-96e3-13548b6e07dd.png)
+
+
+
 
