@@ -21,6 +21,8 @@ This app has a GOOGLE MAD SCORE OF 38 JETPACK LIBRARIES.
 
 app will soon be completed and made available on google playstore
 
+![summary](https://user-images.githubusercontent.com/44091450/104313050-53062b80-548c-11eb-9038-ea9f1fe58cef.png)
+
 ![Screenshot_2021-01-12-12-42-28](https://user-images.githubusercontent.com/44091450/104312162-15ed6980-548b-11eb-9beb-04afbdba24df.png)
 ![Screenshot_2021-01-12-12-42-40](https://user-images.githubusercontent.com/44091450/104312170-184fc380-548b-11eb-89d2-f5d42ba1eed3.png)
 ![Screenshot_2021-01-12-12-39-42](https://user-images.githubusercontent.com/44091450/104312189-21d92b80-548b-11eb-885b-a7917ede735f.png)
