@@ -27,6 +27,10 @@ app will soon be completed and made available on google playstore
 ![Screenshot_2021-01-12-12-39-56](https://user-images.githubusercontent.com/44091450/104312209-269ddf80-548b-11eb-9fe1-7a501a17adbe.png)
 ![Screenshot_2021-01-12-12-42-08](https://user-images.githubusercontent.com/44091450/104312223-2d2c5700-548b-11eb-96e3-13548b6e07dd.png)
 
+![Screenshot_2021-01-12-12-40-43](https://user-images.githubusercontent.com/44091450/104312677-c8bdc780-548b-11eb-9cfd-781f37f5318c.png)
+![Screenshot_2021-01-12-12-41-33](https://user-images.githubusercontent.com/44091450/104312688-ceb3a880-548b-11eb-8823-4693c55806e6.png)
+
+
 
 
 
