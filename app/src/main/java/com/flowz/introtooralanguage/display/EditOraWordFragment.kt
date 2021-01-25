@@ -23,7 +23,7 @@ import com.flowz.introtooralanguage.data.OraLangNums
 import com.flowz.introtooralanguage.data.room.OraWordsDatabase
 import com.flowz.introtooralanguage.display.base.ScopedFragment
 import com.flowz.introtooralanguage.display.numbers.OraLangNumbersFragment
-import com.flowz.introtooralanguage.display.numbers.OraNumberViewModel
+import com.flowz.introtooralanguage.display.numbers.OraNumberViewModel1
 import com.flowz.introtooralanguage.extensions.playContentUri
 import com.flowz.introtooralanguage.extensions.showSnackbar
 import com.flowz.introtooralanguage.extensions.showToast
@@ -48,7 +48,7 @@ var searchViewList: ArrayList<OraLangNums> = ArrayList()
 lateinit var uri: Uri
 lateinit var selectedPath: Uri
 var recordButtonClicked: Boolean = false
-private lateinit var numberViewModel: OraNumberViewModel
+private lateinit var numberViewModel: OraNumberViewModel1
 val addOraWordTag = "addOraWordTag"
 
 /**

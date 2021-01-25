@@ -95,9 +95,9 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
 //Localolazy Libraary for automatic string localiazation to different languages
-apply plugin: 'com.localazy.gradle'
-
-localazy {
-    readKey "a8859262842446524896-12afd05b17905af3657fd3908a81b07e36d341db1c01e14d30d75477dc4b8936"
-    writeKey "a8859262842446524896-38bd6f765ee98a5309548091d428da8c4185e5a4f8751293d126981a7799ee98"
-}
+//apply plugin: 'com.localazy.gradle'
+//
+//localazy {
+//    readKey "a8859262842446524896-12afd05b17905af3657fd3908a81b07e36d341db1c01e14d30d75477dc4b8936"
+//    writeKey "a8859262842446524896-38bd6f765ee98a5309548091d428da8c4185e5a4f8751293d126981a7799ee98"
+//}
