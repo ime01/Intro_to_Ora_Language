@@ -2,12 +2,12 @@ package com.flowz.introtooralanguage.display.numbers
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.flowz.introtooralanguage.data.room.OraWordsDatabase
+import com.flowz.introtooralanguage.data.room.OraNumRepository
 
-class OraNumberViewModelFactory (private val oradb: OraWordsDatabase): ViewModelProvider.NewInstanceFactory() {
+class OraNumberViewModelFactory1 (private val repository: OraNumRepository): ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return OraNumberViewModel(oradb) as T
+        return OraNumberViewModel1(repository) as T
     }
 }

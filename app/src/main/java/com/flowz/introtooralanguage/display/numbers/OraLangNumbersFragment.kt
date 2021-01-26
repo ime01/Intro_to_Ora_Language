@@ -2,6 +2,7 @@ package com.flowz.introtooralanguage.display.numbers
 
 
 import android.app.Activity
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -18,17 +19,27 @@ import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.*
 
 import com.flowz.introtooralanguage.R
-import com.flowz.introtooralanguage.adapters.OraNumbersAdapter
+//import com.flowz.introtooralanguage.adapters.OraNumbersAdapter
+import com.flowz.introtooralanguage.adapters.OraNumbersAdapter1
 import com.flowz.introtooralanguage.data.OraLangNums
+import com.flowz.introtooralanguage.data.room.OraNumRepository
+import com.flowz.introtooralanguage.data.room.OraWordsDao
 import com.flowz.introtooralanguage.data.room.OraWordsDatabase
 import com.flowz.introtooralanguage.display.base.ScopedFragment
+import com.flowz.introtooralanguage.extensions.playContentInt
+import com.flowz.introtooralanguage.extensions.playContentUri
+import com.flowz.introtooralanguage.extensions.showSnackbar
 import com.flowz.introtooralanguage.extensions.showToast
+import com.flowz.introtooralanguage.recyclerviewlistener.RecyclerItemClickListener
 import com.flowz.introtooralanguage.workmanager.ReminderWorker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.ora_lang_numbers.*
@@ -43,7 +54,7 @@ import kotlin.collections.ArrayList
 /**
  * A simple [Fragment] subclass.
  */
-class OraLangNumbersFragment : ScopedFragment() {
+class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickListener {
 
     var isRecording = false
     private val RECORD_REQUEST_CODE = 101
@@ -53,11 +64,12 @@ class OraLangNumbersFragment : ScopedFragment() {
     lateinit var audioFilePath: String
     lateinit var numList: ArrayList<OraLangNums>
     var searchViewList: ArrayList<OraLangNums> = ArrayList()
-    lateinit var oraAdapter: OraNumbersAdapter
+//    lateinit var oraAdapter: OraNumbersAdapter
+    lateinit var oraAdapter: OraNumbersAdapter1
     lateinit var uri: Uri
     lateinit var selectedPath: Uri
     var recordButtonClicked: Boolean = false
-    private lateinit var numberViewModel: OraNumberViewModel
+    private lateinit var numberViewModel: OraNumberViewModel1
     val addOraWordTag = "addOraWordTag"
 
 
@@ -73,8 +85,7 @@ class OraLangNumbersFragment : ScopedFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.ora_lang_numbers, container, false)
+
         val view = inflater.inflate(R.layout.ora_lang_numbers, container, false)
 
         return view
@@ -261,13 +272,14 @@ class OraLangNumbersFragment : ScopedFragment() {
     }
 
 
-    fun initializeList() {
+     fun initializeList() {
+
 
         numList = ArrayList()
 
-        numList.add(0, OraLangNums("One", "Okpa", R.raw.one))
-        numList.add(1, OraLangNums("Two", "Evah", R.raw.two))
-        numList.add(2, OraLangNums("Three", "Eha", R.raw.three))
+        numList.add(0, OraLangNums("One", "Okpa", null, Uri.parse(R.raw.one.toString())))
+        numList.add(1, OraLangNums("Two", "Evah", null, Uri.parse(R.raw.one.toString())))
+        numList.add(2, OraLangNums("Three", "Eha", null, Uri.parse(R.raw.one.toString())))
         numList.add(3, OraLangNums("Four", "Enee", R.raw.four))
         numList.add(4, OraLangNums("Five", "Iheen", R.raw.five))
         numList.add(5, OraLangNums("Six", "Ekhan", R.raw.six))
@@ -298,13 +310,28 @@ class OraLangNumbersFragment : ScopedFragment() {
 
         ora_num_recycler.layoutManager = LinearLayoutManager(this.context)
 
-        oraAdapter = OraNumbersAdapter(this.requireContext(), OraWordsDatabase.invoke(this.context!!),   searchViewList)
-
+//        oraAdapter = OraNumbersAdapter(this.requireContext(), OraWordsDatabase.invoke(this.context!!),   searchViewList)
+        oraAdapter = OraNumbersAdapter1(this)
 
 //        val alphaAdapter = AlphaInAnimationAdapter(oraAdapter)
 //        ora_num_recycler.adapter = ScaleInAnimationAdapter(alphaAdapter)
 
-        ora_num_recycler.adapter = oraAdapter
+
+//        ora_num_recycler.itemAnimator = null
+
+
+        val gottenWords = numberViewModel.oraWords.observe(this, Observer {
+
+            it.let {
+
+                val finalList = searchViewList + it
+
+                oraAdapter.submitList(finalList)
+                ora_num_recycler.adapter = oraAdapter
+
+            }
+        })
+
 
 
 //        ora_num_recycler.itemAnimator = FlipInLeftYAnimator()
@@ -353,18 +380,20 @@ class OraLangNumbersFragment : ScopedFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+//        val navController :NavController = Navigation.findNavController(view)
+
         val application = requireNotNull(activity).application
+        val dao = OraWordsDatabase.invoke(application)
+        val  repository = OraNumRepository(dao.oraWordsDao())
+        val viewModelFactory = OraNumberViewModelFactory1(repository)
 
-        val viewModelFactory = OraNumberViewModelFactory(
-            OraWordsDatabase.invoke(application)
-        )
+//        val viewModelFactory = OraNumberViewModelFactory(
+//            OraWordsDatabase.invoke(application)
+//        )
 
-        numberViewModel = ViewModelProviders.of(this, viewModelFactory).get(OraNumberViewModel::class.java)
+        numberViewModel = ViewModelProviders.of(this, viewModelFactory).get(OraNumberViewModel1::class.java)
 
         initializeList()
-
-        getSavedOraWords()
-
 
         val animation: Animation = AnimationUtils.loadAnimation(context, R.anim.recorder_icon_blink)
 
@@ -453,10 +482,11 @@ class OraLangNumbersFragment : ScopedFragment() {
 
 
 //                            SaveOraElement(engWordEntered, oraWordEntered, null, chosenAudio)
+                            SaveOraElement(engWordEntered, oraWordEntered, null, audioUri)
 
-                           launch {
-                                oraAdapter.addOraNumber(OraLangNums(engWordEntered, oraWordEntered, null, audioUri))
-                           }
+//                           launch {
+//                                oraAdapter.addOraNumber(OraLangNums(engWordEntered, oraWordEntered, null, audioUri))
+//                           }
 
                             showToast("New details saved", this.context!!)
                             dialog.dismiss()
@@ -478,6 +508,7 @@ class OraLangNumbersFragment : ScopedFragment() {
                             SaveOraElement(engWordEntered, oraWordEntered, null, audioUri)
 
                             showToast("New details saved", this.context!!)
+                            oraAdapter.notifyDataSetChanged()
 
                             dialog.dismiss()
 
@@ -584,9 +615,7 @@ class OraLangNumbersFragment : ScopedFragment() {
         dialog.setOnShowListener {
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
 
-
                 setOneTimeWorkRequest(enteredDate, enteredTime)
-
 
                 dialog.dismiss()
 
@@ -597,7 +626,6 @@ class OraLangNumbersFragment : ScopedFragment() {
         }
         dialog.show()
     }
-
 
 
        fun setOneTimeWorkRequest(date_p : DatePicker, time_p : ru.ifr0z.timepickercompact.TimePickerCompact ) {
@@ -647,35 +675,56 @@ class OraLangNumbersFragment : ScopedFragment() {
         })
 
     }
-
-
     fun SaveOraElement(engWord: String, oraWord: String, numIcon: Int?, enteredAudio: Uri) =
         launch {
-
-            numberViewModel.SaveOraElement(engWord, oraWord, numIcon, enteredAudio)
+            numberViewModel.saveOraElement(engWord, oraWord, numIcon, enteredAudio)
         }
 
 
-    fun getSavedOraWords(){
-            val gottenWords = numberViewModel.getSavedOraWords().observe(this, Observer {
+    override fun onPlayOraWordClickListener(oraWords: OraLangNums) {
 
-                it.let {
+//        if (oraWords.oraid < 2){
+            playContentUri(oraWords.recordedAudio!!, context!!)
 
-                    val fetchedList = it
-
-//                    oraAdapter.upDateData(it)
-
-//                    oraAdapter.addOraNumberList(newList)
-//                    val insertIndex = numList.size
-                    searchViewList.addAll(it)
-                    oraAdapter.notifyDataSetChanged()
-//                    oraAdapter.notifyItemRangeInserted(insertIndex, it.size)
-//                    ora_num_recycler.adapter?.notifyDataSetChanged()
+//        }else if (oraWords.oraid>2 && <27) ) {
 //
+//            val  sound = oraWords.numIcon.toString()
+//            val  played = Uri.parse(sound)
+////            playContentInt(oraWords.numIcon!!, context!!)
+//            playContentUri(played!!, context!!)
+//        }
+//        else{
+//            playContentUri(oraWords.recordedAudio!!, context!!)
+//        }
+    }
 
-                }
-            })
+    override fun onEditOraWordClickListener(oraWords: OraLangNums) {
+
+//                              val navController : NavController = Navigation.findNavController()
+//                                navController.navigate(R.id.editOraWordFragment, bundle)
+
+                                val action = OraLangNumbersFragmentDirections.actionOraLangNumbersFragmentToEditOraWordFragment()
+//                                action.oraLangNums = oraLangNumList[position]
+                                    action.oraLangNums = oraWords
+                                Navigation.findNavController(view!!).navigate(action)
+    }
+
+
+
+
+    override fun onDeleteOraWordClickListener(oraWords: OraLangNums) {
+        launch {
+
+            numberViewModel.deleteOraElement(oraWords)
         }
+//        showToast("Delete icon clicked", context!!)
+        showSnackbar(fab1, "${oraWords.engNum} Has been Deleted")
+    }
+
+    override fun onItemClickListener(oraWords: OraLangNums) {
+
+    }
+
 
 }
 

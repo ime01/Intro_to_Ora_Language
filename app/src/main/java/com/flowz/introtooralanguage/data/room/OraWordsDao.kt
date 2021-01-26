@@ -10,10 +10,10 @@ import com.flowz.introtooralanguage.data.UriConverters
 interface OraWordsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert (dboraLang: OraLangNums)
+    suspend fun insert (dboraLang: OraLangNums)
 
     @Update
-    fun  update(dboraLang: OraLangNums)
+    suspend fun  update(dboraLang: OraLangNums)
 
     @TypeConverters(UriConverters::class)
 //    @Query("select * from myoraWords_table where id = oraid ")
@@ -21,5 +21,5 @@ interface OraWordsDao {
     fun getOraWords(): LiveData<List<OraLangNums>>
 
     @Delete
-    fun delete (dboraLang: OraLangNums)
+    suspend fun delete (dboraLang: OraLangNums)
 }

@@ -27,14 +27,14 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 
 import com.flowz.introtooralanguage.R
-import com.flowz.introtooralanguage.adapters.OraNumbersAdapter
-import com.flowz.introtooralanguage.adapters.OraWordsAdapter
+//import com.flowz.introtooralanguage.adapters.OraNumbersAdapter
+//import com.flowz.introtooralanguage.adapters.OraWordsAdapter
 import com.flowz.introtooralanguage.data.OraLangNums
 import com.flowz.introtooralanguage.data.room.OraWordsDatabase
 import com.flowz.introtooralanguage.display.base.ScopedFragment
 import com.flowz.introtooralanguage.display.numbers.OraLangNumbersFragment
-import com.flowz.introtooralanguage.display.numbers.OraNumberViewModel
-import com.flowz.introtooralanguage.display.numbers.OraNumberViewModelFactory
+//import com.flowz.introtooralanguage.display.numbers.OraNumberViewModel
+//import com.flowz.introtooralanguage.display.numbers.OraNumberViewModelFactory
 import com.flowz.introtooralanguage.extensions.showToast
 import com.flowz.introtooralanguage.recyclerviewlistener.RecyclerItemClickListener
 import com.flowz.introtooralanguage.workmanager.ReminderWorker
@@ -60,11 +60,11 @@ class OraLangOutdoorFragment : ScopedFragment() {
     lateinit var audioFilePath: String
     lateinit var numList: ArrayList<OraLangNums>
     var searchViewList: ArrayList<OraLangNums> = ArrayList()
-    lateinit var oraAdapter: OraWordsAdapter
+//    lateinit var oraAdapter: OraWordsAdapter
     lateinit var uri: Uri
     lateinit var selectedPath: Uri
     var recordButtonClicked: Boolean = false
-    private lateinit var numberViewModel: OraNumberViewModel
+//    private lateinit var numberViewModel: OraNumberViewModel
     val addOraWordTag = "addOraWordTag"
 
 
@@ -73,6 +73,10 @@ class OraLangOutdoorFragment : ScopedFragment() {
         const val KEY_COUNT_VALUE = "key_count"
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -279,17 +283,17 @@ class OraLangOutdoorFragment : ScopedFragment() {
 
         val application = requireNotNull(activity).application
 
-        ora_outdoor_recycler.layoutManager = LinearLayoutManager(this.context)
-
-        oraAdapter = OraWordsAdapter(this.requireContext(), OraWordsDatabase.invoke(this.context!!),   searchViewList)
-
-        ora_outdoor_recycler.adapter = oraAdapter
-
-        val viewModelFactory = OraNumberViewModelFactory(OraWordsDatabase.invoke(application))
-
-        numberViewModel = ViewModelProviders.of(this, viewModelFactory).get(OraNumberViewModel::class.java)
-
-        getSavedOraWords()
+//        ora_outdoor_recycler.layoutManager = LinearLayoutManager(this.context)
+//
+//        oraAdapter = OraWordsAdapter(this.requireContext(), OraWordsDatabase.invoke(this.context!!),   searchViewList)
+//
+//        ora_outdoor_recycler.adapter = oraAdapter
+//
+//        val viewModelFactory = OraNumberViewModelFactory(OraWordsDatabase.invoke(application))
+//
+//        numberViewModel = ViewModelProviders.of(this, viewModelFactory).get(OraNumberViewModel::class.java)
+//
+//        getSavedOraWords()
 
         val animation: Animation = AnimationUtils.loadAnimation(context, R.anim.recorder_icon_blink)
 
@@ -380,7 +384,7 @@ class OraLangOutdoorFragment : ScopedFragment() {
 //                            SaveOraElement(engWordEntered, oraWordEntered, null, chosenAudio)
 
                             launch {
-                                oraAdapter.addOraNumber(OraLangNums(engWordEntered, oraWordEntered, null, audioUri))
+//                                oraAdapter.addOraNumber(OraLangNums(engWordEntered, oraWordEntered, null, audioUri))
                             }
 
                             showToast("New details saved", this.context!!)
@@ -400,7 +404,7 @@ class OraLangOutdoorFragment : ScopedFragment() {
 
                             showToast("strings gotten $engWordEntered $oraWordEntered", this.context!!)
 
-                            SaveOraElement(engWordEntered, oraWordEntered, null, audioUri)
+//                            SaveOraElement(engWordEntered, oraWordEntered, null, audioUri)
 
                             showToast("New details saved", this.context!!)
 
@@ -574,24 +578,24 @@ class OraLangOutdoorFragment : ScopedFragment() {
     }
 
 
-    fun SaveOraElement(engWord: String, oraWord: String, numIcon: Int?, enteredAudio: Uri) =
-        launch {
-
-            numberViewModel.SaveOraElement(engWord, oraWord, numIcon, enteredAudio)
-        }
-
-
-    fun getSavedOraWords(){
-        val gottenWords = numberViewModel.getSavedOraWords().observe(this, Observer {
-
-            it.let {
-
-                val fetchedList = it
-
-                searchViewList.addAll(it)
-                oraAdapter.notifyDataSetChanged()
-            }
-        })
-    }
+//    fun SaveOraElement(engWord: String, oraWord: String, numIcon: Int?, enteredAudio: Uri) =
+//        launch {
+//
+//            numberViewModel.SaveOraElement(engWord, oraWord, numIcon, enteredAudio)
+//        }
+//
+//
+//    fun getSavedOraWords(){
+//        val gottenWords = numberViewModel.getSavedOraWords().observe(this, Observer {
+//
+//            it.let {
+//
+//                val fetchedList = it
+//
+//                searchViewList.addAll(it)
+//                oraAdapter.notifyDataSetChanged()
+//            }
+//        })
+//    }
 
 }

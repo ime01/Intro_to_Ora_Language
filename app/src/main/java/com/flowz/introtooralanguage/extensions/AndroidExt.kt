@@ -109,6 +109,19 @@ fun playContentUri(uri: Uri, context: Context) {
     }
 }
 
+fun playContentInt(int: Int, context: Context) {
+
+        if (mediaPlayer == null) {
+                                mediaPlayer = MediaPlayer.create(context, int)
+                                mediaPlayer?.start()
+
+                            } else {
+                                mediaPlayer?.stop()
+                                mediaPlayer = MediaPlayer.create(context, int)
+                                mediaPlayer?.start()
+                            }
+    }
+
 
 //fun editOraWord(context: Context){
 //
