@@ -154,13 +154,12 @@ class EditOraWordFragment : ScopedFragment() {
                 }
 
             }
-
-            navController.navigate(R.id.action_editOraWordFragment_to_oraLangNumbersFragment)
+            navController.popBackStack()
         }
 
 
             disgard_oraword_update.setOnClickListener {
-                navController.navigate(R.id.action_editOraWordFragment_to_oraLangNumbersFragment)
+                navController.popBackStack()
             }
 
 

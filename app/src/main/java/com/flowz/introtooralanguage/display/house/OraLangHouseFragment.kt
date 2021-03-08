@@ -20,6 +20,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.Constraints
 import androidx.work.Data
@@ -27,12 +28,20 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 
 import com.flowz.introtooralanguage.R
+import com.flowz.introtooralanguage.adapters.OraNumbersAdapter1
+import com.flowz.introtooralanguage.adapters.OraWordsAdapter
 //import com.flowz.introtooralanguage.adapters.OraNumbersAdapter
 //import com.flowz.introtooralanguage.adapters.OraWordsAdapter
 import com.flowz.introtooralanguage.data.OraLangNums
+import com.flowz.introtooralanguage.data.room.OraNumRepository
 import com.flowz.introtooralanguage.data.room.OraWordsDatabase
 import com.flowz.introtooralanguage.display.base.ScopedFragment
 import com.flowz.introtooralanguage.display.numbers.OraLangNumbersFragment
+import com.flowz.introtooralanguage.display.numbers.OraLangNumbersFragmentDirections
+import com.flowz.introtooralanguage.display.numbers.OraNumberViewModel1
+import com.flowz.introtooralanguage.display.numbers.OraNumberViewModelFactory1
+import com.flowz.introtooralanguage.extensions.playContentUri
+import com.flowz.introtooralanguage.extensions.showSnackbar
 //import com.flowz.introtooralanguage.display.numbers.OraNumberViewModel
 //import com.flowz.introtooralanguage.display.numbers.OraNumberViewModelFactory
 import com.flowz.introtooralanguage.extensions.showToast
@@ -51,7 +60,7 @@ import kotlin.collections.ArrayList
 /**
  * A simple [Fragment] subclass.
  */
-class OraLangHouseFragment : ScopedFragment() {
+class OraLangHouseFragment : ScopedFragment(), OraWordsAdapter.RowClickListener {
 
     var isRecording = false
     private val RECORD_REQUEST_CODE = 101
@@ -65,7 +74,7 @@ class OraLangHouseFragment : ScopedFragment() {
     lateinit var uri: Uri
     lateinit var selectedPath: Uri
     var recordButtonClicked: Boolean = false
-//    private lateinit var numberViewModel: OraNumberViewModel
+    private lateinit var oraWordsViewModel: OraNumberViewModel1
     val addOraWordTag = "addOraWordTag"
 
 
@@ -271,17 +280,17 @@ class OraLangHouseFragment : ScopedFragment() {
         var mediaPlayer: MediaPlayer? = null
         val houseList: ArrayList<OraLangNums> = ArrayList()
 
-        houseList.add(0, OraLangNums("Welcome", "O bo khian", R.raw.ninety))
-        houseList.add(1, OraLangNums("Switch it on", "Ror ee ruu", R.raw.ninety))
-        houseList.add(2, OraLangNums("Put it down", "Muii khi vbo otoee", R.raw.ninety))
-        houseList.add(3, OraLangNums("Open the door", "Thu khu khe dee aah", R.raw.ninety))
-        houseList.add(4, OraLangNums("Close the door", "Ghu khu khe dee aah", R.raw.ninety))
-        houseList.add(5, OraLangNums("Go do the dishes", "Oho doh kpee ta saa", R.raw.ninety))
-        houseList.add(6, OraLangNums("Sit Down", "Dee gha vbo toie", R.raw.ninety))
-        houseList.add(7, OraLangNums("Stand up", "Kparhe muze", R.raw.ninety))
-        houseList.add(8, OraLangNums("Come and eat", " Vie  ebaee", R.raw.ninety))
-        houseList.add(9, OraLangNums("Be carefull", "Fuen gbee rhe", R.raw.ninety))
-        houseList.add(10, OraLangNums("Go buy a loaf of bread", "Olo odor doo okoh oibo", R.raw.ninety))
+        houseList.add(0, OraLangNums("Welcome", "O bo khian", null, Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
+        houseList.add(1, OraLangNums("Switch it on", "Ror ee ruu",null, Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
+        houseList.add(2, OraLangNums("Put it down", "Muii khi vbo otoee", null, Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
+        houseList.add(3, OraLangNums("Open the door", "Thu khu khe dee aah", null, Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
+        houseList.add(4, OraLangNums("Close the door", "Ghu khu khe dee aah", null, Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
+        houseList.add(5, OraLangNums("Go do the dishes", "Oho doh kpee ta saa", null, Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
+        houseList.add(6, OraLangNums("Sit Down", "Dee gha vbo toie", null, Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
+        houseList.add(7, OraLangNums("Stand up", "Kparhe muze", null, Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
+        houseList.add(8, OraLangNums("Come and eat", " Vie  ebaee", null, Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
+        houseList.add(9, OraLangNums("Be carefull", "Fuen gbee rhe", null, Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
+        houseList.add(10, OraLangNums("Go buy a loaf of bread", "Olo odor doo okoh oibo", null, Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
         searchViewList.addAll(houseList)
 
         ora_house_recycler.layoutManager = LinearLayoutManager(this.context)
@@ -289,16 +298,32 @@ class OraLangHouseFragment : ScopedFragment() {
 //        oraAdapter = OraWordsAdapter(this.requireContext(), OraWordsDatabase.invoke(this.context!!), searchViewList)
 //
 //        ora_house_recycler.adapter = oraAdapter
-//
+
+        val application = requireNotNull(activity).application
+        val dao = OraWordsDatabase.invoke(application)
+        val  repository = OraNumRepository(dao.oraWordsDao())
+        val viewModelFactory = OraNumberViewModelFactory1(repository)
+
+//        val viewModelFactory = OraNumberViewModelFactory(
+//            OraWordsDatabase.invoke(application)
+//        )
+       val   oraAdapter = OraWordsAdapter(this)
+
+       oraWordsViewModel = ViewModelProviders.of(this, viewModelFactory).get(OraNumberViewModel1::class.java)
+
         val animation: Animation = AnimationUtils.loadAnimation(context, R.anim.recorder_icon_blink)
-//
-//        val application = requireNotNull(activity).application
-//
-//        val viewModelFactory = OraNumberViewModelFactory(OraWordsDatabase.invoke(application))
-//
-//        numberViewModel = ViewModelProviders.of(this, viewModelFactory).get(OraNumberViewModel::class.java)
-//
-//        getSavedOraWords()
+
+        val gottenWords = oraWordsViewModel.oraWords.observe(this, Observer {
+
+            it.let {
+
+                val finalList = searchViewList + it
+
+                oraAdapter.submitList(finalList)
+                ora_house_recycler.adapter = oraAdapter
+
+            }
+        })
 
 
         fab3.setOnClickListener {
@@ -383,33 +408,16 @@ class OraLangHouseFragment : ScopedFragment() {
                             val engWordEntered = engText.text.toString().trim()
                             val oraWordEntered = oraText.text.toString().trim()
 
-                            showToast(
-                                "strings gotten $engWordEntered $oraWordEntered",
-                                this.context!!
-                            )
+                            showToast("strings gotten $engWordEntered $oraWordEntered", this.context!!)
 
+                            SaveOraElement(engWordEntered, oraWordEntered, null, chosenAudio)
 
-//                            SaveOraElement(engWordEntered, oraWordEntered, null, chosenAudio)
-
-                            launch {
-//                                oraAdapter.addOraNumber(
-//                                    OraLangNums(
-//                                        engWordEntered,
-//                                        oraWordEntered,
-//                                        null,
-//                                        audioUri
-//                                    )
-//                                )
-                            }
-
+//
                             showToast("New details saved", this.context!!)
                             dialog.dismiss()
 
                         } else {
-                            showToast(
-                                "Ensure you have entered the English and Ora Words",
-                                this.context!!
-                            )
+                            showToast("Ensure you have entered the English and Ora Words", this.context!!)
                         }
 
 
@@ -420,12 +428,9 @@ class OraLangHouseFragment : ScopedFragment() {
                             val engWordEntered = engText.text.toString().trim()
                             val oraWordEntered = oraText.text.toString().trim()
 
-                            showToast(
-                                "strings gotten $engWordEntered $oraWordEntered",
-                                this.context!!
-                            )
+                            showToast("strings gotten $engWordEntered $oraWordEntered", this.context!!)
 
-//                            SaveOraElement(engWordEntered, oraWordEntered, null, audioUri)
+                            SaveOraElement(engWordEntered, oraWordEntered, null, audioUri)
 
                             showToast("New details saved", this.context!!)
 
@@ -483,13 +488,13 @@ class OraLangHouseFragment : ScopedFragment() {
                                 searchViewList.add(it)
 
                             }
-                            ora_num_recycler.adapter!!.notifyDataSetChanged()
+                            ora_house_recycler.adapter!!.notifyDataSetChanged()
                         }
                     } else{
 
                         searchViewList.clear()
                         searchViewList.addAll(numList)
-                        ora_num_recycler.adapter!!.notifyDataSetChanged()
+                        ora_house_recycler.adapter!!.notifyDataSetChanged()
                     }
 
                     return true
@@ -600,25 +605,37 @@ class OraLangHouseFragment : ScopedFragment() {
         })
 
     }
+    fun SaveOraElement(engWord: String, oraWord: String, numIcon: Int?, enteredAudio: Uri) =
+        launch {
+            oraWordsViewModel.saveOraElement(engWord, oraWord, numIcon, enteredAudio)
+        }
 
-//        fun SaveOraElement(engWord: String, oraWord: String, numIcon: Int?, enteredAudio: Uri) =
-//            launch {
-//
-//                numberViewModel.SaveOraElement(engWord, oraWord, numIcon, enteredAudio)
-//            }
-//
-//
-//        fun getSavedOraWords() {
-//            val gottenWords = numberViewModel.getSavedOraWords().observe(this, Observer {
-//
-//                it.let {
-//                    2
-//                    val fetchedList = it
-//
-//                    searchViewList.addAll(it)
-//                    oraAdapter.notifyDataSetChanged()
-//
-//                }
-//            })
+    override fun onPlayOraWordClickListener(oraWords: OraLangNums) {
+        oraWords.recordedAudio?.let { playContentUri(it, context!!) }
+    }
+
+    override fun onEditOraWordClickListener(oraWords: OraLangNums) {
+
+//        if (oraWords.oraid<10){
+//            showSnackbar(fab3, "You Cant't edit pre-installed OraWords")
+//        }else if (oraWords.oraid>10){
+            val action = OraLangHouseFragmentDirections.actionOraLangHouseFragmentToEditOraWordFragment()
+//                                action.oraLangNums = oraLangNumList[position]
+            action.oraLangNums = oraWords
+            Navigation.findNavController(view!!).navigate(action)
 //        }
+
+    }
+
+    override fun onDeleteOraWordClickListener(oraWords: OraLangNums) {
+        launch {
+
+            oraWordsViewModel.deleteOraElement(oraWords)
+        }
+    }
+
+    override fun onItemClickListener(oraWords: OraLangNums) {
+
+    }
+
 }

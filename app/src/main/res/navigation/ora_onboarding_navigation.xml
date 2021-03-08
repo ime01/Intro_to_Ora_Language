@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ora_onboarding_navigation.xml"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.flowz.introtooralanguage.onboarding.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_viewPagerFragment"
+            app:destination="@id/viewPagerFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splashFragment_to_loginActivity"
+            app:destination="@id/loginActivity"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewPagerFragment"
+        android:name="com.flowz.introtooralanguage.onboarding.ViewPagerFragment"
+        android:label="fragment_view_pager"
+        tools:layout="@layout/fragment_view_pager" >
+        <action
+            android:id="@+id/action_viewPagerFragment_to_firstonboardFragment"
+            app:destination="@id/firstonboardFragment"
+            app:popUpTo="@id/viewPagerFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/firstonboardFragment"
+        android:name="com.flowz.introtooralanguage.onboarding.screens.FirstonboardFragment"
+        android:label="fragment_firstonboard"
+        tools:layout="@layout/fragment_firstonboard" >
+        <action
+            android:id="@+id/action_firstonboardFragment_to_secondOnboardingFragment"
+            app:destination="@id/secondOnboardingFragment"
+            app:popUpTo="@id/firstonboardFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/secondOnboardingFragment"
+        android:name="com.flowz.introtooralanguage.onboarding.screens.SecondOnboardingFragment"
+        android:label="fragment_second_onboarding"
+        tools:layout="@layout/fragment_second_onboarding" >
+        <action
+            android:id="@+id/action_secondOnboardingFragment_to_thirdOnboardFragment"
+            app:destination="@id/thirdOnboardFragment"
+            app:popUpTo="@id/secondOnboardingFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/thirdOnboardFragment"
+        android:name="com.flowz.introtooralanguage.onboarding.screens.ThirdOnboardFragment"
+        android:label="fragment_third_onboard"
+        tools:layout="@layout/fragment_third_onboard" >
+        <action
+            android:id="@+id/action_thirdOnboardFragment_to_loginActivity"
+            app:destination="@id/loginActivity"
+            app:popUpTo="@id/thirdOnboardFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.flowz.introtooralanguage.firebase.LoginActivity"
+        android:label="LoginActivity" />
+</navigation>

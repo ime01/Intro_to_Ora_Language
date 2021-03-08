@@ -53,17 +53,30 @@
         android:id="@+id/oraLangOutdoorFragment"
         android:name="com.flowz.introtooralanguage.display.outdoor.OraLangOutdoorFragment"
         android:label="OutdoorPhrases"
-        tools:layout="@layout/fragment_ora_lang_outdoor" />
+        tools:layout="@layout/fragment_ora_lang_outdoor" >
+        <action
+            android:id="@+id/action_oraLangOutdoorFragment_to_editOraWordFragment"
+            app:destination="@id/editOraWordFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/oraLangHouseFragment"
         android:name="com.flowz.introtooralanguage.display.house.OraLangHouseFragment"
         android:label="IndoorPhrases"
-        tools:layout="@layout/fragment_ora_lang_house" />
+        tools:layout="@layout/fragment_ora_lang_house" >
+        <action
+            android:id="@+id/action_oraLangHouseFragment_to_editOraWordFragment"
+            app:destination="@id/editOraWordFragment" />
+    </fragment>
     <fragment
         android:id="@+id/oraLangTravelFragment"
         android:name="com.flowz.introtooralanguage.display.travel.OraLangTravelFragment"
         android:label="TravelPhrases"
-        tools:layout="@layout/fragment_ora_lang_travel" />
+        tools:layout="@layout/fragment_ora_lang_travel" >
+        <action
+            android:id="@+id/action_oraLangTravelFragment_to_editOraWordFragment"
+            app:destination="@id/editOraWordFragment" />
+    </fragment>
     <fragment
         android:id="@+id/userProfileFragment"
         android:name="com.flowz.introtooralanguage.display.profile.UserProfileFragment"
@@ -91,4 +104,62 @@
             android:id="@+id/action_editOraWordFragment_to_oraLangNumbersFragment"
             app:destination="@id/oraLangNumbersFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/aboutTheAppFragment"
+        android:name="com.flowz.introtooralanguage.display.AboutTheAppFragment"
+        android:label="fragment_about_the_app"
+        tools:layout="@layout/fragment_about_the_app" />
+    <fragment
+        android:id="@+id/inviteFriendsToAddOraWordFragment"
+        android:name="com.flowz.introtooralanguage.display.InviteFriendsToAddOraWordFragment"
+        android:label="fragment_invite_friends_to_add_ora_word"
+        tools:layout="@layout/fragment_invite_friends_to_add_ora_word" />
+    <fragment
+        android:id="@+id/shareThisAppFragment"
+        android:name="com.flowz.introtooralanguage.display.ShareThisAppFragment"
+        android:label="fragment_share_this_app"
+        tools:layout="@layout/fragment_share_this_app" />
+<!--    <fragment-->
+<!--        android:id="@+id/splashFragment"-->
+<!--        android:name="com.flowz.introtooralanguage.onboarding.SplashFragment"-->
+<!--        android:label="fragment_splash"-->
+<!--        tools:layout="@layout/fragment_splash" >-->
+<!--        <action-->
+<!--            android:id="@+id/action_splashFragment_to_viewPagerFragment"-->
+<!--            app:destination="@id/viewPagerFragment"-->
+<!--            app:popUpTo="@id/splashFragment" />-->
+<!--        <action-->
+<!--            android:id="@+id/action_splashFragment_to_loginFragment"-->
+<!--            app:destination="@id/loginFragment"-->
+<!--            app:popUpTo="@id/splashFragment"-->
+<!--            app:popUpToInclusive="true" />-->
+<!--    </fragment>-->
+<!--    <fragment-->
+<!--        android:id="@+id/viewPagerFragment"-->
+<!--        android:name="com.flowz.introtooralanguage.onboarding.ViewPagerFragment"-->
+<!--        android:label="fragment_view_pager"-->
+<!--        tools:layout="@layout/fragment_view_pager" >-->
+<!--        <action-->
+<!--            android:id="@+id/action_viewPagerFragment_to_loginFragment"-->
+<!--            app:destination="@id/loginFragment"-->
+<!--            app:popUpTo="@id/viewPagerFragment"-->
+<!--            app:popUpToInclusive="true" />-->
+<!--    </fragment>-->
+<!--    <fragment-->
+<!--        android:id="@+id/loginFragment"-->
+<!--        android:name="com.flowz.introtooralanguage.firebase.LoginFragment"-->
+<!--        android:label="LoginFragment" >-->
+<!--        <action-->
+<!--            android:id="@+id/action_loginFragment_to_oraLangHomeFragment"-->
+<!--            app:destination="@id/oraLangHomeFragment"-->
+<!--            app:popUpTo="@id/loginFragment"-->
+<!--            app:popUpToInclusive="true" />-->
+<!--        <action-->
+<!--            android:id="@+id/action_loginFragment_to_signupActivity"-->
+<!--            app:destination="@id/signupActivity" />-->
+<!--    </fragment>-->
+    <activity
+        android:id="@+id/signupActivity"
+        android:name="com.flowz.introtooralanguage.firebase.SignupActivity"
+        android:label="SignupActivity" />
 </navigation>

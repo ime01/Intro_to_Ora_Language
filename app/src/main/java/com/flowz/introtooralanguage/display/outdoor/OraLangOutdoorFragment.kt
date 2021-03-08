@@ -20,6 +20,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.Constraints
 import androidx.work.Data
@@ -27,18 +28,24 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 
 import com.flowz.introtooralanguage.R
+import com.flowz.introtooralanguage.adapters.OraWordsAdapter
 //import com.flowz.introtooralanguage.adapters.OraNumbersAdapter
 //import com.flowz.introtooralanguage.adapters.OraWordsAdapter
 import com.flowz.introtooralanguage.data.OraLangNums
+import com.flowz.introtooralanguage.data.room.OraNumRepository
 import com.flowz.introtooralanguage.data.room.OraWordsDatabase
 import com.flowz.introtooralanguage.display.base.ScopedFragment
 import com.flowz.introtooralanguage.display.numbers.OraLangNumbersFragment
+import com.flowz.introtooralanguage.display.numbers.OraNumberViewModel1
+import com.flowz.introtooralanguage.display.numbers.OraNumberViewModelFactory1
+import com.flowz.introtooralanguage.extensions.playContentUri
 //import com.flowz.introtooralanguage.display.numbers.OraNumberViewModel
 //import com.flowz.introtooralanguage.display.numbers.OraNumberViewModelFactory
 import com.flowz.introtooralanguage.extensions.showToast
 import com.flowz.introtooralanguage.recyclerviewlistener.RecyclerItemClickListener
 import com.flowz.introtooralanguage.workmanager.ReminderWorker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.android.synthetic.main.fragment_ora_lang_house.*
 import kotlinx.android.synthetic.main.fragment_ora_lang_outdoor.*
 import kotlinx.android.synthetic.main.ora_lang_numbers.*
 import kotlinx.coroutines.launch
@@ -50,7 +57,7 @@ import kotlin.collections.ArrayList
 /**
  * A simple [Fragment] subclass.
  */
-class OraLangOutdoorFragment : ScopedFragment() {
+class OraLangOutdoorFragment : ScopedFragment(), OraWordsAdapter.RowClickListener {
 
     var isRecording = false
     private val RECORD_REQUEST_CODE = 101
@@ -60,11 +67,10 @@ class OraLangOutdoorFragment : ScopedFragment() {
     lateinit var audioFilePath: String
     lateinit var numList: ArrayList<OraLangNums>
     var searchViewList: ArrayList<OraLangNums> = ArrayList()
-//    lateinit var oraAdapter: OraWordsAdapter
     lateinit var uri: Uri
     lateinit var selectedPath: Uri
     var recordButtonClicked: Boolean = false
-//    private lateinit var numberViewModel: OraNumberViewModel
+    private lateinit var oraWordsViewModel: OraNumberViewModel1
     val addOraWordTag = "addOraWordTag"
 
 
@@ -78,7 +84,8 @@ class OraLangOutdoorFragment : ScopedFragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_ora_lang_outdoor, container, false)
@@ -115,7 +122,7 @@ class OraLangOutdoorFragment : ScopedFragment() {
             mediaPlayer?.release()
             mediaPlayer = null
         }
-        showToast("Recording Stoped",this.context!! )
+        showToast("Recording Stoped", this.context!!)
     }
 
 
@@ -171,7 +178,10 @@ class OraLangOutdoorFragment : ScopedFragment() {
 
     fun audioSetup() {
         if (!hasMicrophone()) {
-            showToast("No microphone to reocrd, try selecting an Audio file instead", this.context!!)
+            showToast(
+                "No microphone to reocrd, try selecting an Audio file instead",
+                this.context!!
+            )
         } else {
             showToast("Microphone Present", this.context!!)
         }
@@ -265,35 +275,133 @@ class OraLangOutdoorFragment : ScopedFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         var mediaPlayer: MediaPlayer? = null
-        val OutdoorList : ArrayList<OraLangNums> = ArrayList()
+        val OutdoorList: ArrayList<OraLangNums> = ArrayList()
 //
-        OutdoorList.add(0, OraLangNums("I am going to the market", "Ilo deh vbee kin", R.raw.fourty) )
-        OutdoorList.add(1, OraLangNums("How much is this item", "Ekah ighor na", R.raw.fourty) )
-        OutdoorList.add(2, OraLangNums("I will pay for this", "Mio hoosa ghor ona", R.raw.fourty) )
-        OutdoorList.add(3, OraLangNums("I am going out", "Ilo deh vbooee", R.raw.fourty) )
-        OutdoorList.add(4, OraLangNums("walk fast", "Tuah shaan", R.raw.fourty) )
-        OutdoorList.add(5, OraLangNums("put the item down", "Meo onee mi eeh wo otoi", R.raw.fourty) )
-        OutdoorList.add(6, OraLangNums("Put on your shoes", "Whei ebata weh", R.raw.fourty) )
-        OutdoorList.add(7, OraLangNums("You can play here", "Khi een maan", R.raw.fourty) )
-        OutdoorList.add(8, OraLangNums("I'll wait for you here", " Meo muze khe maan", R.raw.fourty) )
-        OutdoorList.add(9, OraLangNums("How are you", "Or nhe gbe", R.raw.fourty) )
-        OutdoorList.add(10, OraLangNums("I am fine", "Orfure", R.raw.fourty) )
+        OutdoorList.add(
+            0,
+            OraLangNums(
+                "I am going to the market",
+                "Ilo deh vbee kin",
+                null,
+                Uri.parse("android.resource://" + context?.packageName + "/raw/one")
+            )
+        )
+        OutdoorList.add(
+            1,
+            OraLangNums(
+                "How much is this item",
+                "Ekah ighor na",
+                null,
+                Uri.parse("android.resource://" + context?.packageName + "/raw/one")
+            )
+        )
+        OutdoorList.add(
+            2,
+            OraLangNums(
+                "I will pay for this",
+                "Mio hoosa ghor ona",
+                null,
+                Uri.parse("android.resource://" + context?.packageName + "/raw/one")
+            )
+        )
+        OutdoorList.add(
+            3,
+            OraLangNums(
+                "I am going out",
+                "Ilo deh vbooee",
+                null,
+                Uri.parse("android.resource://" + context?.packageName + "/raw/one")
+            )
+        )
+        OutdoorList.add(
+            4,
+            OraLangNums(
+                "walk fast",
+                "Tuah shaan",
+                null,
+                Uri.parse("android.resource://" + context?.packageName + "/raw/one")
+            )
+        )
+        OutdoorList.add(
+            5,
+            OraLangNums(
+                "put the item down",
+                "Meo onee mi eeh wo otoi",
+                null,
+                Uri.parse("android.resource://" + context?.packageName + "/raw/one")
+            )
+        )
+        OutdoorList.add(
+            6,
+            OraLangNums(
+                "Put on your shoes",
+                "Whei ebata weh",
+                null,
+                Uri.parse("android.resource://" + context?.packageName + "/raw/one")
+            )
+        )
+        OutdoorList.add(
+            7,
+            OraLangNums(
+                "You can play here",
+                "Khi een maan",
+                null,
+                Uri.parse("android.resource://" + context?.packageName + "/raw/one")
+            )
+        )
+        OutdoorList.add(
+            8,
+            OraLangNums(
+                "I'll wait for you here",
+                " Meo muze khe maan",
+                null,
+                Uri.parse("android.resource://" + context?.packageName + "/raw/one")
+            )
+        )
+        OutdoorList.add(
+            9,
+            OraLangNums(
+                "How are you",
+                "Or nhe gbe",
+                null,
+                Uri.parse("android.resource://" + context?.packageName + "/raw/one")
+            )
+        )
+        OutdoorList.add(
+            10,
+            OraLangNums(
+                "I am fine",
+                "Orfure",
+                null,
+                Uri.parse("android.resource://" + context?.packageName + "/raw/one")
+            )
+        )
 
         searchViewList.addAll(OutdoorList)
 
-        val application = requireNotNull(activity).application
 
-//        ora_outdoor_recycler.layoutManager = LinearLayoutManager(this.context)
-//
-//        oraAdapter = OraWordsAdapter(this.requireContext(), OraWordsDatabase.invoke(this.context!!),   searchViewList)
-//
-//        ora_outdoor_recycler.adapter = oraAdapter
-//
-//        val viewModelFactory = OraNumberViewModelFactory(OraWordsDatabase.invoke(application))
-//
-//        numberViewModel = ViewModelProviders.of(this, viewModelFactory).get(OraNumberViewModel::class.java)
-//
-//        getSavedOraWords()
+        val application = requireNotNull(activity).application
+        val dao = OraWordsDatabase.invoke(application)
+        val repository = OraNumRepository(dao.oraWordsDao())
+        val viewModelFactory = OraNumberViewModelFactory1(repository)
+
+        oraWordsViewModel = ViewModelProviders.of(this, viewModelFactory).get(OraNumberViewModel1::class.java)
+
+        val oraAdapter = OraWordsAdapter(this)
+        ora_outdoor_recycler.layoutManager = LinearLayoutManager(this.context)
+
+        val gottenWords = oraWordsViewModel.oraWords.observe(this, Observer {
+
+            it.let {
+
+                val finalList = searchViewList + it
+
+                oraAdapter.submitList(finalList)
+                ora_outdoor_recycler.adapter = oraAdapter
+
+            }
+        })
+
 
         val animation: Animation = AnimationUtils.loadAnimation(context, R.anim.recorder_icon_blink)
 
@@ -322,7 +430,8 @@ class OraLangOutdoorFragment : ScopedFragment() {
                 val audioIntent = Intent()
                 audioIntent.setType("audio/*")
                 audioIntent.setAction(Intent.ACTION_GET_CONTENT)
-                startActivityForResult(audioIntent,
+                startActivityForResult(
+                    audioIntent,
                     OraLangNumbersFragment.AUDIO_REQUEST_CODE
                 )
             }
@@ -369,7 +478,7 @@ class OraLangOutdoorFragment : ScopedFragment() {
 
                     if (recordButtonClicked == false) {
 
-                        showToast("Select Audio Button clicked",this.context!!)
+                        showToast("Select Audio Button clicked", this.context!!)
 
                         val chosenAudio = Uri.parse(audioFilePath)
 
@@ -378,20 +487,22 @@ class OraLangOutdoorFragment : ScopedFragment() {
                             val engWordEntered = engText.text.toString().trim()
                             val oraWordEntered = oraText.text.toString().trim()
 
-                            showToast("strings gotten $engWordEntered $oraWordEntered",  this.context!!)
+                            showToast(
+                                "strings gotten $engWordEntered $oraWordEntered",
+                                this.context!!
+                            )
 
 
-//                            SaveOraElement(engWordEntered, oraWordEntered, null, chosenAudio)
-
-                            launch {
-//                                oraAdapter.addOraNumber(OraLangNums(engWordEntered, oraWordEntered, null, audioUri))
-                            }
+                            SaveOraElement(engWordEntered, oraWordEntered, null, chosenAudio)
 
                             showToast("New details saved", this.context!!)
                             dialog.dismiss()
 
                         } else {
-                            showToast("Ensure you have entered the English and Ora Words", this.context!!)
+                            showToast(
+                                "Ensure you have entered the English and Ora Words",
+                                this.context!!
+                            )
                         }
 
 
@@ -402,16 +513,22 @@ class OraLangOutdoorFragment : ScopedFragment() {
                             val engWordEntered = engText.text.toString().trim()
                             val oraWordEntered = oraText.text.toString().trim()
 
-                            showToast("strings gotten $engWordEntered $oraWordEntered", this.context!!)
+                            showToast(
+                                "strings gotten $engWordEntered $oraWordEntered",
+                                this.context!!
+                            )
 
-//                            SaveOraElement(engWordEntered, oraWordEntered, null, audioUri)
+                            SaveOraElement(engWordEntered, oraWordEntered, null, audioUri)
 
                             showToast("New details saved", this.context!!)
 
                             dialog.dismiss()
 
                         } else {
-                            showToast("Ensure you have entered the English and Ora Words", this.context!!)
+                            showToast(
+                                "Ensure you have entered the English and Ora Words",
+                                this.context!!
+                            )
                         }
                     }
                 }
@@ -430,7 +547,7 @@ class OraLangOutdoorFragment : ScopedFragment() {
         val menuItem = menu!!.findItem(R.id.search_oraword)
 
 
-        if(menuItem != null){
+        if (menuItem != null) {
 
             val searchView = menuItem.actionView as androidx.appcompat.widget.SearchView
 
@@ -446,7 +563,7 @@ class OraLangOutdoorFragment : ScopedFragment() {
 
                 override fun onQueryTextChange(newText: String?): Boolean {
 
-                    if (newText!!.isNotEmpty()){
+                    if (newText!!.isNotEmpty()) {
 
                         searchViewList.clear()
 
@@ -454,18 +571,18 @@ class OraLangOutdoorFragment : ScopedFragment() {
 
                         numList.forEach {
 
-                            if (it.engNum.toLowerCase(Locale.getDefault()).contains(search)){
+                            if (it.engNum.toLowerCase(Locale.getDefault()).contains(search)) {
 
                                 searchViewList.add(it)
 
                             }
-                            ora_num_recycler.adapter!!.notifyDataSetChanged()
+                            ora_outdoor_recycler.adapter!!.notifyDataSetChanged()
                         }
-                    } else{
+                    } else {
 
                         searchViewList.clear()
                         searchViewList.addAll(numList)
-                        ora_num_recycler.adapter!!.notifyDataSetChanged()
+                        ora_outdoor_recycler.adapter!!.notifyDataSetChanged()
                     }
 
                     return true
@@ -476,10 +593,10 @@ class OraLangOutdoorFragment : ScopedFragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId){
+        return when (item.itemId) {
 
-            R.id.remind_me ->{
-                showToast("Reminder Clicked",this.requireContext() )
+            R.id.remind_me -> {
+                showToast("Reminder Clicked", this.requireContext())
                 selectDateandTimeForRemeinder()
 
                 true
@@ -494,12 +611,14 @@ class OraLangOutdoorFragment : ScopedFragment() {
         }
     }
 
-    fun selectDateandTimeForRemeinder(){
+    fun selectDateandTimeForRemeinder() {
 
         val layoutInflater = LayoutInflater.from(this.context)
-        val setTimeDialogView = layoutInflater.inflate(R.layout.date_n_time_picker_alert_dialog, null)
+        val setTimeDialogView =
+            layoutInflater.inflate(R.layout.date_n_time_picker_alert_dialog, null)
         val enteredDate = setTimeDialogView.findViewById<DatePicker>(R.id.date_p)
-        val enteredTime = setTimeDialogView.findViewById<ru.ifr0z.timepickercompact.TimePickerCompact>(R.id.time_p)
+        val enteredTime =
+            setTimeDialogView.findViewById<ru.ifr0z.timepickercompact.TimePickerCompact>(R.id.time_p)
 
 
         val alertDialog = MaterialAlertDialogBuilder(this.context!!)
@@ -528,8 +647,10 @@ class OraLangOutdoorFragment : ScopedFragment() {
     }
 
 
-
-    fun setOneTimeWorkRequest(date_p : DatePicker, time_p : ru.ifr0z.timepickercompact.TimePickerCompact ) {
+    fun setOneTimeWorkRequest(
+        date_p: DatePicker,
+        time_p: ru.ifr0z.timepickercompact.TimePickerCompact
+    ) {
 
         val customCalendar = java.util.Calendar.getInstance()
 
@@ -547,7 +668,7 @@ class OraLangOutdoorFragment : ScopedFragment() {
         val workManager = WorkManager.getInstance(this.context!!)
 
 
-        val data : Data = Data.Builder()
+        val data: Data = Data.Builder()
             .putInt(OraLangNumbersFragment.KEY_COUNT_VALUE, 125)
             .build()
 
@@ -567,35 +688,45 @@ class OraLangOutdoorFragment : ScopedFragment() {
 
 //        workManager.beginUniqueWork(addOraWordTag, ExistingWorkPolicy.REPLACE, notificationRequest)
 
-        workManager.getWorkInfoByIdLiveData(notificationRequest.id).observe(viewLifecycleOwner, Observer {
+        workManager.getWorkInfoByIdLiveData(notificationRequest.id)
+            .observe(viewLifecycleOwner, Observer {
 
-            val workSetStatus = it.state.name
+                val workSetStatus = it.state.name
 
-            showToast("Status of workManager task is : $workSetStatus", this.context!!)
+                showToast("Status of workManager task is : $workSetStatus", this.context!!)
 
-        })
+            })
 
     }
 
+    fun SaveOraElement(engWord: String, oraWord: String, numIcon: Int?, enteredAudio: Uri) =
+        launch {
+            oraWordsViewModel.saveOraElement(engWord, oraWord, numIcon, enteredAudio)
+        }
 
-//    fun SaveOraElement(engWord: String, oraWord: String, numIcon: Int?, enteredAudio: Uri) =
-//        launch {
-//
-//            numberViewModel.SaveOraElement(engWord, oraWord, numIcon, enteredAudio)
-//        }
-//
-//
-//    fun getSavedOraWords(){
-//        val gottenWords = numberViewModel.getSavedOraWords().observe(this, Observer {
-//
-//            it.let {
-//
-//                val fetchedList = it
-//
-//                searchViewList.addAll(it)
-//                oraAdapter.notifyDataSetChanged()
-//            }
-//        })
-//    }
+    override fun onPlayOraWordClickListener(oraWords: OraLangNums) {
+        oraWords.recordedAudio?.let { playContentUri(it, context!!) }
+    }
+
+    override fun onEditOraWordClickListener(oraWords: OraLangNums) {
+        val action =
+            OraLangOutdoorFragmentDirections.actionOraLangOutdoorFragmentToEditOraWordFragment()
+//                                action.oraLangNums = oraLangNumList[position]
+        action.oraLangNums = oraWords
+        Navigation.findNavController(view!!).navigate(action)
+
+}
+
+    override fun onDeleteOraWordClickListener(oraWords: OraLangNums) {
+        launch {
+
+            oraWordsViewModel.deleteOraElement(oraWords)
+        }
+
+    }
+
+    override fun onItemClickListener(oraWords: OraLangNums) {
+
+    }
 
 }

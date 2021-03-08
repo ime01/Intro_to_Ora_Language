@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/navgroup_menu"
+        android:checkableBehavior="single">
+    <item android:id="@+id/oraLangHomeFragment"
+        android:title="Home"
+        android:icon="@drawable/ic_baseline_home_24"/>
+
+    <item android:id="@+id/userProfileFragment"
+        android:title="User Profile"
+        android:icon="@drawable/ic_person_black_24dp"/>
+
+    <item android:id="@+id/inviteFriendsToAddOraWordFragment"
+        android:title="Invite Friend to add Ora Word"
+        android:icon="@drawable/ic_baseline_mobile_friendly_24"/>
+
+    <item android:id="@+id/shareThisAppFragment"
+        android:title="Share This app"
+        android:icon="@drawable/ic_baseline_share_24"/>
+
+    </group>
+
+
+    <item android:id="@+id/aboutTheAppFragment"
+        android:title="About This app"
+        android:icon="@drawable/ic_baseline_info_24"/>
+
+
+</menu>

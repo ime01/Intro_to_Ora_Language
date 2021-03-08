@@ -6,8 +6,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-<!--    <uses-permission android:name="android.permission.MEDIA_CONTENT_CONTROL"/>-->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -17,29 +16,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
-        <activity android:name=".welcomesplashscreen.SplashScreenActivity">
-
-        </activity>
-        <activity android:name=".MainActivity">
-
-        </activity>
-        <activity android:name=".firebase.LoginActivity"
-            android:theme="@style/NoActionBar">
+        <activity android:name=".onboarding.OnBoardingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity">
 
-        <activity android:name=".firebase.SignupActivity"
-            android:theme="@style/NoActionBar">
         </activity>
-
-        <activity android:name=".firebase.ForgotPasswordActivity"
-            android:theme="@style/NoActionBar"/>
-
+        <activity
+            android:name=".firebase.LoginActivity"
+            android:theme="@style/NoActionBar"></activity>
+        <activity
+            android:name=".firebase.SignupActivity"
+            android:theme="@style/NoActionBar"></activity>
+        <activity
+            android:name=".firebase.ForgotPasswordActivity"
+            android:theme="@style/NoActionBar" />
     </application>
 
 </manifest>

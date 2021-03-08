@@ -42,6 +42,7 @@ import com.flowz.introtooralanguage.extensions.showToast
 import com.flowz.introtooralanguage.recyclerviewlistener.RecyclerItemClickListener
 import com.flowz.introtooralanguage.workmanager.ReminderWorker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.ora_lang_numbers.*
 import kotlinx.coroutines.*
 import java.io.IOException
@@ -277,34 +278,34 @@ class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickList
 
         numList = ArrayList()
 
-        numList.add(0, OraLangNums("One", "Okpa", null, Uri.parse(R.raw.one.toString())))
-        numList.add(1, OraLangNums("Two", "Evah", null, Uri.parse(R.raw.one.toString())))
-        numList.add(2, OraLangNums("Three", "Eha", null, Uri.parse(R.raw.one.toString())))
-        numList.add(3, OraLangNums("Four", "Enee", R.raw.four))
-        numList.add(4, OraLangNums("Five", "Iheen", R.raw.five))
-        numList.add(5, OraLangNums("Six", "Ekhan", R.raw.six))
-        numList.add(6, OraLangNums("Seven", "Ikhion", R.raw.seven))
-        numList.add(7, OraLangNums("Eight", "Een", R.raw.eight))
-        numList.add(8, OraLangNums("Nine", "Isiin", R.raw.nine))
-        numList.add(9, OraLangNums("Ten", "Igbee", R.raw.ten))
-        numList.add(10, OraLangNums("Eleven", "Ugbour", R.raw.one))
-        numList.add(11, OraLangNums("Twelve", "Igbe-vah", R.raw.two))
-        numList.add(12, OraLangNums("Thirteen", "Igbe-eha", R.raw.three))
-        numList.add(13, OraLangNums("Fourteen", "Igbe-Enee", R.raw.four))
-        numList.add(14, OraLangNums("Fifteen", "Igbe-Iheen", R.raw.five))
-        numList.add(15, OraLangNums("Sixteen", "Ke-enee-Suuee", R.raw.six))
-        numList.add(16, OraLangNums("Seventeen", "Ke-eha-Suuee", R.raw.seven))
-        numList.add(17, OraLangNums("Eighteen", "Ke-evah-Suuee", R.raw.eight))
-        numList.add(18, OraLangNums("Nineteen", "Ke-okpa-Suuee", R.raw.nine))
-        numList.add(19, OraLangNums("Twenty", "Uuee", R.raw.twenty))
-        numList.add(20, OraLangNums("Thirty", "Ogban", R.raw.thirty))
-        numList.add(21, OraLangNums("Fourty", "Egbo-evah", R.raw.fourty))
-        numList.add(22, OraLangNums("Fifty", "Egbo-evah-bi-igbe", R.raw.fifty))
-        numList.add(23, OraLangNums("Sixty", "Egbo-eha", R.raw.sixty))
-        numList.add(24, OraLangNums("Seventy", "Egbo-eha-bi-igbe", R.raw.seventy))
-        numList.add(25, OraLangNums("Eighty", "Egbo-enee", R.raw.eighty))
-        numList.add(26, OraLangNums("Ninety", "Egbo-enee-bi-igbe", R.raw.ninety))
-        numList.add(27, OraLangNums("One Hundred", "Egbo-eheen", R.raw.hundred))
+        numList.add(0, OraLangNums("One", "Okpa", R.drawable.ione, Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
+        numList.add(1, OraLangNums("Two", "Evah", R.drawable.itwo, Uri.parse("android.resource://"+context?.packageName +"/raw/two")))
+        numList.add(2, OraLangNums("Three", "Eha", R.drawable.ithree, Uri.parse("android.resource://"+context?.packageName  +"/raw/three")))
+        numList.add(3, OraLangNums("Four", "Enee", R.drawable.ifour, Uri.parse("android.resource://"+context?.packageName  +"/raw/four")))
+        numList.add(4, OraLangNums("Five", "Iheen", R.drawable.ifive, Uri.parse("android.resource://"+context?.packageName  +"/raw/five")))
+        numList.add(5, OraLangNums("Six", "Ekhan", R.drawable.i6, Uri.parse("android.resource://"+context?.packageName  +"/raw/six")))
+        numList.add(6, OraLangNums("Seven", "Ikhion", R.drawable.i7, Uri.parse("android.resource://"+context?.packageName  +"/raw/seven")))
+        numList.add(7, OraLangNums("Eight", "Een", R.drawable.ieight, Uri.parse("android.resource://"+context?.packageName  +"/raw/eight")))
+        numList.add(8, OraLangNums("Nine", "Isiin", R.drawable.inine, Uri.parse("android.resource://"+context?.packageName  +"/raw/nine")))
+        numList.add(9, OraLangNums("Ten", "Igbee", R.drawable.i10, Uri.parse("android.resource://"+context?.packageName  +"/raw/ten")))
+        numList.add(10, OraLangNums("Eleven", "Ugbour",  R.drawable.i11, Uri.parse("android.resource://"+context?.packageName  +"/raw/eleven")))
+        numList.add(11, OraLangNums("Twelve", "Igbe-vah",  R.drawable.i12, Uri.parse("android.resource://"+context?.packageName  +"/raw/twelve")))
+        numList.add(12, OraLangNums("Thirteen", "Igbe-eha",  R.drawable.i13a,  Uri.parse("android.resource://"+context?.packageName  +"/raw/thirteen")))
+        numList.add(13, OraLangNums("Fourteen", "Igbe-Enee",  R.drawable.i14,  Uri.parse("android.resource://"+context?.packageName  +"/raw/fourteen")))
+        numList.add(14, OraLangNums("Fifteen", "Igbe-Iheen",  R.drawable.i15,  Uri.parse("android.resource://"+context?.packageName  +"/raw/fifteen")))
+        numList.add(15, OraLangNums("Sixteen", "Ke-enee-Suuee",  R.drawable.i16,  Uri.parse("android.resource://"+context?.packageName  +"/raw/sixteen")))
+        numList.add(16, OraLangNums("Seventeen", "Ke-eha-Suuee",  R.drawable.i17,  Uri.parse("android.resource://"+context?.packageName  +"/raw/seventeen")))
+        numList.add(17, OraLangNums("Eighteen", "Ke-evah-Suuee",  R.drawable.i18,  Uri.parse("android.resource://"+context?.packageName  +"/raw/eighteen")))
+        numList.add(18, OraLangNums("Nineteen", "Ke-okpa-Suuee",  R.drawable.i19,  Uri.parse("android.resource://"+context?.packageName  +"/raw/nineteen")))
+        numList.add(19, OraLangNums("Twenty", "Uuee",  R.drawable.i20,  Uri.parse("android.resource://"+context?.packageName  +"/raw/twenty")))
+        numList.add(20, OraLangNums("Thirty", "Ogban",  R.drawable.i30,  Uri.parse("android.resource://"+context?.packageName  +"/raw/thirty")))
+        numList.add(21, OraLangNums("Fourty", "Egbo-evah",  R.drawable.i40,  Uri.parse("android.resource://"+context?.packageName  +"/raw/fourty")))
+        numList.add(22, OraLangNums("Fifty", "Egbo-evah-bi-igbe",  R.drawable.i50,  Uri.parse("android.resource://"+context?.packageName  +"/raw/fifty")))
+        numList.add(23, OraLangNums("Sixty", "Egbo-eha",  R.drawable.i60,  Uri.parse("android.resource://"+context?.packageName  +"/raw/sixty")))
+        numList.add(24, OraLangNums("Seventy", "Egbo-eha-bi-igbe",  R.drawable.i70,  Uri.parse("android.resource://"+context?.packageName  +"/raw/seventy")))
+        numList.add(25, OraLangNums("Eighty", "Egbo-enee",  R.drawable.i80,  Uri.parse("android.resource://"+context?.packageName  +"/raw/eighty")))
+        numList.add(26, OraLangNums("Ninety", "Egbo-enee-bi-igbe",  R.drawable.i90,  Uri.parse("android.resource://"+context?.packageName  +"/raw/ninety")))
+        numList.add(27, OraLangNums("One Hundred", "Egbo-eheen",  R.drawable.i100,  Uri.parse("android.resource://"+context?.packageName  +"/raw/hundred")))
 
         searchViewList.addAll(numList)
 
@@ -320,7 +321,7 @@ class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickList
 //        ora_num_recycler.itemAnimator = null
 
 
-        val gottenWords = numberViewModel.oraWords.observe(this, Observer {
+        val gottenWords = numberViewModel.oraWords.observe(viewLifecycleOwner, Observer {
 
             it.let {
 
@@ -380,7 +381,6 @@ class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickList
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-//        val navController :NavController = Navigation.findNavController(view)
 
         val application = requireNotNull(activity).application
         val dao = OraWordsDatabase.invoke(application)
@@ -683,49 +683,50 @@ class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickList
 
     override fun onPlayOraWordClickListener(oraWords: OraLangNums) {
 
-//        if (oraWords.oraid < 2){
-            playContentUri(oraWords.recordedAudio!!, context!!)
-
-//        }else if (oraWords.oraid>2 && <27) ) {
-//
-//            val  sound = oraWords.numIcon.toString()
-//            val  played = Uri.parse(sound)
-////            playContentInt(oraWords.numIcon!!, context!!)
-//            playContentUri(played!!, context!!)
-//        }
-//        else{
-//            playContentUri(oraWords.recordedAudio!!, context!!)
-//        }
+        oraWords.recordedAudio?.let { playContentUri(it, context!!) }
     }
 
     override fun onEditOraWordClickListener(oraWords: OraLangNums) {
 
-//                              val navController : NavController = Navigation.findNavController()
-//                                navController.navigate(R.id.editOraWordFragment, bundle)
-
-                                val action = OraLangNumbersFragmentDirections.actionOraLangNumbersFragmentToEditOraWordFragment()
+//        if (oraWords.oraid >27){
+            val action = OraLangNumbersFragmentDirections.actionOraLangNumbersFragmentToEditOraWordFragment()
 //                                action.oraLangNums = oraLangNumList[position]
-                                    action.oraLangNums = oraWords
-                                Navigation.findNavController(view!!).navigate(action)
+            action.oraLangNums = oraWords
+            Navigation.findNavController(view!!).navigate(action)
+//
+//        }
+//        else{
+//
+//            showSnackbar(fab1, "You can't edit pre-installed Ora Words")
+//        }
     }
-
-
 
 
     override fun onDeleteOraWordClickListener(oraWords: OraLangNums) {
-        launch {
 
-            numberViewModel.deleteOraElement(oraWords)
+        if (oraWords.oraid > 27) {
+//
+            launch {
+
+                numberViewModel.deleteOraElement(oraWords)
+            }
+            showSnackbar(fab1, "${oraWords.engNum} Has been Deleted")
+//
+//        }else if(oraWords.oraid <27){
+//            showSnackbar(fab1, "You can't delete pre-installed Ora Words")
         }
-//        showToast("Delete icon clicked", context!!)
-        showSnackbar(fab1, "${oraWords.engNum} Has been Deleted")
-    }
-
-    override fun onItemClickListener(oraWords: OraLangNums) {
 
     }
 
+        override fun onItemClickListener(oraWords: OraLangNums) {
 
+        }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mediaPlayer?.release()
+    }
 }
 
 

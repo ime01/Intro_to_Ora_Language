@@ -73,4 +73,8 @@
     <string name="play">play</string>
     <string name="orasegmenticon">OraSegmentIcon</string>
     <string name="textview">TextView</string>
+    <string name="update_ora_user_profile">Update User Profile</string>
+    <string name="finish">finish</string>
+    <string name="next">Next</string>
+    <string name="theoraslanguage">FEEL FREE TO LEARN AND ADD WORDS TO THE DIGITIZATION AND PRESERVATION OF THE LANGUAGE</string>
 </resources>

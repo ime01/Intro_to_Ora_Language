@@ -30,6 +30,7 @@ class OraLangHomeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requireActivity().actionBar?.show()
         setHasOptionsMenu(true)
     }
 
