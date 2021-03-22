@@ -19,11 +19,12 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.flowz.introtooralanguage.R
-import com.flowz.introtooralanguage.data.OraLangNums
+import com.flowz.introtooralanguage.data.models.HouseWordsModel
+import com.flowz.introtooralanguage.data.models.NumbersModel
 import com.flowz.introtooralanguage.data.room.OraWordsDatabase
+import com.flowz.introtooralanguage.data.models.OutdoorWordsModel
+import com.flowz.introtooralanguage.data.models.TravelWordsModel
 import com.flowz.introtooralanguage.display.base.ScopedFragment
-import com.flowz.introtooralanguage.display.numbers.OraLangNumbersFragment
-import com.flowz.introtooralanguage.display.numbers.OraNumberViewModel1
 import com.flowz.introtooralanguage.extensions.playContentUri
 import com.flowz.introtooralanguage.extensions.showSnackbar
 import com.flowz.introtooralanguage.extensions.showToast
@@ -42,13 +43,12 @@ private val STORAGE_REQUEST_CODE = 102
 var mediaRecorder: MediaRecorder? = null
 var mediaPlayer: MediaPlayer? = null
 lateinit var audioFilePath: String
-lateinit var numList: ArrayList<OraLangNums>
-var searchViewList: ArrayList<OraLangNums> = ArrayList()
+lateinit var numList: ArrayList<NumbersModel>
+var searchViewList: ArrayList<NumbersModel> = ArrayList()
 //lateinit var oraAdapter: OraNumAdapter
 lateinit var uri: Uri
 lateinit var selectedPath: Uri
 var recordButtonClicked: Boolean = false
-private lateinit var numberViewModel: OraNumberViewModel1
 val addOraWordTag = "addOraWordTag"
 
 /**
@@ -61,7 +61,15 @@ class EditOraWordFragment : ScopedFragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var param3: Int? = null
-    private var oraLangNums: OraLangNums? = null
+    private var outdoorWord: OutdoorWordsModel? = null
+    private var travelWord: TravelWordsModel? = null
+    private var houseWord: HouseWordsModel? = null
+    private var number: NumbersModel? = null
+
+    private var  wordFromNumbersFragment :Boolean = false
+    private var  wordFromOutDoorFragment :Boolean = false
+    private var  wordFromHouseFragment :Boolean = false
+    private var  wordFromTravelFragment :Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +77,29 @@ class EditOraWordFragment : ScopedFragment() {
 //            param1 = it.getString(ARG_PARAM1)
 //            param2 = it.getString(ARG_PARAM2)
 
-            oraLangNums = EditOraWordFragmentArgs.fromBundle(it).oraLangNums
+            outdoorWord = EditOraWordFragmentArgs.fromBundle(it).outdoorWord
+            travelWord = EditOraWordFragmentArgs.fromBundle(it).travelWord
+            houseWord = EditOraWordFragmentArgs.fromBundle(it).houseWord
+            number = EditOraWordFragmentArgs.fromBundle(it).number
+
+
+            if (it.getInt("type") == 1){
+//              if equals to 1 that means we came here from here from Numbers Fragment, so we save the updated word with NumbersDao to database
+                wordFromNumbersFragment = true
+
+           }else if (it.getInt("type") == 2){
+//               if equals to 1 that means we came here from here from House Fragment, so we save the updated word with HouseDao to database
+                wordFromHouseFragment = true
+
+           }else if (it.getInt("type") == 3){
+//               if equals to 1 that means we came here from here from Travel Fragment, so we save the updated word with TravelDao to database
+                wordFromTravelFragment = true
+
+           }else{
+//               if equals to 1 that means we came here from here from Outdoor Fragment, so we save the updated word with OutdoorDao to database
+                wordFromOutDoorFragment = true
+           }
+
 
         }
 
@@ -84,17 +114,34 @@ class EditOraWordFragment : ScopedFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val db = OraWordsDatabase(context!!)
+        val db = OraWordsDatabase(requireContext())
 
-        entered_eng_words.setText(oraLangNums?.engNum)
-        entered_ora_words.setText(oraLangNums?.oraNum)
+        if (wordFromOutDoorFragment==true){
+
+            entered_eng_words.setText(outdoorWord?.engNum)
+            entered_ora_words.setText(outdoorWord?.oraNum)
+
+        }else if (wordFromHouseFragment == true){
+
+            entered_eng_words.setText(houseWord?.engNum)
+            entered_ora_words.setText(houseWord?.oraNum)
+
+        }else if (wordFromTravelFragment == true){
+
+            entered_eng_words.setText(travelWord?.engNum)
+            entered_ora_words.setText(travelWord?.oraNum)
+
+        }else if (wordFromNumbersFragment == true){
+
+            entered_eng_words.setText(number?.engNum)
+            entered_ora_words.setText(number?.oraNum)
+        }
+
 
         val animation: Animation = AnimationUtils.loadAnimation(context, R.anim.recorder_icon_blink)
         val navController : NavController = Navigation.findNavController(view)
 
-
 //        audioFilePath = context?.getExternalFilesDir(null)?.absolutePath + "/oraAudio.3gp"
-
 
         internal_audio_update.setOnClickListener {
             recordButtonClicked = false
@@ -103,7 +150,7 @@ class EditOraWordFragment : ScopedFragment() {
             audioIntent.setAction(Intent.ACTION_GET_CONTENT)
             startActivityForResult(
                 audioIntent,
-                OraLangNumbersFragment.AUDIO_REQUEST_CODE
+                AUDIO_REQUEST_CODE
             )
         }
 
@@ -111,7 +158,6 @@ class EditOraWordFragment : ScopedFragment() {
             val audioUri = Uri.parse(audioFilePath)
 
             if(recordButtonClicked == false) {
-
 
                 val chosenAudio = Uri.parse(audioFilePath)
 
@@ -122,15 +168,55 @@ class EditOraWordFragment : ScopedFragment() {
 
                     showSnackbar(update_oraword, "Words gotten $engWordEntered $oraWordEntered")
 
-                    launch {
+                    if (wordFromNumbersFragment == true){
+                        launch {
 
-                        val updatedOraWord = OraLangNums(engWordEntered, oraWordEntered, null, chosenAudio)
+                            val updatedOutdoorWord = NumbersModel(engWordEntered, oraWordEntered, null, chosenAudio)
 
-                        updatedOraWord.oraid = oraLangNums!!.oraid
+                            updatedOutdoorWord.oraid = number!!.oraid
 
-                        db.oraWordsDao().update(updatedOraWord)
+                            db.NumbersDao().update(updatedOutdoorWord)
+
+                        }
+                        showSnackbar(update_oraword, "$engWordEntered has been updated")
+
+                    }else if (wordFromHouseFragment == true){
+                        launch {
+
+                            val updatedOutdoorWord = HouseWordsModel(engWordEntered, oraWordEntered,  chosenAudio)
+
+                            updatedOutdoorWord.oraid = houseWord!!.oraid
+
+                            db.houseWordsDao().update(updatedOutdoorWord)
+
+                        }
+                        showSnackbar(update_oraword, "$engWordEntered has been updated")
+
+                    }else if(wordFromOutDoorFragment == true){
+                        launch {
+
+                            val updatedOutdoorWord = OutdoorWordsModel(engWordEntered, oraWordEntered,  chosenAudio)
+
+                            updatedOutdoorWord.oraid = outdoorWord!!.oraid
+
+                            db.outDoorWordsDao().update(updatedOutdoorWord)
+
+                        }
+                        showSnackbar(update_oraword, "$engWordEntered has been updated")
+
+                    }else if(wordFromTravelFragment == true){
+                        launch {
+
+                            val updatedOutdoorWord = TravelWordsModel(engWordEntered, oraWordEntered,  chosenAudio)
+
+                            updatedOutdoorWord.oraid = travelWord!!.oraid
+
+                            db.TravelWordsDao().update(updatedOutdoorWord)
+
+                        }
+                        showSnackbar(update_oraword, "$engWordEntered has been updated")
                     }
-                    showSnackbar(update_oraword, "OraItem has been updated")
+
                 }
             }
             else if (recordButtonClicked == true){
@@ -141,16 +227,55 @@ class EditOraWordFragment : ScopedFragment() {
 
                     showSnackbar(update_oraword, "strings gotten $engWordEntered $oraWordEntered")
 
-                    launch {
+                    if (wordFromNumbersFragment== true){
+                        launch {
 
-                        val updatedOraWord = OraLangNums(engWordEntered, oraWordEntered, null, audioUri )
+                            val updatedOutdoorWord = NumbersModel(engWordEntered, oraWordEntered, null, audioUri)
 
-                        updatedOraWord.oraid = oraLangNums!!.oraid
+                            updatedOutdoorWord.oraid = number!!.oraid
 
-                        db.oraWordsDao().update(updatedOraWord)
+                            db.NumbersDao().update(updatedOutdoorWord)
+                        }
+
+                        showSnackbar(update_oraword, "$engWordEntered has been updated")
+
+                    }else if (wordFromTravelFragment == true){
+                        launch {
+
+                            val updatedOutdoorWord = TravelWordsModel(engWordEntered, oraWordEntered, audioUri)
+
+                            updatedOutdoorWord.oraid = travelWord!!.oraid
+
+                            db.TravelWordsDao().update(updatedOutdoorWord)
+                        }
+
+                        showSnackbar(update_oraword, "$engWordEntered has been updated")
+
+                    }else if (wordFromOutDoorFragment == true){
+                        launch {
+
+                            val updatedOutdoorWord = OutdoorWordsModel(engWordEntered, oraWordEntered, audioUri)
+
+                            updatedOutdoorWord.oraid = outdoorWord!!.oraid
+
+                            db.outDoorWordsDao().update(updatedOutdoorWord)
+                        }
+
+                        showSnackbar(update_oraword, "$engWordEntered has been updated")
+
+                    }else if (wordFromHouseFragment == true){
+                        launch {
+
+                            val updatedOutdoorWord = HouseWordsModel(engWordEntered, oraWordEntered, audioUri)
+
+                            updatedOutdoorWord.oraid = houseWord!!.oraid
+
+                            db.houseWordsDao().update(updatedOutdoorWord)
+                        }
+
+                        showSnackbar(update_oraword, "$engWordEntered has been updated")
                     }
 
-                    showSnackbar(update_oraword, "OraItem has been updated")
                 }
 
             }
@@ -174,7 +299,7 @@ class EditOraWordFragment : ScopedFragment() {
             audioIntent.setType("audio/*")
             audioIntent.setAction(Intent.ACTION_GET_CONTENT)
             startActivityForResult(audioIntent,
-                OraLangNumbersFragment.AUDIO_REQUEST_CODE
+                AUDIO_REQUEST_CODE
             )
         }
 
@@ -208,10 +333,10 @@ class EditOraWordFragment : ScopedFragment() {
         override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
             if (!(resultCode == Activity.RESULT_OK || data != null || data?.data != null)) {
-                showToast("Error in getting music file", this.context!!)
+                showToast("Error in getting music file", this.requireContext())
             }
 
-            if (requestCode == OraLangNumbersFragment.AUDIO_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            if (requestCode == AUDIO_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
 
                 if (data != null) {
 
@@ -224,7 +349,7 @@ class EditOraWordFragment : ScopedFragment() {
                         audioFilePath = muri.toString()
 
 //                    playContentUri(muri!!)
-                        playContentUri(muri!!, this.context!!)
+                        playContentUri(muri!!, this.requireContext())
 
                         super.onActivityResult(requestCode, resultCode, data)
 
@@ -253,7 +378,7 @@ class EditOraWordFragment : ScopedFragment() {
             }
             start()
         }
-        showToast("Recording Started", this.context!!)
+        showToast("Recording Started", this.requireContext())
     }
 
     fun stopAudio() {
@@ -265,7 +390,7 @@ class EditOraWordFragment : ScopedFragment() {
             mediaPlayer?.release()
             mediaPlayer = null
         }
-        showToast("Recording Stoped",this.context!! )
+        showToast("Recording Stoped",this.requireContext() )
     }
 
 
@@ -293,7 +418,7 @@ class EditOraWordFragment : ScopedFragment() {
             RECORD_REQUEST_CODE -> {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
 
-                    showToast("Record permission required", this.context!!)
+                    showToast("Record permission required", this.requireContext())
                 } else {
                     requestPermission(
                         android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -305,12 +430,13 @@ class EditOraWordFragment : ScopedFragment() {
 
             STORAGE_REQUEST_CODE -> {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    showToast("External Storage permission required", this.context!!)
+                    showToast("External Storage permission required", this.requireContext())
                 }
                 return
             }
         }
     }
+
 
     fun playAudio() {
         mediaPlayer = MediaPlayer()
@@ -321,9 +447,9 @@ class EditOraWordFragment : ScopedFragment() {
 
     fun audioSetup() {
         if (!hasMicrophone()) {
-            showToast("No microphone to reocrd, try selecting an Audio file instead", this.context!!)
+            showToast("No microphone to reocrd, try selecting an Audio file instead", this.requireContext())
         } else {
-            showToast("Microphone Present", this.context!!)
+            showToast("Microphone Present", this.requireContext())
         }
 //        audioFilePath = Environment.getExternalStorageDirectory().absolutePath + "/oraAudio.3gp"
         audioFilePath = context?.getExternalFilesDir(null)?.absolutePath + "/oraAudio.3gp"
@@ -338,6 +464,8 @@ class EditOraWordFragment : ScopedFragment() {
 
 
     companion object {
+        const val AUDIO_REQUEST_CODE = 1
+        const val KEY_COUNT_VALUE = "key_count"
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
@@ -359,4 +487,6 @@ class EditOraWordFragment : ScopedFragment() {
                 }
             }
     }
+
 }
+

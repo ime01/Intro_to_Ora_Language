@@ -2,7 +2,6 @@ package com.flowz.introtooralanguage.display.numbers
 
 
 import android.app.Activity
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -19,32 +18,21 @@ import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.*
-
 import com.flowz.introtooralanguage.R
-//import com.flowz.introtooralanguage.adapters.OraNumbersAdapter
-import com.flowz.introtooralanguage.adapters.OraNumbersAdapter1
-import com.flowz.introtooralanguage.data.OraLangNums
-import com.flowz.introtooralanguage.data.room.OraNumRepository
-import com.flowz.introtooralanguage.data.room.OraWordsDao
-import com.flowz.introtooralanguage.data.room.OraWordsDatabase
-import com.flowz.introtooralanguage.display.base.ScopedFragment
-import com.flowz.introtooralanguage.extensions.playContentInt
+import com.flowz.introtooralanguage.adapters.NumbersAdapter
+import com.flowz.introtooralanguage.data.models.NumbersModel
 import com.flowz.introtooralanguage.extensions.playContentUri
 import com.flowz.introtooralanguage.extensions.showSnackbar
 import com.flowz.introtooralanguage.extensions.showToast
-import com.flowz.introtooralanguage.recyclerviewlistener.RecyclerItemClickListener
 import com.flowz.introtooralanguage.workmanager.ReminderWorker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.ora_lang_numbers.*
-import kotlinx.coroutines.*
 import java.io.IOException
 import java.lang.System.currentTimeMillis
 import java.util.*
@@ -55,7 +43,11 @@ import kotlin.collections.ArrayList
 /**
  * A simple [Fragment] subclass.
  */
-class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickListener {
+
+@AndroidEntryPoint
+class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
+
+    private val numbersViewModel by viewModels<NumbersViewModel>()
 
     var isRecording = false
     private val RECORD_REQUEST_CODE = 101
@@ -63,14 +55,13 @@ class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickList
     var mediaRecorder: MediaRecorder? = null
     var mediaPlayer: MediaPlayer? = null
     lateinit var audioFilePath: String
-    lateinit var numList: ArrayList<OraLangNums>
-    var searchViewList: ArrayList<OraLangNums> = ArrayList()
+    lateinit var numList: ArrayList<NumbersModel>
+    var searchViewList: ArrayList<NumbersModel> = ArrayList()
 //    lateinit var oraAdapter: OraNumbersAdapter
-    lateinit var oraAdapter: OraNumbersAdapter1
+    lateinit var oraAdapter: NumbersAdapter
     lateinit var uri: Uri
     lateinit var selectedPath: Uri
     var recordButtonClicked: Boolean = false
-    private lateinit var numberViewModel: OraNumberViewModel1
     val addOraWordTag = "addOraWordTag"
 
 
@@ -112,7 +103,7 @@ class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickList
             }
             start()
         }
-        showToast("Recording Started", this.context!!)
+        showToast("Recording Started", requireContext())
     }
 
     fun stopAudio() {
@@ -124,7 +115,7 @@ class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickList
             mediaPlayer?.release()
             mediaPlayer = null
         }
-        showToast("Recording Stoped",this.context!! )
+        showToast("Recording Stoped",requireContext() )
     }
 
 
@@ -152,7 +143,7 @@ class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickList
             RECORD_REQUEST_CODE -> {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
 
-                    showToast("Record permission required", this.context!!)
+                    showToast("Record permission required", requireContext())
                 } else {
                     requestPermission(
                         android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -164,7 +155,7 @@ class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickList
 
             STORAGE_REQUEST_CODE -> {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    showToast("External Storage permission required", this.context!!)
+                    showToast("External Storage permission required", requireContext())
                 }
                 return
             }
@@ -180,9 +171,9 @@ class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickList
 
     fun audioSetup() {
         if (!hasMicrophone()) {
-            showToast("No microphone to reocrd, try selecting an Audio file instead", this.context!!)
+            showToast("No microphone to reocrd, try selecting an Audio file instead", requireContext())
         } else {
-            showToast("Microphone Present", this.context!!)
+            showToast("Microphone Present", requireContext())
         }
 //        audioFilePath = Environment.getExternalStorageDirectory().absolutePath + "/oraAudio.3gp"
         audioFilePath = context?.getExternalFilesDir(null)?.absolutePath + "/oraAudio.3gp"
@@ -204,7 +195,7 @@ class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickList
 
             try {
                 mediaPlayer = MediaPlayer().apply {
-                    setDataSource(context!!, uri)
+                    setDataSource(requireContext(), uri)
                     setAudioAttributes(
                         AudioAttributes.Builder()
                             .setUsage(AudioAttributes.USAGE_MEDIA)
@@ -224,7 +215,7 @@ class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickList
             try {
                 mediaPlayer = MediaPlayer().apply {
 
-                    setDataSource(context!!, uri)
+                    setDataSource(requireContext(), uri)
 
                     setAudioAttributes(
                         AudioAttributes.Builder()
@@ -248,7 +239,7 @@ class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickList
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
         if (!(resultCode == Activity.RESULT_OK || data != null || data?.data != null)) {
-            showToast("Error in getting music file", this.context!!)
+            showToast("Error in getting music file", requireContext())
         }
 
         if (requestCode == AUDIO_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
@@ -275,44 +266,44 @@ class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickList
 
      fun initializeList() {
 
-
         numList = ArrayList()
 
-        numList.add(0, OraLangNums("One", "Okpa", R.drawable.ione, Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
-        numList.add(1, OraLangNums("Two", "Evah", R.drawable.itwo, Uri.parse("android.resource://"+context?.packageName +"/raw/two")))
-        numList.add(2, OraLangNums("Three", "Eha", R.drawable.ithree, Uri.parse("android.resource://"+context?.packageName  +"/raw/three")))
-        numList.add(3, OraLangNums("Four", "Enee", R.drawable.ifour, Uri.parse("android.resource://"+context?.packageName  +"/raw/four")))
-        numList.add(4, OraLangNums("Five", "Iheen", R.drawable.ifive, Uri.parse("android.resource://"+context?.packageName  +"/raw/five")))
-        numList.add(5, OraLangNums("Six", "Ekhan", R.drawable.i6, Uri.parse("android.resource://"+context?.packageName  +"/raw/six")))
-        numList.add(6, OraLangNums("Seven", "Ikhion", R.drawable.i7, Uri.parse("android.resource://"+context?.packageName  +"/raw/seven")))
-        numList.add(7, OraLangNums("Eight", "Een", R.drawable.ieight, Uri.parse("android.resource://"+context?.packageName  +"/raw/eight")))
-        numList.add(8, OraLangNums("Nine", "Isiin", R.drawable.inine, Uri.parse("android.resource://"+context?.packageName  +"/raw/nine")))
-        numList.add(9, OraLangNums("Ten", "Igbee", R.drawable.i10, Uri.parse("android.resource://"+context?.packageName  +"/raw/ten")))
-        numList.add(10, OraLangNums("Eleven", "Ugbour",  R.drawable.i11, Uri.parse("android.resource://"+context?.packageName  +"/raw/eleven")))
-        numList.add(11, OraLangNums("Twelve", "Igbe-vah",  R.drawable.i12, Uri.parse("android.resource://"+context?.packageName  +"/raw/twelve")))
-        numList.add(12, OraLangNums("Thirteen", "Igbe-eha",  R.drawable.i13a,  Uri.parse("android.resource://"+context?.packageName  +"/raw/thirteen")))
-        numList.add(13, OraLangNums("Fourteen", "Igbe-Enee",  R.drawable.i14,  Uri.parse("android.resource://"+context?.packageName  +"/raw/fourteen")))
-        numList.add(14, OraLangNums("Fifteen", "Igbe-Iheen",  R.drawable.i15,  Uri.parse("android.resource://"+context?.packageName  +"/raw/fifteen")))
-        numList.add(15, OraLangNums("Sixteen", "Ke-enee-Suuee",  R.drawable.i16,  Uri.parse("android.resource://"+context?.packageName  +"/raw/sixteen")))
-        numList.add(16, OraLangNums("Seventeen", "Ke-eha-Suuee",  R.drawable.i17,  Uri.parse("android.resource://"+context?.packageName  +"/raw/seventeen")))
-        numList.add(17, OraLangNums("Eighteen", "Ke-evah-Suuee",  R.drawable.i18,  Uri.parse("android.resource://"+context?.packageName  +"/raw/eighteen")))
-        numList.add(18, OraLangNums("Nineteen", "Ke-okpa-Suuee",  R.drawable.i19,  Uri.parse("android.resource://"+context?.packageName  +"/raw/nineteen")))
-        numList.add(19, OraLangNums("Twenty", "Uuee",  R.drawable.i20,  Uri.parse("android.resource://"+context?.packageName  +"/raw/twenty")))
-        numList.add(20, OraLangNums("Thirty", "Ogban",  R.drawable.i30,  Uri.parse("android.resource://"+context?.packageName  +"/raw/thirty")))
-        numList.add(21, OraLangNums("Fourty", "Egbo-evah",  R.drawable.i40,  Uri.parse("android.resource://"+context?.packageName  +"/raw/fourty")))
-        numList.add(22, OraLangNums("Fifty", "Egbo-evah-bi-igbe",  R.drawable.i50,  Uri.parse("android.resource://"+context?.packageName  +"/raw/fifty")))
-        numList.add(23, OraLangNums("Sixty", "Egbo-eha",  R.drawable.i60,  Uri.parse("android.resource://"+context?.packageName  +"/raw/sixty")))
-        numList.add(24, OraLangNums("Seventy", "Egbo-eha-bi-igbe",  R.drawable.i70,  Uri.parse("android.resource://"+context?.packageName  +"/raw/seventy")))
-        numList.add(25, OraLangNums("Eighty", "Egbo-enee",  R.drawable.i80,  Uri.parse("android.resource://"+context?.packageName  +"/raw/eighty")))
-        numList.add(26, OraLangNums("Ninety", "Egbo-enee-bi-igbe",  R.drawable.i90,  Uri.parse("android.resource://"+context?.packageName  +"/raw/ninety")))
-        numList.add(27, OraLangNums("One Hundred", "Egbo-eheen",  R.drawable.i100,  Uri.parse("android.resource://"+context?.packageName  +"/raw/hundred")))
+        numList.add(0, NumbersModel("One", "Okpa", R.drawable.ione, Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
+        numList.add(1, NumbersModel("Two", "Evah", R.drawable.itwo, Uri.parse("android.resource://"+context?.packageName +"/raw/two")))
+        numList.add(2, NumbersModel("Three", "Eha", R.drawable.ithree, Uri.parse("android.resource://"+context?.packageName  +"/raw/three")))
+        numList.add(3, NumbersModel("Four", "Enee", R.drawable.ifour, Uri.parse("android.resource://"+context?.packageName  +"/raw/four")))
+        numList.add(4, NumbersModel("Five", "Iheen", R.drawable.ifive, Uri.parse("android.resource://"+context?.packageName  +"/raw/five")))
+        numList.add(5, NumbersModel("Six", "Ekhan", R.drawable.i6, Uri.parse("android.resource://"+context?.packageName  +"/raw/six")))
+        numList.add(6, NumbersModel("Seven", "Ikhion", R.drawable.i7, Uri.parse("android.resource://"+context?.packageName  +"/raw/seven")))
+        numList.add(7, NumbersModel("Eight", "Een", R.drawable.ieight, Uri.parse("android.resource://"+context?.packageName  +"/raw/eight")))
+        numList.add(8, NumbersModel("Nine", "Isiin", R.drawable.inine, Uri.parse("android.resource://"+context?.packageName  +"/raw/nine")))
+        numList.add(9, NumbersModel("Ten", "Igbee", R.drawable.i10, Uri.parse("android.resource://"+context?.packageName  +"/raw/ten")))
+        numList.add(10, NumbersModel("Eleven", "Ugbour",  R.drawable.i11, Uri.parse("android.resource://"+context?.packageName  +"/raw/eleven")))
+        numList.add(11, NumbersModel("Twelve", "Igbe-vah",  R.drawable.i12, Uri.parse("android.resource://"+context?.packageName  +"/raw/twelve")))
+        numList.add(12, NumbersModel("Thirteen", "Igbe-eha",  R.drawable.i13a,  Uri.parse("android.resource://"+context?.packageName  +"/raw/thirteen")))
+        numList.add(13, NumbersModel("Fourteen", "Igbe-Enee",  R.drawable.i14,  Uri.parse("android.resource://"+context?.packageName  +"/raw/fourteen")))
+        numList.add(14, NumbersModel("Fifteen", "Igbe-Iheen",  R.drawable.i15,  Uri.parse("android.resource://"+context?.packageName  +"/raw/fifteen")))
+        numList.add(15, NumbersModel("Sixteen", "Ke-enee-Suuee",  R.drawable.i16,  Uri.parse("android.resource://"+context?.packageName  +"/raw/sixteen")))
+        numList.add(16, NumbersModel("Seventeen", "Ke-eha-Suuee",  R.drawable.i17,  Uri.parse("android.resource://"+context?.packageName  +"/raw/seventeen")))
+        numList.add(17, NumbersModel("Eighteen", "Ke-evah-Suuee",  R.drawable.i18,  Uri.parse("android.resource://"+context?.packageName  +"/raw/eighteen")))
+        numList.add(18, NumbersModel("Nineteen", "Ke-okpa-Suuee",  R.drawable.i19,  Uri.parse("android.resource://"+context?.packageName  +"/raw/nineteen")))
+        numList.add(19, NumbersModel("Twenty", "Uuee",  R.drawable.i20,  Uri.parse("android.resource://"+context?.packageName  +"/raw/twenty")))
+        numList.add(20, NumbersModel("Thirty", "Ogban",  R.drawable.i30,  Uri.parse("android.resource://"+context?.packageName  +"/raw/thirty")))
+        numList.add(21, NumbersModel("Fourty", "Egbo-evah",  R.drawable.i40,  Uri.parse("android.resource://"+context?.packageName  +"/raw/fourty")))
+        numList.add(22, NumbersModel("Fifty", "Egbo-evah-bi-igbe",  R.drawable.i50,  Uri.parse("android.resource://"+context?.packageName  +"/raw/fifty")))
+        numList.add(23, NumbersModel("Sixty", "Egbo-eha",  R.drawable.i60,  Uri.parse("android.resource://"+context?.packageName  +"/raw/sixty")))
+        numList.add(24, NumbersModel("Seventy", "Egbo-eha-bi-igbe",  R.drawable.i70,  Uri.parse("android.resource://"+context?.packageName  +"/raw/seventy")))
+        numList.add(25, NumbersModel("Eighty", "Egbo-enee",  R.drawable.i80,  Uri.parse("android.resource://"+context?.packageName  +"/raw/eighty")))
+        numList.add(26, NumbersModel("Ninety", "Egbo-enee-bi-igbe",  R.drawable.i90,  Uri.parse("android.resource://"+context?.packageName  +"/raw/ninety")))
+        numList.add(27, NumbersModel("One Hundred", "Egbo-eheen",  R.drawable.i100,  Uri.parse("android.resource://"+context?.packageName  +"/raw/hundred")))
 
         searchViewList.addAll(numList)
 
+         numbersViewModel.insertListOfNumbers(numList)
+
         ora_num_recycler.layoutManager = LinearLayoutManager(this.context)
 
-//        oraAdapter = OraNumbersAdapter(this.requireContext(), OraWordsDatabase.invoke(this.context!!),   searchViewList)
-        oraAdapter = OraNumbersAdapter1(this)
+        oraAdapter = NumbersAdapter(this)
 
 //        val alphaAdapter = AlphaInAnimationAdapter(oraAdapter)
 //        ora_num_recycler.adapter = ScaleInAnimationAdapter(alphaAdapter)
@@ -320,20 +311,10 @@ class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickList
 
 //        ora_num_recycler.itemAnimator = null
 
-
-        val gottenWords = numberViewModel.oraWords.observe(viewLifecycleOwner, Observer {
-
-            it.let {
-
-                val finalList = searchViewList + it
-
-                oraAdapter.submitList(finalList)
-                ora_num_recycler.adapter = oraAdapter
-
-            }
-        })
-
-
+         numbersViewModel.numbersFromDb.observe(viewLifecycleOwner, Observer {
+             oraAdapter.submitList(it)
+             ora_num_recycler.adapter = oraAdapter
+         })
 
 //        ora_num_recycler.itemAnimator = FlipInLeftYAnimator()
 //        ora_num_recycler.itemAnimator?.apply {
@@ -341,57 +322,10 @@ class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickList
 //            removeDuration = 500
 //        }
 
-//        ora_num_recycler.addOnItemTouchListener(RecyclerItemClickListener(this.requireContext(), ora_num_recycler, object : RecyclerItemClickListener.OnItemClickListener {
-//
-//                    override fun onItemClick(view: View, position: Int) {
-//
-//                        val soundPlayed = numList.get(position)
-//
-//                        if (position <= 27) {
-//
-////                                val playa = soundPlayed.numIcon!!.toString()
-////
-////                                val play = Uri.parse(playa)
-////
-////                                playContentUri(Uri.parse(soundPlayed.numIcon.toString()))
-//
-//                            if (mediaPlayer == null) {
-//                                mediaPlayer = MediaPlayer.create(context, soundPlayed.numIcon!!)
-//                                mediaPlayer?.start()
-//
-//                            } else {
-//                                mediaPlayer?.stop()
-//                                mediaPlayer = MediaPlayer.create(context, soundPlayed.numIcon!!)
-//                                mediaPlayer?.start()
-//                            }
-//                            Toast.makeText(activity, "LESS THAN 27", Toast.LENGTH_LONG).show()
-//
-//                        } else {
-//
-//                            playContentUri(soundPlayed.recordedAudio!!)
-//                        }
-//                    }
-//
-//                    override fun onItemLongClick(view: View?, position: Int) {
-//                    }
-//                })
-//        )
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-
-        val application = requireNotNull(activity).application
-        val dao = OraWordsDatabase.invoke(application)
-        val  repository = OraNumRepository(dao.oraWordsDao())
-        val viewModelFactory = OraNumberViewModelFactory1(repository)
-
-//        val viewModelFactory = OraNumberViewModelFactory(
-//            OraWordsDatabase.invoke(application)
-//        )
-
-        numberViewModel = ViewModelProviders.of(this, viewModelFactory).get(OraNumberViewModel1::class.java)
 
         initializeList()
 
@@ -449,11 +383,11 @@ class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickList
             }
             delete.setOnClickListener {
                 audioFilePath = " "
-                showToast("Audio disgarded", this.context!!)
+                showToast("Audio disgarded", requireContext())
 
             }
 
-            val alertDialog = MaterialAlertDialogBuilder(this.context!!)
+            val alertDialog = MaterialAlertDialogBuilder(requireContext())
             alertDialog.setView(alertView)
             alertDialog.setTitle(getString(R.string.alert_tilte))
             alertDialog.setCancelable(false)
@@ -469,7 +403,7 @@ class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickList
 
                     if (recordButtonClicked == false) {
 
-                        showToast("Select Audio Button clicked",this.context!!)
+                        showToast("Select Audio Button clicked",requireContext())
 
                         val chosenAudio = Uri.parse(audioFilePath)
 
@@ -478,21 +412,21 @@ class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickList
                             val engWordEntered = engText.text.toString().trim()
                             val oraWordEntered = oraText.text.toString().trim()
 
-                            showToast("strings gotten $engWordEntered $oraWordEntered",  this.context!!)
+                            showToast("strings gotten $engWordEntered $oraWordEntered",  requireContext())
 
 
 //                            SaveOraElement(engWordEntered, oraWordEntered, null, chosenAudio)
-                            SaveOraElement(engWordEntered, oraWordEntered, null, audioUri)
+                            saveOraElement(engWordEntered, oraWordEntered, null, audioUri)
 
 //                           launch {
 //                                oraAdapter.addOraNumber(OraLangNums(engWordEntered, oraWordEntered, null, audioUri))
 //                           }
 
-                            showToast("New details saved", this.context!!)
+                            showToast("New details saved", requireContext())
                             dialog.dismiss()
 
                         } else {
-                            showToast("Ensure you have entered the English and Ora Words", this.context!!)
+                            showToast("Ensure you have entered the English and Ora Words", requireContext())
                         }
 
 
@@ -503,17 +437,17 @@ class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickList
                             val engWordEntered = engText.text.toString().trim()
                             val oraWordEntered = oraText.text.toString().trim()
 
-                            showToast("strings gotten $engWordEntered $oraWordEntered", this.context!!)
+                            showToast("strings gotten $engWordEntered $oraWordEntered", requireContext())
 
-                            SaveOraElement(engWordEntered, oraWordEntered, null, audioUri)
+                            saveOraElement(engWordEntered, oraWordEntered, null, audioUri)
 
-                            showToast("New details saved", this.context!!)
+                            showToast("New details saved", requireContext())
                             oraAdapter.notifyDataSetChanged()
 
                             dialog.dismiss()
 
                         } else {
-                           showToast("Ensure you have entered the English and Ora Words", this.context!!)
+                           showToast("Ensure you have entered the English and Ora Words", requireContext())
                         }
                     }
                 }
@@ -604,7 +538,7 @@ class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickList
          val enteredTime = setTimeDialogView.findViewById<ru.ifr0z.timepickercompact.TimePickerCompact>(R.id.time_p)
 
 
-        val alertDialog = MaterialAlertDialogBuilder(this.context!!)
+        val alertDialog = MaterialAlertDialogBuilder(requireContext())
         alertDialog.setView(setTimeDialogView)
         alertDialog.setTitle(getString(R.string.select_time_dialog_title))
         alertDialog.setCancelable(false)
@@ -643,7 +577,7 @@ class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickList
         val delay = customTime - currentTime
 
 
-        val workManager = WorkManager.getInstance(this.context!!)
+        val workManager = WorkManager.getInstance(requireContext())
 
 
         val data : Data = Data.Builder()
@@ -670,47 +604,43 @@ class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickList
 
             val workSetStatus = it.state.name
 
-            showToast("Status of workManager task is : $workSetStatus", this.context!!)
+            showToast("Status of workManager task is : $workSetStatus", requireContext())
 
         })
 
     }
-    fun SaveOraElement(engWord: String, oraWord: String, numIcon: Int?, enteredAudio: Uri) =
-        launch {
-            numberViewModel.saveOraElement(engWord, oraWord, numIcon, enteredAudio)
-        }
+    fun saveOraElement(engWord: String, oraWord: String, numIcon: Int?, enteredAudio: Uri) =
+
+        numbersViewModel.insertNumber(NumbersModel(engWord, oraWord, numIcon, enteredAudio))
 
 
-    override fun onPlayOraWordClickListener(oraWords: OraLangNums) {
+    override fun onPlayOraWordClickListener(number: NumbersModel) {
 
-        oraWords.recordedAudio?.let { playContentUri(it, context!!) }
+        number.recordedAudio?.let { playContentUri(it, requireContext()) }
     }
 
-    override fun onEditOraWordClickListener(oraWords: OraLangNums) {
+    override fun onEditOraWordClickListener(number: NumbersModel) {
 
-//        if (oraWords.oraid >27){
+        if (number.oraid >27){
             val action = OraLangNumbersFragmentDirections.actionOraLangNumbersFragmentToEditOraWordFragment()
 //                                action.oraLangNums = oraLangNumList[position]
-            action.oraLangNums = oraWords
-            Navigation.findNavController(view!!).navigate(action)
+            action.arguments.putInt("type", 1)
+            action.number = number
+            Navigation.findNavController(requireView()).navigate(action)
 //
-//        }
-//        else{
-//
-//            showSnackbar(fab1, "You can't edit pre-installed Ora Words")
-//        }
+        }
+        else{
+            showSnackbar(fab1, "You can't edit pre-installed Ora Words")
+        }
     }
 
 
-    override fun onDeleteOraWordClickListener(oraWords: OraLangNums) {
+    override fun onDeleteOraWordClickListener(number: NumbersModel) {
 
-        if (oraWords.oraid > 27) {
+        if (number.oraid > 27) {
 //
-            launch {
-
-                numberViewModel.deleteOraElement(oraWords)
-            }
-            showSnackbar(fab1, "${oraWords.engNum} Has been Deleted")
+          numbersViewModel.deleteNumber(number)
+            showSnackbar(fab1, "${number.engNum} Has been Deleted")
 //
 //        }else if(oraWords.oraid <27){
 //            showSnackbar(fab1, "You can't delete pre-installed Ora Words")
@@ -718,7 +648,7 @@ class OraLangNumbersFragment : ScopedFragment(), OraNumbersAdapter1.RowClickList
 
     }
 
-        override fun onItemClickListener(oraWords: OraLangNums) {
+        override fun onItemClickListener(number: NumbersModel) {
 
         }
 

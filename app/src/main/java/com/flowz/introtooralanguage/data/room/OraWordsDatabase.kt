@@ -2,14 +2,16 @@ package com.flowz.introtooralanguage.data.room
 
 import android.content.Context
 import androidx.room.*
-import com.flowz.introtooralanguage.data.OraLangNums
-import com.flowz.introtooralanguage.data.UriConverters
+import com.flowz.introtooralanguage.data.models.*
 
-@Database(entities = [OraLangNums::class], version = 6)
+@Database(entities = [NumbersModel::class, OutdoorWordsModel::class, TravelWordsModel::class, HouseWordsModel::class], version = 7, exportSchema = false)
 @TypeConverters(UriConverters::class)
 abstract class OraWordsDatabase : RoomDatabase(){
 
-    abstract fun oraWordsDao(): OraWordsDao
+    abstract fun houseWordsDao(): HouseWordsDao
+    abstract fun outDoorWordsDao(): OutdoorWordsDao
+    abstract fun TravelWordsDao(): TravelWordsDao
+    abstract fun NumbersDao(): NumbersDao
 
     companion object{
 

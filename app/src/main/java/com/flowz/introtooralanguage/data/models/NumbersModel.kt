@@ -1,14 +1,13 @@
-package com.flowz.introtooralanguage.data
+package com.flowz.introtooralanguage.data.models
 
 import android.net.Uri
 import android.os.Parcelable
 import androidx.room.*
 import kotlinx.android.parcel.Parcelize
-import java.io.Serializable
 
 @Parcelize
-@Entity(tableName = "myoraWords_table")
-data class OraLangNums (
+@Entity(tableName = "numbers_table")
+data class NumbersModel (
     @ColumnInfo(name ="engNum")
     val engNum : String,
 
@@ -24,7 +23,6 @@ data class OraLangNums (
     var oraid: Int = 0
 
 }
-
 
 class UriConverters {
     @TypeConverter

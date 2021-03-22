@@ -13,12 +13,15 @@ import androidx.navigation.Navigation
 //import androidx.navigation.fragment.findNavController
 
 import com.flowz.introtooralanguage.R
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_ora_lang_home.*
 
 /**
  * A simple [Fragment] subclass.
  */
+
+//@AndroidEntryPoint
 class OraLangHomeFragment : Fragment() {
 
     override fun onCreateView(
@@ -64,7 +67,7 @@ class OraLangHomeFragment : Fragment() {
       when(item.itemId){
 
             R.id.ora_user_profile -> {
-                val navController :NavController = Navigation.findNavController(view!!)
+                val navController :NavController = Navigation.findNavController(requireView())
                 navController.navigate(R.id.action_oraLangHomeFragment_to_userProfileFragment)
             }
        }

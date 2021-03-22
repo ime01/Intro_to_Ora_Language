@@ -6,18 +6,18 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.flowz.introtooralanguage.R
-import com.flowz.introtooralanguage.data.OraLangNums
 import androidx.recyclerview.widget.ListAdapter
-import com.squareup.picasso.Picasso
+import com.flowz.introtooralanguage.data.models.HouseWordsModel
+import com.flowz.introtooralanguage.data.models.OutdoorWordsModel
 import kotlinx.android.synthetic.main.ora_num.view.*
 
 
-class OraNumbersAdapter1  (val listener: RowClickListener)  :ListAdapter<OraLangNums, OraNumbersAdapter1.OraNumViewHolder>(OraNumDiffCallback()) {
+class HouseWordsAdapter  (val listener: RowClickListener)  :ListAdapter<HouseWordsModel, HouseWordsAdapter.OraNumViewHolder>(HouseWordsDiffCallback()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):  OraNumViewHolder {
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.ora_num, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.ora_num1, parent, false)
         return OraNumViewHolder(view, listener)
 
     }
@@ -34,7 +34,6 @@ class OraNumbersAdapter1  (val listener: RowClickListener)  :ListAdapter<OraLang
 //        }
 
 //        oraWords.numIcon?.let { Picasso.get().load(it).into(itemView.ora_numIcon) }
-        getItem(position).numIcon?.let { Picasso.get().load(it).placeholder(R.drawable.itwo).error(R.drawable.itwo) .into(holder.itemView.ora_numIcon) }
 
         holder.bind(getItem(position))
         holder.itemView.setOnClickListener {
@@ -50,19 +49,19 @@ class OraNumbersAdapter1  (val listener: RowClickListener)  :ListAdapter<OraLang
 
         val play = itemView.findViewById<ImageView>(R.id.play_oraword)
 
-        fun bind(oraWords: OraLangNums){
+        fun bind(houseWords: HouseWordsModel){
 
-            itemView.eng_num.text = oraWords.engNum
-            itemView.ora_num.text = oraWords.oraNum
+            itemView.eng_num.text = houseWords.engNum
+            itemView.ora_num.text = houseWords.oraNum
 
 
             itemView.play_oraword.setOnClickListener {
-                    listener.onPlayOraWordClickListener(oraWords)
+                    listener.onPlayOraWordClickListener(houseWords)
             }
 
             itemView.edit_oraword.setOnClickListener {
 //                if(position> 27){
-                    listener.onEditOraWordClickListener(oraWords)
+                    listener.onEditOraWordClickListener(houseWords)
 //                }
 //                showSnackbar(itemView.eng_num, "You can't edit pre-installed OraWords")
 
@@ -71,10 +70,9 @@ class OraNumbersAdapter1  (val listener: RowClickListener)  :ListAdapter<OraLang
 
             itemView.delete_oraword.setOnClickListener {
 //                if(position> 27){
-                    listener.onDeleteOraWordClickListener(oraWords)
+                    listener.onDeleteOraWordClickListener(houseWords)
 //                }
 //                showSnackbar(itemView.eng_num, "You can't delete pre-installed OraWords")
-
 
             }
         }
@@ -82,10 +80,10 @@ class OraNumbersAdapter1  (val listener: RowClickListener)  :ListAdapter<OraLang
     }
 
     interface RowClickListener{
-        fun onPlayOraWordClickListener(oraWords: OraLangNums)
-        fun onEditOraWordClickListener(oraWords: OraLangNums)
-        fun onDeleteOraWordClickListener(oraWords: OraLangNums)
-        fun onItemClickListener(oraWords: OraLangNums)
+        fun onPlayOraWordClickListener(houseWords: HouseWordsModel)
+        fun onEditOraWordClickListener(houseWords: HouseWordsModel)
+        fun onDeleteOraWordClickListener(houseWords: HouseWordsModel)
+        fun onItemClickListener(houseWords: HouseWordsModel)
 
     }
 

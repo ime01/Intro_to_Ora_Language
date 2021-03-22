@@ -1,9 +1,9 @@
 package com.flowz.introtooralanguage.utils
 
 import androidx.recyclerview.widget.DiffUtil
-import com.flowz.introtooralanguage.data.OraLangNums
+import com.flowz.introtooralanguage.data.models.NumbersModel
 
-class OraListDiffCallback(private val oldList: List<OraLangNums>, private val newList: List<OraLangNums> ) : DiffUtil.Callback() {
+class OraListDiffCallback(private val oldList: List<NumbersModel>, private val newList: List<NumbersModel> ) : DiffUtil.Callback() {
 
 
     override fun getOldListSize(): Int  = oldList.size
