@@ -13,7 +13,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.concurrent.Executors
 import javax.inject.Provider
 import javax.inject.Singleton
 
@@ -24,7 +23,7 @@ object AppModule {
     @Provides
     @Singleton
     fun providesOraDatabase(@ApplicationContext app: Context, houseDaoProvider: Provider<HouseWordsDao>, numbersDaoProvider: Provider<NumbersDao>, outdoorDaoProvider: Provider<OutdoorWordsDao>, travelDaoProvider: Provider<TravelWordsDao>) =
-        Room.databaseBuilder(app, OraWordsDatabase::class.java, DATABASENAME) .addCallback(object: RoomDatabase.Callback(){
+        Room.databaseBuilder(app, OraWordsDatabase::class.java, DATABASENAME).addCallback(object: RoomDatabase.Callback(){
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
 
@@ -67,8 +66,3 @@ object AppModule {
 }
 
 const val DATABASENAME = "allorawords.db"
-private val IO_EXECUTOR = Executors.newSingleThreadExecutor()
-
-fun ioThread(f : () -> Unit) {
-    IO_EXECUTOR.execute(f)
-}
