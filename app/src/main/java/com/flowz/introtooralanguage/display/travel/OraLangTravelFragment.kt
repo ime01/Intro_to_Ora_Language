@@ -269,22 +269,6 @@ class OraLangTravelFragment : Fragment(), TravelWordsAdapter.RowClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         var mediaPlayer: MediaPlayer? = null
-        val travelList : ArrayList<TravelWordsModel> = ArrayList()
-
-        travelList.add(0, TravelWordsModel("We'll stop for a break here", "Mi ma muze fietian waun",  Uri.parse("android.resource://" + context?.packageName + "/raw/one")) )
-        travelList.add(1, TravelWordsModel(" Shortly we'll be back on our journey", "Mi ma gbe gbe bee vbi o shaan", Uri.parse("android.resource://" + context?.packageName + "/raw/one")) )
-        travelList.add(2, TravelWordsModel("The light says stop ", "Uru okpa owee nu muze",  Uri.parse("android.resource://" + context?.packageName + "/raw/one")) )
-        travelList.add(3, TravelWordsModel("Here are my papers ", "Ka ough kpebe men",  Uri.parse("android.resource://" + context?.packageName + "/raw/one")) )
-        travelList.add(4, TravelWordsModel("You can go", "Kha Shaan", Uri.parse("android.resource://" + context?.packageName + "/raw/one")) )
-        travelList.add(5, TravelWordsModel("We've on the road for some time", "Or khuiee nii mai da rii vbi ukpodee",  Uri.parse("android.resource://" + context?.packageName + "/raw/one")) )
-        travelList.add(6, TravelWordsModel("Sit in the front seat", "Dey gha vbi odaoo",  Uri.parse("android.resource://" + context?.packageName + "/raw/one")) )
-        travelList.add(7, TravelWordsModel("Sit in the back seat", "Dey gha vbi Ehimin",  Uri.parse("android.resource://" + context?.packageName + "/raw/one")) )
-        travelList.add(8, TravelWordsModel("Stop here", "Muze ma ann", Uri.parse("android.resource://" + context?.packageName + "/raw/one")) )
-        travelList.add(9, TravelWordsModel("We will get down here", "Mi ma do otoi maan",  Uri.parse("android.resource://" + context?.packageName + "/raw/one")) )
-        travelList.add(10, TravelWordsModel("Thanks for taking me", "Uzor kah nu dah mu mee",  Uri.parse("android.resource://" + context?.packageName + "/raw/one")) )
-        searchViewList.addAll(travelList)
-
-        travelWordViewModel.insertListOfTravelWords(travelList)
 
         ora_travel_recycler.layoutManager = LinearLayoutManager(this.context)
 
@@ -437,41 +421,6 @@ class OraLangTravelFragment : Fragment(), TravelWordsAdapter.RowClickListener {
 
             val searchView = menuItem.actionView as androidx.appcompat.widget.SearchView
 
-            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
-                androidx.appcompat.widget.SearchView.OnQueryTextListener {
-
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    return true
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean {
-
-                    if (newText!!.isNotEmpty()){
-
-                        searchViewList.clear()
-
-                        val search = newText.toLowerCase(Locale.getDefault())
-
-                        numList.forEach {
-
-                            if (it.engNum.toLowerCase(Locale.getDefault()).contains(search)){
-
-                                searchViewList.add(it)
-
-                            }
-                            ora_travel_recycler.adapter!!.notifyDataSetChanged()
-                        }
-                    } else{
-
-                        searchViewList.clear()
-                        searchViewList.addAll(numList)
-                        ora_travel_recycler.adapter!!.notifyDataSetChanged()
-                    }
-
-                    return true
-                }
-
-            })
         }
     }
 

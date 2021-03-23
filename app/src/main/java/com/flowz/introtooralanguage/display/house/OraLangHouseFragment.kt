@@ -272,22 +272,6 @@ class OraLangHouseFragment : Fragment(), HouseWordsAdapter.RowClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         var mediaPlayer: MediaPlayer? = null
-        val houseList: ArrayList<HouseWordsModel> = ArrayList()
-
-        houseList.add(0, HouseWordsModel("Welcome", "O bo khian", Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
-        houseList.add(1, HouseWordsModel("Switch it on", "Ror ee ruu", Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
-        houseList.add(2, HouseWordsModel("Put it down", "Muii khi vbo otoee", Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
-        houseList.add(3, HouseWordsModel("Open the door", "Thu khu khe dee aah", Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
-        houseList.add(4, HouseWordsModel("Close the door", "Ghu khu khe dee aah", Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
-        houseList.add(5, HouseWordsModel("Go do the dishes", "Oho doh kpee ta saa", Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
-        houseList.add(6, HouseWordsModel("Sit Down", "Dee gha vbo toie", Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
-        houseList.add(7, HouseWordsModel("Stand up", "Kparhe muze", Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
-        houseList.add(8, HouseWordsModel("Come and eat", " Vie  ebaee", Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
-        houseList.add(9, HouseWordsModel("Be carefull", "Fuen gbee rhe", Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
-        houseList.add(10, HouseWordsModel("Go buy a loaf of bread", "Olo odor doo okoh oibo", Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
-        searchViewList.addAll(houseList)
-
-        houseViewModel.insertListOfHouseWords(houseList)
 
         ora_house_recycler.layoutManager = LinearLayoutManager(this.context)
 
@@ -439,45 +423,6 @@ class OraLangHouseFragment : Fragment(), HouseWordsAdapter.RowClickListener {
         if(menuItem != null){
 
             val searchView = menuItem.actionView as androidx.appcompat.widget.SearchView
-
-//            val editText = searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
-//            editText.hint = "Search..."
-
-            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
-                androidx.appcompat.widget.SearchView.OnQueryTextListener {
-
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    return true
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean {
-
-                    if (newText!!.isNotEmpty()){
-
-                        searchViewList.clear()
-
-                        val search = newText.toLowerCase(Locale.getDefault())
-
-                        numList.forEach {
-
-                            if (it.engNum.toLowerCase(Locale.getDefault()).contains(search)){
-
-                                searchViewList.add(it)
-
-                            }
-                            ora_house_recycler.adapter!!.notifyDataSetChanged()
-                        }
-                    } else{
-
-                        searchViewList.clear()
-                        searchViewList.addAll(numList)
-                        ora_house_recycler.adapter!!.notifyDataSetChanged()
-                    }
-
-                    return true
-                }
-
-            })
         }
     }
 

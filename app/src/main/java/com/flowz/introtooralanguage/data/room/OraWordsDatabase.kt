@@ -2,6 +2,7 @@ package com.flowz.introtooralanguage.data.room
 
 import android.content.Context
 import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.flowz.introtooralanguage.data.models.*
 
 @Database(entities = [NumbersModel::class, OutdoorWordsModel::class, TravelWordsModel::class, HouseWordsModel::class], version = 7, exportSchema = false)
@@ -25,7 +26,8 @@ abstract class OraWordsDatabase : RoomDatabase(){
             }
         }
 
-        private fun buidDatabase(context: Context) = Room.databaseBuilder(context.applicationContext, OraWordsDatabase::class.java, "orawords.db").fallbackToDestructiveMigration().build()
+        private fun buidDatabase(context: Context) =
+            Room.databaseBuilder(context.applicationContext, OraWordsDatabase::class.java, "orawords.db").fallbackToDestructiveMigration().build()
 
 
     }

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 6,
-    "identityHash": "fbedf4aaeea0bf608d555002c9e48e4e",
+    "identityHash": "6f111041dd0006d4320011b7905d3a77",
     "entities": [
       {
         "tableName": "myoraWords_table",
@@ -47,12 +47,50 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "outdoorwords_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`oraid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `engNum` TEXT NOT NULL, `oraNum` TEXT NOT NULL, `recordedAudio` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "oraid",
+            "columnName": "oraid",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "engNum",
+            "columnName": "engNum",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "oraNum",
+            "columnName": "oraNum",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "recordedAudio",
+            "columnName": "recordedAudio",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "oraid"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fbedf4aaeea0bf608d555002c9e48e4e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6f111041dd0006d4320011b7905d3a77')"
     ]
   }
 }

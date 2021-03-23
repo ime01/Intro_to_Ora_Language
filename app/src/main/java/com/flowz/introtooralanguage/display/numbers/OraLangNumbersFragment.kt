@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.*
 import com.flowz.introtooralanguage.R
 import com.flowz.introtooralanguage.adapters.NumbersAdapter
+import com.flowz.introtooralanguage.data.models.HouseWordsModel
 import com.flowz.introtooralanguage.data.models.NumbersModel
 import com.flowz.introtooralanguage.extensions.playContentUri
 import com.flowz.introtooralanguage.extensions.showSnackbar
@@ -55,7 +56,7 @@ class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
     var mediaRecorder: MediaRecorder? = null
     var mediaPlayer: MediaPlayer? = null
     lateinit var audioFilePath: String
-    lateinit var numList: ArrayList<NumbersModel>
+//    lateinit var numList: ArrayList<NumbersModel>
     var searchViewList: ArrayList<NumbersModel> = ArrayList()
 //    lateinit var oraAdapter: OraNumbersAdapter
     lateinit var oraAdapter: NumbersAdapter
@@ -266,41 +267,6 @@ class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
 
      fun initializeList() {
 
-        numList = ArrayList()
-
-        numList.add(0, NumbersModel("One", "Okpa", R.drawable.ione, Uri.parse("android.resource://"+context?.packageName  +"/raw/one")))
-        numList.add(1, NumbersModel("Two", "Evah", R.drawable.itwo, Uri.parse("android.resource://"+context?.packageName +"/raw/two")))
-        numList.add(2, NumbersModel("Three", "Eha", R.drawable.ithree, Uri.parse("android.resource://"+context?.packageName  +"/raw/three")))
-        numList.add(3, NumbersModel("Four", "Enee", R.drawable.ifour, Uri.parse("android.resource://"+context?.packageName  +"/raw/four")))
-        numList.add(4, NumbersModel("Five", "Iheen", R.drawable.ifive, Uri.parse("android.resource://"+context?.packageName  +"/raw/five")))
-        numList.add(5, NumbersModel("Six", "Ekhan", R.drawable.i6, Uri.parse("android.resource://"+context?.packageName  +"/raw/six")))
-        numList.add(6, NumbersModel("Seven", "Ikhion", R.drawable.i7, Uri.parse("android.resource://"+context?.packageName  +"/raw/seven")))
-        numList.add(7, NumbersModel("Eight", "Een", R.drawable.ieight, Uri.parse("android.resource://"+context?.packageName  +"/raw/eight")))
-        numList.add(8, NumbersModel("Nine", "Isiin", R.drawable.inine, Uri.parse("android.resource://"+context?.packageName  +"/raw/nine")))
-        numList.add(9, NumbersModel("Ten", "Igbee", R.drawable.i10, Uri.parse("android.resource://"+context?.packageName  +"/raw/ten")))
-        numList.add(10, NumbersModel("Eleven", "Ugbour",  R.drawable.i11, Uri.parse("android.resource://"+context?.packageName  +"/raw/eleven")))
-        numList.add(11, NumbersModel("Twelve", "Igbe-vah",  R.drawable.i12, Uri.parse("android.resource://"+context?.packageName  +"/raw/twelve")))
-        numList.add(12, NumbersModel("Thirteen", "Igbe-eha",  R.drawable.i13a,  Uri.parse("android.resource://"+context?.packageName  +"/raw/thirteen")))
-        numList.add(13, NumbersModel("Fourteen", "Igbe-Enee",  R.drawable.i14,  Uri.parse("android.resource://"+context?.packageName  +"/raw/fourteen")))
-        numList.add(14, NumbersModel("Fifteen", "Igbe-Iheen",  R.drawable.i15,  Uri.parse("android.resource://"+context?.packageName  +"/raw/fifteen")))
-        numList.add(15, NumbersModel("Sixteen", "Ke-enee-Suuee",  R.drawable.i16,  Uri.parse("android.resource://"+context?.packageName  +"/raw/sixteen")))
-        numList.add(16, NumbersModel("Seventeen", "Ke-eha-Suuee",  R.drawable.i17,  Uri.parse("android.resource://"+context?.packageName  +"/raw/seventeen")))
-        numList.add(17, NumbersModel("Eighteen", "Ke-evah-Suuee",  R.drawable.i18,  Uri.parse("android.resource://"+context?.packageName  +"/raw/eighteen")))
-        numList.add(18, NumbersModel("Nineteen", "Ke-okpa-Suuee",  R.drawable.i19,  Uri.parse("android.resource://"+context?.packageName  +"/raw/nineteen")))
-        numList.add(19, NumbersModel("Twenty", "Uuee",  R.drawable.i20,  Uri.parse("android.resource://"+context?.packageName  +"/raw/twenty")))
-        numList.add(20, NumbersModel("Thirty", "Ogban",  R.drawable.i30,  Uri.parse("android.resource://"+context?.packageName  +"/raw/thirty")))
-        numList.add(21, NumbersModel("Fourty", "Egbo-evah",  R.drawable.i40,  Uri.parse("android.resource://"+context?.packageName  +"/raw/fourty")))
-        numList.add(22, NumbersModel("Fifty", "Egbo-evah-bi-igbe",  R.drawable.i50,  Uri.parse("android.resource://"+context?.packageName  +"/raw/fifty")))
-        numList.add(23, NumbersModel("Sixty", "Egbo-eha",  R.drawable.i60,  Uri.parse("android.resource://"+context?.packageName  +"/raw/sixty")))
-        numList.add(24, NumbersModel("Seventy", "Egbo-eha-bi-igbe",  R.drawable.i70,  Uri.parse("android.resource://"+context?.packageName  +"/raw/seventy")))
-        numList.add(25, NumbersModel("Eighty", "Egbo-enee",  R.drawable.i80,  Uri.parse("android.resource://"+context?.packageName  +"/raw/eighty")))
-        numList.add(26, NumbersModel("Ninety", "Egbo-enee-bi-igbe",  R.drawable.i90,  Uri.parse("android.resource://"+context?.packageName  +"/raw/ninety")))
-        numList.add(27, NumbersModel("One Hundred", "Egbo-eheen",  R.drawable.i100,  Uri.parse("android.resource://"+context?.packageName  +"/raw/hundred")))
-
-        searchViewList.addAll(numList)
-
-         numbersViewModel.insertListOfNumbers(numList)
-
         ora_num_recycler.layoutManager = LinearLayoutManager(this.context)
 
         oraAdapter = NumbersAdapter(this)
@@ -470,44 +436,6 @@ class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
 
             val searchView = menuItem.actionView as androidx.appcompat.widget.SearchView
 
-//            val editText = searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
-//            editText.hint = "Search..."
-
-            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
-                androidx.appcompat.widget.SearchView.OnQueryTextListener {
-
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                     return true
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean {
-
-                    if (newText!!.isNotEmpty()){
-
-                        searchViewList.clear()
-
-                        val search = newText.toLowerCase(Locale.getDefault())
-
-                        numList.forEach {
-
-                            if (it.engNum.toLowerCase(Locale.getDefault()).contains(search)){
-
-                                    searchViewList.add(it)
-
-                                }
-                            ora_num_recycler.adapter!!.notifyDataSetChanged()
-                        }
-                    } else{
-
-                        searchViewList.clear()
-                        searchViewList.addAll(numList)
-                        ora_num_recycler.adapter!!.notifyDataSetChanged()
-                    }
-
-                    return true
-                }
-
-            })
         }
     }
 
