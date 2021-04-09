@@ -24,16 +24,6 @@ class NumbersAdapter  (val listener: RowClickListener)  :ListAdapter<NumbersMode
 
     override fun onBindViewHolder(holder: OraNumViewHolder, position: Int) {
 
-//        if ( holder.position < 28){
-//
-//            holder.itemView.edit_oraword.visibility = View.GONE
-//            holder.itemView.delete_oraword.visibility = View.GONE
-//        }else{
-//            holder.itemView.edit_oraword.visibility = View.VISIBLE
-//            holder.itemView.delete_oraword.visibility = View.VISIBLE
-//        }
-
-//        oraWords.numIcon?.let { Picasso.get().load(it).into(itemView.ora_numIcon) }
         getItem(position).numIcon?.let { Picasso.get().load(it).placeholder(R.drawable.itwo).error(R.drawable.itwo) .into(holder.itemView.ora_numIcon) }
 
         holder.bind(getItem(position))
@@ -41,7 +31,6 @@ class NumbersAdapter  (val listener: RowClickListener)  :ListAdapter<NumbersMode
             listener.onItemClickListener(getItem(position))
             listener.onPlayOraWordClickListener(getItem(position))
             listener.onEditOraWordClickListener(getItem(position))
-            listener.onDeleteOraWordClickListener(getItem(position))
         }
 
     }
@@ -68,15 +57,6 @@ class NumbersAdapter  (val listener: RowClickListener)  :ListAdapter<NumbersMode
 
 
             }
-
-            itemView.delete_oraword.setOnClickListener {
-//                if(position> 27){
-                    listener.onDeleteOraWordClickListener(oraWords)
-//                }
-//                showSnackbar(itemView.eng_num, "You can't delete pre-installed OraWords")
-
-
-            }
         }
 
     }
@@ -84,7 +64,6 @@ class NumbersAdapter  (val listener: RowClickListener)  :ListAdapter<NumbersMode
     interface RowClickListener{
         fun onPlayOraWordClickListener(oraWords: NumbersModel)
         fun onEditOraWordClickListener(oraWords: NumbersModel)
-        fun onDeleteOraWordClickListener(oraWords: NumbersModel)
         fun onItemClickListener(oraWords: NumbersModel)
 
     }

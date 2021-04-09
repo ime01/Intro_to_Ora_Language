@@ -3,7 +3,9 @@ package com.flowz.introtooralanguage.display.numbers
 import android.net.Uri
 import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.flowz.introtooralanguage.data.models.NumbersModel
 import com.flowz.introtooralanguage.data.models.TravelWordsModel
@@ -23,6 +25,12 @@ class NumbersViewModel @ViewModelInject constructor(private var numbersRepositor
             Log.d(TAG, "List of Numbers Inserted into Database successfully")
         }
     }
+
+    fun searchNumber(searchQuery: String): LiveData<List<NumbersModel>> {
+        return numbersRepository.searchNumber(searchQuery).asLiveData()
+        Log.d(TAG, "Searched Successfull")
+    }
+
 
     fun insertNumber(number: NumbersModel){
         viewModelScope.launch (Dispatchers.IO){

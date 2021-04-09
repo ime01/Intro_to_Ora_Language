@@ -16,19 +16,23 @@ import androidx.fragment.app.Fragment
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
+import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.work.Constraints
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.flowz.introtooralanguage.R
 import com.flowz.introtooralanguage.adapters.HouseWordsAdapter
+import com.flowz.introtooralanguage.adapters.NumbersAdapter
 import com.flowz.introtooralanguage.data.models.HouseWordsModel
 import com.flowz.introtooralanguage.display.numbers.NumbersRepository
 import com.flowz.introtooralanguage.data.room.OraWordsDatabase
@@ -39,10 +43,14 @@ import com.flowz.introtooralanguage.extensions.showSnackbar
 //import com.flowz.introtooralanguage.display.numbers.OraNumberViewModel
 //import com.flowz.introtooralanguage.display.numbers.OraNumberViewModelFactory
 import com.flowz.introtooralanguage.extensions.showToast
+import com.flowz.introtooralanguage.utils.onQueryTextChanged
 import com.flowz.introtooralanguage.workmanager.ReminderWorker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_ora_lang_house.*
+import kotlinx.android.synthetic.main.fragment_ora_lang_outdoor.*
+import kotlinx.android.synthetic.main.fragment_ora_lang_travel.*
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.*
@@ -64,6 +72,7 @@ class OraLangHouseFragment : Fragment(), HouseWordsAdapter.RowClickListener {
     var mediaRecorder: MediaRecorder? = null
     var mediaPlayer: MediaPlayer? = null
     lateinit var audioFilePath: String
+    lateinit var houseAdapter: HouseWordsAdapter
     lateinit var numList: ArrayList<HouseWordsModel>
     var searchViewList: ArrayList<HouseWordsModel> = ArrayList()
     lateinit var uri: Uri
@@ -75,6 +84,7 @@ class OraLangHouseFragment : Fragment(), HouseWordsAdapter.RowClickListener {
     companion object {
         const val AUDIO_REQUEST_CODE = 1
         const val KEY_COUNT_VALUE = "key_count"
+        const val TAG = "House Fragment"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -276,15 +286,18 @@ class OraLangHouseFragment : Fragment(), HouseWordsAdapter.RowClickListener {
         ora_house_recycler.layoutManager = LinearLayoutManager(this.context)
 
 
-       val oraAdapter = HouseWordsAdapter(this)
+        houseAdapter = HouseWordsAdapter(this)
 
 
         val animation: Animation = AnimationUtils.loadAnimation(context, R.anim.recorder_icon_blink)
 
         houseViewModel.houseWordsFromDb.observe(viewLifecycleOwner, Observer {
-            oraAdapter.submitList(it)
-            ora_house_recycler.adapter = oraAdapter
+            houseAdapter.submitList(it)
+            ora_house_recycler.adapter = houseAdapter
         })
+
+        showSnackbar(ora_house_recycler, getString(R.string.delete_info))
+        swipeToDeleteHouseWord()
 
 
         fab3.setOnClickListener {
@@ -414,17 +427,57 @@ class OraLangHouseFragment : Fragment(), HouseWordsAdapter.RowClickListener {
         }
     }
 
+    private fun swipeToDeleteHouseWord() {
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ){
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val houseWord = houseAdapter.currentList[viewHolder.adapterPosition]
+
+                if(houseWord.oraid <= 10){
+                    houseViewModel.deleteHouseWord(houseWord)
+                    Snackbar.make(ora_house_recycler, "Word ${houseWord.engNum} Deleted", Snackbar.LENGTH_LONG)
+                        .setAction("UNDO"){
+                            houseViewModel.insertHouseWord(houseWord)
+                        }.show()
+                }else{
+                    showSnackbar(ora_house_recycler, "You can't delete pre-installed Ora Words")
+                }
+
+
+            }
+
+        }).attachToRecyclerView(ora_house_recycler)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 
         inflater.inflate(R.menu.menu_layout, menu)
         val menuItem = menu!!.findItem(R.id.search_oraword)
 
+        val searchView = menuItem.actionView as SearchView
 
-        if(menuItem != null){
-
-            val searchView = menuItem.actionView as androidx.appcompat.widget.SearchView
+        searchView.onQueryTextChanged {
+            searchDatabase(it)
+            Log.d(TAG, "Search Successful")
         }
     }
+
+    private fun searchDatabase(query:String){
+        val searchQuery = "%$query%"
+        houseViewModel.searchHouseWords(searchQuery).observe(viewLifecycleOwner, Observer {list->
+            list.let {
+                houseAdapter.submitList(it)
+            }
+
+        })
+    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
@@ -432,7 +485,6 @@ class OraLangHouseFragment : Fragment(), HouseWordsAdapter.RowClickListener {
             R.id.remind_me ->{
                 showToast("Reminder Clicked",this.requireContext() )
                 selectDateandTimeForRemeinder()
-
                 true
             }
 
@@ -548,9 +600,6 @@ class OraLangHouseFragment : Fragment(), HouseWordsAdapter.RowClickListener {
 
     }
 
-    override fun onDeleteOraWordClickListener(houseWord: HouseWordsModel) {
-        houseViewModel.deleteHouseWord(houseWord)
-    }
 
     override fun onItemClickListener(houseWord: HouseWordsModel) {
 

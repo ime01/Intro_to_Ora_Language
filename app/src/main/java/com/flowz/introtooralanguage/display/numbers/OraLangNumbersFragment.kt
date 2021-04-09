@@ -16,27 +16,31 @@ import androidx.fragment.app.Fragment
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
+import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.work.*
 import com.flowz.introtooralanguage.R
 import com.flowz.introtooralanguage.adapters.NumbersAdapter
-import com.flowz.introtooralanguage.data.models.HouseWordsModel
 import com.flowz.introtooralanguage.data.models.NumbersModel
 import com.flowz.introtooralanguage.extensions.playContentUri
 import com.flowz.introtooralanguage.extensions.showSnackbar
 import com.flowz.introtooralanguage.extensions.showToast
+import com.flowz.introtooralanguage.utils.onQueryTextChanged
 import com.flowz.introtooralanguage.workmanager.ReminderWorker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_ora_lang_travel.*
 import kotlinx.android.synthetic.main.ora_lang_numbers.*
 import java.io.IOException
 import java.lang.System.currentTimeMillis
-import java.util.*
 import java.util.concurrent.TimeUnit.MILLISECONDS
 import kotlin.collections.ArrayList
 
@@ -69,6 +73,7 @@ class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
     companion object {
         const val AUDIO_REQUEST_CODE = 1
         const val KEY_COUNT_VALUE = "key_count"
+        const val TAG = "NumbersFragment"
     }
 
 
@@ -294,7 +299,9 @@ class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         initializeList()
+        swipeToDeleteNumber()
 
+        showSnackbar(ora_num_recycler, getString(R.string.delete_info))
         val animation: Animation = AnimationUtils.loadAnimation(context, R.anim.recorder_icon_blink)
 
         fab1.setOnClickListener {
@@ -426,17 +433,55 @@ class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
 
     }
 
+    private fun swipeToDeleteNumber() {
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ){
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val number = oraAdapter.currentList[viewHolder.adapterPosition]
+
+                if(number.oraid <= 20){
+                    numbersViewModel.deleteNumber(number)
+                    Snackbar.make(ora_num_recycler, "Word ${number.engNum} Deleted", Snackbar.LENGTH_LONG)
+                        .setAction("UNDO"){
+                            numbersViewModel.insertNumber(number)
+                        }.show()
+                }else{
+                    showSnackbar(ora_num_recycler, "You can't delete pre-installed Ora Words")
+                }
+
+
+            }
+
+        }).attachToRecyclerView(ora_num_recycler)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 
         inflater.inflate(R.menu.menu_layout, menu)
         val menuItem = menu!!.findItem(R.id.search_oraword)
+        val searchView = menuItem.actionView as SearchView
 
-
-        if(menuItem != null){
-
-            val searchView = menuItem.actionView as androidx.appcompat.widget.SearchView
-
+        searchView.onQueryTextChanged {
+            searchDatabase(it)
+            Log.d(TAG, "Search Successful")
         }
+
+    }
+
+    private fun searchDatabase(query:String){
+        val searchQuery = "%$query%"
+        numbersViewModel.searchNumber(searchQuery).observe(viewLifecycleOwner, Observer {list->
+            list.let {
+                oraAdapter.submitList(it)
+            }
+
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -445,7 +490,6 @@ class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
             R.id.remind_me ->{
                 showToast("Reminder Clicked",this.requireContext() )
                 selectDateandTimeForRemeinder()
-
                 true
             }
 
@@ -454,7 +498,6 @@ class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
                 true
             }
             else -> super.onOptionsItemSelected(item)
-
         }
     }
 
@@ -504,9 +547,7 @@ class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
 
         val delay = customTime - currentTime
 
-
         val workManager = WorkManager.getInstance(requireContext())
-
 
         val data : Data = Data.Builder()
             .putInt(KEY_COUNT_VALUE, 125)
@@ -563,19 +604,6 @@ class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
     }
 
 
-    override fun onDeleteOraWordClickListener(number: NumbersModel) {
-
-        if (number.oraid > 27) {
-//
-          numbersViewModel.deleteNumber(number)
-            showSnackbar(fab1, "${number.engNum} Has been Deleted")
-//
-//        }else if(oraWords.oraid <27){
-//            showSnackbar(fab1, "You can't delete pre-installed Ora Words")
-        }
-
-    }
-
         override fun onItemClickListener(number: NumbersModel) {
 
         }
@@ -585,6 +613,7 @@ class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
         super.onDestroyView()
         mediaPlayer?.release()
     }
+
 }
 
 

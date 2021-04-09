@@ -3,9 +3,13 @@ package com.flowz.introtooralanguage.display.outdoor
 import android.net.Uri
 import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.flowz.introtooralanguage.data.models.NumbersModel
 import com.flowz.introtooralanguage.data.models.OutdoorWordsModel
+import com.flowz.introtooralanguage.display.numbers.NumbersViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -20,6 +24,11 @@ class OutdoorWordViewModel @ViewModelInject constructor(private var outdoorWordR
             outdoorWordRepository.insertOutdoorWordS(outdoorWords)
             Log.d(TAG, "List of outdoor words Inserted into Database successfully")
         }
+    }
+
+    fun searchOutdoorWords(searchQuery: String): LiveData<List<OutdoorWordsModel>> {
+        return outdoorWordRepository.searchOutdoorWords(searchQuery).asLiveData()
+        Log.d(TAG, "Searched Successfull")
     }
 
     fun insertOutdoorWord(outdoorWord: OutdoorWordsModel){

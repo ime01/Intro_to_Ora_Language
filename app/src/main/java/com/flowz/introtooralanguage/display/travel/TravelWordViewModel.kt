@@ -3,10 +3,14 @@ package com.flowz.introtooralanguage.display.travel
 import android.net.Uri
 import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.flowz.introtooralanguage.data.models.NumbersModel
 import com.flowz.introtooralanguage.data.models.OutdoorWordsModel
 import com.flowz.introtooralanguage.data.models.TravelWordsModel
+import com.flowz.introtooralanguage.display.numbers.NumbersViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -21,6 +25,11 @@ class TravelWordViewModel @ViewModelInject constructor(private var travelWordRep
             travelWordRepository.insertTravelWordS(travelWords)
             Log.d(TAG, "List of travel words Inserted into Database successfully")
         }
+    }
+
+    fun searchTravelWords(searchQuery: String): LiveData<List<TravelWordsModel>> {
+        return travelWordRepository.searchTravelWords(searchQuery).asLiveData()
+        Log.d(TAG, "Searched Successfull")
     }
 
     fun insertTravelWord(travelWord: TravelWordsModel){

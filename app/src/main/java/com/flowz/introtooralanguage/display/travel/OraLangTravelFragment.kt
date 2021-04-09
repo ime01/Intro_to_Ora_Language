@@ -16,13 +16,16 @@ import androidx.fragment.app.Fragment
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
+import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.work.Constraints
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequest
@@ -30,6 +33,7 @@ import androidx.work.WorkManager
 
 import com.flowz.introtooralanguage.R
 import com.flowz.introtooralanguage.adapters.HouseWordsAdapter
+import com.flowz.introtooralanguage.adapters.NumbersAdapter
 import com.flowz.introtooralanguage.adapters.OutdoorWordsAdapter
 import com.flowz.introtooralanguage.adapters.TravelWordsAdapter
 import com.flowz.introtooralanguage.data.models.TravelWordsModel
@@ -37,12 +41,16 @@ import com.flowz.introtooralanguage.display.numbers.NumbersRepository
 import com.flowz.introtooralanguage.data.room.OraWordsDatabase
 import com.flowz.introtooralanguage.display.numbers.OraLangNumbersFragment
 import com.flowz.introtooralanguage.extensions.playContentUri
+import com.flowz.introtooralanguage.extensions.showSnackbar
 import com.flowz.introtooralanguage.extensions.showToast
+import com.flowz.introtooralanguage.utils.onQueryTextChanged
 import com.flowz.introtooralanguage.workmanager.ReminderWorker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_ora_lang_travel.*
 import kotlinx.android.synthetic.main.fragment_ora_lang_travel.fab2
+import kotlinx.android.synthetic.main.ora_lang_numbers.*
 import java.io.IOException
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -63,6 +71,7 @@ class OraLangTravelFragment : Fragment(), TravelWordsAdapter.RowClickListener {
     var mediaRecorder: MediaRecorder? = null
     var mediaPlayer: MediaPlayer? = null
     lateinit var audioFilePath: String
+    lateinit var travelAdapter: TravelWordsAdapter
     lateinit var numList: ArrayList<TravelWordsModel>
     var searchViewList: ArrayList<TravelWordsModel> = ArrayList()
     lateinit var uri: Uri
@@ -272,20 +281,21 @@ class OraLangTravelFragment : Fragment(), TravelWordsAdapter.RowClickListener {
 
         ora_travel_recycler.layoutManager = LinearLayoutManager(this.context)
 
-        val oraAdapter = TravelWordsAdapter(this)
+        travelAdapter = TravelWordsAdapter(this)
 
 
         val animation: Animation = AnimationUtils.loadAnimation(context, R.anim.recorder_icon_blink)
 
         travelWordViewModel.travelWordsFromDb.observe(viewLifecycleOwner, Observer {
 
-            oraAdapter.submitList(it)
-            ora_travel_recycler.adapter = oraAdapter
+            travelAdapter.submitList(it)
+            ora_travel_recycler.adapter = travelAdapter
 
         })
 
+        showSnackbar(ora_travel_recycler, getString(R.string.delete_info))
 
-
+        swipeToDeleteTravelWord()
 
         fab2.setOnClickListener {
 
@@ -411,17 +421,54 @@ class OraLangTravelFragment : Fragment(), TravelWordsAdapter.RowClickListener {
 
     }
 
+    private fun swipeToDeleteTravelWord() {
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ){
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val travelWord = travelAdapter.currentList[viewHolder.adapterPosition]
+
+                if(travelWord.oraid <= 10){
+                    travelWordViewModel.deleteTravelWord(travelWord)
+                    Snackbar.make(ora_travel_recycler, "Word ${travelWord.engNum} Deleted", Snackbar.LENGTH_LONG)
+                        .setAction("UNDO"){
+                            travelWordViewModel.insertTravelWord(travelWord)
+                        }.show()
+                }else{
+                    showSnackbar(ora_travel_recycler, "You can't delete pre-installed Ora Words")
+                }
+
+
+            }
+
+        }).attachToRecyclerView(ora_travel_recycler)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 
         inflater.inflate(R.menu.menu_layout, menu)
         val menuItem = menu!!.findItem(R.id.search_oraword)
+        val searchView = menuItem.actionView as SearchView
 
-
-        if(menuItem != null){
-
-            val searchView = menuItem.actionView as androidx.appcompat.widget.SearchView
-
+        searchView.onQueryTextChanged {
+            searchDatabase(it)
+            Log.d(OraLangNumbersFragment.TAG, "Search Successful")
         }
+    }
+
+    private fun searchDatabase(query:String){
+        val searchQuery = "%$query%"
+        travelWordViewModel.searchTravelWords(searchQuery).observe(viewLifecycleOwner, Observer {list->
+            list.let {
+                travelAdapter.submitList(it)
+            }
+
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -542,10 +589,6 @@ class OraLangTravelFragment : Fragment(), TravelWordsAdapter.RowClickListener {
         action.travelWord = travelWord
         Navigation.findNavController(requireView()).navigate(action)
 
-    }
-
-    override fun onDeleteOraWordClickListener(travelWord: TravelWordsModel) {
-        travelWordViewModel.deleteTravelWord(travelWord)
     }
 
     override fun onItemClickListener(travelWord: TravelWordsModel) {

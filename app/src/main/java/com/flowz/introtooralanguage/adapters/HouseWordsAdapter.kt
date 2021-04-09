@@ -24,23 +24,11 @@ class HouseWordsAdapter  (val listener: RowClickListener)  :ListAdapter<HouseWor
 
     override fun onBindViewHolder(holder: OraNumViewHolder, position: Int) {
 
-//        if ( holder.position < 28){
-//
-//            holder.itemView.edit_oraword.visibility = View.GONE
-//            holder.itemView.delete_oraword.visibility = View.GONE
-//        }else{
-//            holder.itemView.edit_oraword.visibility = View.VISIBLE
-//            holder.itemView.delete_oraword.visibility = View.VISIBLE
-//        }
-
-//        oraWords.numIcon?.let { Picasso.get().load(it).into(itemView.ora_numIcon) }
-
         holder.bind(getItem(position))
         holder.itemView.setOnClickListener {
             listener.onItemClickListener(getItem(position))
             listener.onPlayOraWordClickListener(getItem(position))
             listener.onEditOraWordClickListener(getItem(position))
-            listener.onDeleteOraWordClickListener(getItem(position))
         }
 
     }
@@ -68,13 +56,6 @@ class HouseWordsAdapter  (val listener: RowClickListener)  :ListAdapter<HouseWor
 
             }
 
-            itemView.delete_oraword.setOnClickListener {
-//                if(position> 27){
-                    listener.onDeleteOraWordClickListener(houseWords)
-//                }
-//                showSnackbar(itemView.eng_num, "You can't delete pre-installed OraWords")
-
-            }
         }
 
     }
@@ -82,7 +63,6 @@ class HouseWordsAdapter  (val listener: RowClickListener)  :ListAdapter<HouseWor
     interface RowClickListener{
         fun onPlayOraWordClickListener(houseWords: HouseWordsModel)
         fun onEditOraWordClickListener(houseWords: HouseWordsModel)
-        fun onDeleteOraWordClickListener(houseWords: HouseWordsModel)
         fun onItemClickListener(houseWords: HouseWordsModel)
 
     }

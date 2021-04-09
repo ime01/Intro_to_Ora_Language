@@ -212,7 +212,7 @@ class UserProfileFragment : Fragment() {
 
         logout.setOnClickListener {
             auth.signOut()
-            val navController : NavController = Navigation.findNavController(view!!)
+            val navController : NavController = Navigation.findNavController(requireView())
             navController.navigate(R.id.action_userProfileFragment_to_loginActivity)
         }
     }

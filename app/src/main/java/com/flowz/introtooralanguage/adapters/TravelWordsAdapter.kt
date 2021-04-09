@@ -40,7 +40,6 @@ class TravelWordsAdapter  (val listener: RowClickListener)  :ListAdapter<TravelW
             listener.onItemClickListener(getItem(position))
             listener.onPlayOraWordClickListener(getItem(position))
             listener.onEditOraWordClickListener(getItem(position))
-            listener.onDeleteOraWordClickListener(getItem(position))
         }
 
     }
@@ -67,14 +66,6 @@ class TravelWordsAdapter  (val listener: RowClickListener)  :ListAdapter<TravelW
 
 
             }
-
-            itemView.delete_oraword.setOnClickListener {
-//                if(position> 27){
-                    listener.onDeleteOraWordClickListener(travelWords)
-//                }
-//                showSnackbar(itemView.eng_num, "You can't delete pre-installed OraWords")
-
-            }
         }
 
     }
@@ -82,7 +73,6 @@ class TravelWordsAdapter  (val listener: RowClickListener)  :ListAdapter<TravelW
     interface RowClickListener{
         fun onPlayOraWordClickListener(travelWords: TravelWordsModel)
         fun onEditOraWordClickListener(travelWords: TravelWordsModel)
-        fun onDeleteOraWordClickListener(travelWords: TravelWordsModel)
         fun onItemClickListener(travelWords: TravelWordsModel)
 
     }

@@ -3,10 +3,14 @@ package com.flowz.introtooralanguage.display.house
 import android.net.Uri
 import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.flowz.introtooralanguage.data.models.HouseWordsModel
+import com.flowz.introtooralanguage.data.models.NumbersModel
 import com.flowz.introtooralanguage.data.models.OutdoorWordsModel
+import com.flowz.introtooralanguage.display.numbers.NumbersViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -21,6 +25,11 @@ class HouseViewModel @ViewModelInject constructor(private var houseRepository: H
             houseRepository.insertHouseWordS(houseWords)
             Log.d(TAG, "List of House words Inserted into Database successfully")
         }
+    }
+
+    fun searchHouseWords(searchQuery: String): LiveData<List<HouseWordsModel>> {
+        return houseRepository.searchHouseWords(searchQuery).asLiveData()
+        Log.d(TAG, "Searched Successfull")
     }
 
     fun insertHouseWord(houseword: HouseWordsModel){

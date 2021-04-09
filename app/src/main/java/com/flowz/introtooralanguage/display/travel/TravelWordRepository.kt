@@ -1,9 +1,11 @@
 package com.flowz.introtooralanguage.display.travel
 
+import com.flowz.introtooralanguage.data.models.NumbersModel
 import com.flowz.introtooralanguage.data.room.OutdoorWordsDao
 import com.flowz.introtooralanguage.data.models.OutdoorWordsModel
 import com.flowz.introtooralanguage.data.models.TravelWordsModel
 import com.flowz.introtooralanguage.data.room.TravelWordsDao
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,6 +16,10 @@ class TravelWordRepository @Inject constructor(private val travelDao: TravelWord
 
     suspend fun insertTravelWord(travelWord: TravelWordsModel){
         travelDao.insert(travelWord)
+    }
+
+    fun searchTravelWords(searchQuery: String): Flow<List<TravelWordsModel>> {
+        return travelDao.searchTravelWords(searchQuery)
     }
 
     suspend fun insertTravelWordS(listOftravelWords: List<TravelWordsModel> ){

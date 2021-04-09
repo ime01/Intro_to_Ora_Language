@@ -23,23 +23,11 @@ class OutdoorWordsAdapter  (val listener: RowClickListener)  :ListAdapter<Outdoo
 
     override fun onBindViewHolder(holder: OraNumViewHolder, position: Int) {
 
-//        if ( holder.position < 28){
-//
-//            holder.itemView.edit_oraword.visibility = View.GONE
-//            holder.itemView.delete_oraword.visibility = View.GONE
-//        }else{
-//            holder.itemView.edit_oraword.visibility = View.VISIBLE
-//            holder.itemView.delete_oraword.visibility = View.VISIBLE
-//        }
-
-//        oraWords.numIcon?.let { Picasso.get().load(it).into(itemView.ora_numIcon) }
-
         holder.bind(getItem(position))
         holder.itemView.setOnClickListener {
             listener.onItemClickListener(getItem(position))
             listener.onPlayOraWordClickListener(getItem(position))
             listener.onEditOraWordClickListener(getItem(position))
-            listener.onDeleteOraWordClickListener(getItem(position))
         }
 
     }
@@ -59,21 +47,10 @@ class OutdoorWordsAdapter  (val listener: RowClickListener)  :ListAdapter<Outdoo
             }
 
             itemView.edit_oraword.setOnClickListener {
-//                if(position> 27){
                     listener.onEditOraWordClickListener(outdoorWords)
-//                }
-//                showSnackbar(itemView.eng_num, "You can't edit pre-installed OraWords")
-
 
             }
 
-            itemView.delete_oraword.setOnClickListener {
-//                if(position> 27){
-                    listener.onDeleteOraWordClickListener(outdoorWords)
-//                }
-//                showSnackbar(itemView.eng_num, "You can't delete pre-installed OraWords")
-
-            }
         }
 
     }
@@ -81,7 +58,6 @@ class OutdoorWordsAdapter  (val listener: RowClickListener)  :ListAdapter<Outdoo
     interface RowClickListener{
         fun onPlayOraWordClickListener(outdoorWords: OutdoorWordsModel)
         fun onEditOraWordClickListener(outdoorWords: OutdoorWordsModel)
-        fun onDeleteOraWordClickListener(outdoorWords: OutdoorWordsModel)
         fun onItemClickListener(outdoorWords: OutdoorWordsModel)
 
     }

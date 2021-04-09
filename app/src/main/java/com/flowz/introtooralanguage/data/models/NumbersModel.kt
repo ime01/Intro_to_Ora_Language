@@ -36,7 +36,4 @@ class UriConverters {
     }
 }
 
-//val numList : ArrayList<OraLangNums> = ArrayList()
-
-
 
