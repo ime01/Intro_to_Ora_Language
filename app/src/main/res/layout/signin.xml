@@ -15,6 +15,7 @@
         android:padding="@dimen/textpadding"
         android:text="@string/signin"
         android:textStyle="bold|italic"
+        android:fontFamily="@font/almendra"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -22,47 +23,72 @@
         app:layout_constraintTop_toBottomOf="@+id/ora_person"
         app:layout_constraintVertical_bias="0.084" />
 
-    <EditText
-        android:id="@+id/lg_user_email"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="@string/enter_email"
-        android:inputType="textEmailAddress"
-        android:padding="@dimen/textpadding"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view2" />
 
-    <EditText
-        android:id="@+id/lg_user_password"
-        android:layout_width="0dp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/lg_user_email_layout"
+        style="@style/TextLabel2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="@string/enter_password"
-        android:inputType="textPassword"
-        android:padding="@dimen/textpadding"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:hint="@string/enter_email"
+        app:hintEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lg_user_email" />
+        app:layout_constraintTop_toBottomOf="@id/text_view2">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/lg_user_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_baseline_person_24"
+            android:fontFamily="@font/almendra"
+            android:inputType="textEmailAddress" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/lg_password_layout"
+        style="@style/TextLabel2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:hint="@string/enter_password"
+        app:hintEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lg_user_email_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/lg_user_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_baseline_lock_24"
+            android:fontFamily="@font/almendra"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
         android:id="@+id/user_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/almendra"
         android:text="@string/login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lg_user_password" />
+        app:layout_constraintTop_toBottomOf="@+id/lg_password_layout" />
 
     <TextView
         android:id="@+id/no_account"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/almendra"
         android:gravity="center"
         android:onClick="onClick"
         android:text="@string/create_new"
@@ -79,6 +105,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:gravity="center"
+        android:fontFamily="@font/almendra"
         android:onClick="onClick"
         android:text="@string/forgottenpassword"
         android:textColor="@color/colorAccent"

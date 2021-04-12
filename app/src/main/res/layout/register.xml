@@ -8,83 +8,137 @@
 
     <TextView
         android:id="@+id/textView2"
-        style="@style/TextLabel"
+        style="@style/TextLabel2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="@dimen/textpadding"
         android:text="@string/welcome"
         android:textStyle="bold|italic"
+        android:fontFamily="@font/almendra"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.047" />
 
-    <EditText
-        android:id="@+id/rg_user_name"
-        android:layout_width="0dp"
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:padding="@dimen/textpadding"
-        android:ems="10"
-        android:hint="@string/name"
-        android:inputType="textPersonName"
+        android:id="@+id/rg_user_name_layout"
+        app:layout_constraintTop_toBottomOf="@id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        style="@style/TextLabel2"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:hintEnabled="true"
+        android:hint="@string/name">
 
-    <EditText
-        android:id="@+id/rg_user_email"
-        android:layout_width="0dp"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/rg_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/almendra"
+            android:inputType="textPersonName"
+            android:drawableStart="@drawable/ic_baseline_person_24"
+            android:singleLine="true"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="@string/enter_email"
-        android:padding="@dimen/textpadding"
-        android:inputType="textEmailAddress"
+        android:id="@+id/rg_user_email_layout"
+        app:layout_constraintTop_toBottomOf="@id/rg_user_name_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rg_user_name"/>
+        style="@style/TextLabel2"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:hintEnabled="true"
+        android:hint="@string/enter_email">
 
-    <EditText
-        android:id="@+id/user_phone_number"
-        android:layout_width="0dp"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/rg_user_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/almendra"
+            android:inputType="textEmailAddress"
+            android:drawableStart="@drawable/ic_baseline_email_24" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:padding="@dimen/textpadding"
-        android:ems="10"
-        android:hint="@string/enter_phone"
-        android:inputType="phone"
+        android:id="@+id/user_phone_number_layout"
+        app:layout_constraintTop_toBottomOf="@id/rg_user_email_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rg_user_email" />
+        style="@style/TextLabel2"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:hintEnabled="true"
+        android:hint="@string/enter_phone">
 
-    <EditText
-        android:id="@+id/rg_user_password"
-        android:layout_width="0dp"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/user_phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/almendra"
+            android:inputType="phone"
+            android:drawableStart="@drawable/ic_baseline_phone_24" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/rg_user_password_layout"
+        style="@style/TextLabel2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:padding="@dimen/textpadding"
-        android:ems="10"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:hint="@string/enter_password"
-        android:inputType="textPassword"
+        app:hintEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_phone_number" />
+        app:layout_constraintTop_toBottomOf="@id/user_phone_number_layout">
 
-    <EditText
-        android:id="@+id/rg_user_confirm_password"
-        android:layout_width="0dp"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/rg_user_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_baseline_lock_24"
+            android:fontFamily="@font/almendra"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/rg_user_confirm_password_layout"
+        style="@style/TextLabel2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:hint="@string/confirm_password"
-        android:inputType="textPassword"
-        android:padding="@dimen/textpadding"
+        app:hintEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rg_user_password" />
+        app:layout_constraintTop_toBottomOf="@id/rg_user_password_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/rg_user_confirm_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_baseline_lock_24"
+            android:fontFamily="@font/almendra"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
         android:id="@+id/register_user"
@@ -92,9 +146,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/register"
+        android:fontFamily="@font/almendra"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rg_user_confirm_password" />
+        app:layout_constraintTop_toBottomOf="@id/rg_user_confirm_password_layout" />
 
     <TextView
         android:id="@+id/account_holder"
@@ -103,6 +158,7 @@
         android:layout_marginTop="16dp"
         android:text="@string/account_holder"
         android:gravity="center"
+        android:fontFamily="@font/almendra"
         android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
