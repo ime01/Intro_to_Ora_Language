@@ -1,4 +1,4 @@
-# Intro_to_Ora_Language
+#Intro_to_Ora_Language
 
 
 An Android application of a personal project embarked upon by me to help capture, digitize and store the ORA Language which is a language spoken by the ORAs a small community of people in EDO state.
