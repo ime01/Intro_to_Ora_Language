@@ -5,21 +5,35 @@ store the ORA Language which is a language spoken by the ORAs a small community 
 
 App is fully built with kotLin and uses the latest of Google jetpack libraries and coding style as the app utilizes
 
-*DaggerHilt
-*Firebase authentication and data storage
-*Firebase crashlytics 
-*Firebase Analytics
-*Room Database
-*Work Manger
-*jetpack navigation
-*SafeArgs
-*KotLin Coroutines
-*Mvvm
-*LiveData
-*Flowz
-*Permission handling
-*Sound Recorder
-*Localazy utilized via plugin to automate the easy localization of the English language text strings to over 90+ languages
+DaggerHilt
+
+Firebase authentication and data storage
+
+Firebase crashlytics
+
+Firebase Analytics
+
+Room Database
+
+Work Manger
+
+jetpack navigation
+
+SafeArgs
+
+KotLin Coroutines
+
+Mvvm
+
+LiveData
+
+Flow
+
+Permission handling
+
+Sound Recorder
+
+Localazy utilized via plugin to automate the easy localization of the English language text strings to over 90+ languages
 
 This app has a GOOGLE MAD SCORE OF 38 JETPACK LIBRARIES.
 
