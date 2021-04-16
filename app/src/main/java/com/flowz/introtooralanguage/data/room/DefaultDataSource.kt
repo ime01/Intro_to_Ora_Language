@@ -19,6 +19,7 @@ class DefaultDataSource {
                 "One",
                 "Okpa",
                 R.drawable.ione,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/one")
             )
         )
@@ -28,6 +29,7 @@ class DefaultDataSource {
                 "Two",
                 "Evah",
                 R.drawable.itwo,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/two")
             )
         )
@@ -37,6 +39,7 @@ class DefaultDataSource {
                 "Three",
                 "Eha",
                 R.drawable.ithree,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/three")
             )
         )
@@ -46,6 +49,7 @@ class DefaultDataSource {
                 "Four",
                 "Enee",
                 R.drawable.ifour,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/four")
             )
         )
@@ -55,6 +59,7 @@ class DefaultDataSource {
                 "Five",
                 "Iheen",
                 R.drawable.ifive,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/five")
             )
         )
@@ -64,6 +69,7 @@ class DefaultDataSource {
                 "Six",
                 "Ekhan",
                 R.drawable.i6,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/six")
             )
         )
@@ -73,6 +79,7 @@ class DefaultDataSource {
                 "Seven",
                 "Ikhion",
                 R.drawable.i7,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/seven")
             )
         )
@@ -82,6 +89,7 @@ class DefaultDataSource {
                 "Eight",
                 "Een",
                 R.drawable.ieight,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/eight")
             )
         )
@@ -91,6 +99,7 @@ class DefaultDataSource {
                 "Nine",
                 "Isiin",
                 R.drawable.inine,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/nine")
             )
         )
@@ -100,6 +109,7 @@ class DefaultDataSource {
                 "Ten",
                 "Igbee",
                 R.drawable.i10,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/ten")
             )
         )
@@ -109,6 +119,7 @@ class DefaultDataSource {
                 "Eleven",
                 "Ugbour",
                 R.drawable.i11,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/eleven")
             )
         )
@@ -118,6 +129,7 @@ class DefaultDataSource {
                 "Twelve",
                 "Igbe-vah",
                 R.drawable.i12,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/twelve")
             )
         )
@@ -127,6 +139,7 @@ class DefaultDataSource {
                 "Thirteen",
                 "Igbe-eha",
                 R.drawable.i13a,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/thirteen")
             )
         )
@@ -136,6 +149,7 @@ class DefaultDataSource {
                 "Fourteen",
                 "Igbe-Enee",
                 R.drawable.i14,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/fourteen")
             )
         )
@@ -145,6 +159,7 @@ class DefaultDataSource {
                 "Fifteen",
                 "Igbe-Iheen",
                 R.drawable.i15,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/fifteen")
             )
         )
@@ -154,6 +169,7 @@ class DefaultDataSource {
                 "Sixteen",
                 "Ke-enee-Suuee",
                 R.drawable.i16,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/sixteen")
             )
         )
@@ -163,6 +179,7 @@ class DefaultDataSource {
                 "Seventeen",
                 "Ke-eha-Suuee",
                 R.drawable.i17,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/seventeen")
             )
         )
@@ -172,6 +189,7 @@ class DefaultDataSource {
                 "Eighteen",
                 "Ke-evah-Suuee",
                 R.drawable.i18,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/eighteen")
             )
         )
@@ -181,6 +199,7 @@ class DefaultDataSource {
                 "Nineteen",
                 "Ke-okpa-Suuee",
                 R.drawable.i19,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/nineteen")
             )
         )
@@ -190,6 +209,7 @@ class DefaultDataSource {
                 "Twenty",
                 "Uuee",
                 R.drawable.i20,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/twenty")
             )
         )
@@ -199,6 +219,7 @@ class DefaultDataSource {
                 "Thirty",
                 "Ogban",
                 R.drawable.i30,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/thirty")
             )
         )
@@ -208,6 +229,7 @@ class DefaultDataSource {
                 "Fourty",
                 "Egbo-evah",
                 R.drawable.i40,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/fourty")
             )
         )
@@ -217,6 +239,7 @@ class DefaultDataSource {
                 "Fifty",
                 "Egbo-evah-bi-igbe",
                 R.drawable.i50,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/fifty")
             )
         )
@@ -226,6 +249,7 @@ class DefaultDataSource {
                 "Sixty",
                 "Egbo-eha",
                 R.drawable.i60,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/sixty")
             )
         )
@@ -235,6 +259,7 @@ class DefaultDataSource {
                 "Seventy",
                 "Egbo-eha-bi-igbe",
                 R.drawable.i70,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/seventy")
             )
         )
@@ -244,6 +269,7 @@ class DefaultDataSource {
                 "Eighty",
                 "Egbo-enee",
                 R.drawable.i80,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/eighty")
             )
         )
@@ -253,6 +279,7 @@ class DefaultDataSource {
                 "Ninety",
                 "Egbo-enee-bi-igbe",
                 R.drawable.i90,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/ninety")
             )
         )
@@ -262,6 +289,7 @@ class DefaultDataSource {
                 "One Hundred",
                 "Egbo-eheen",
                 R.drawable.i100,
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/hundred")
             )
         )
@@ -281,6 +309,7 @@ class DefaultDataSource {
             TravelWordsModel(
                 "We'll stop for a break here",
                 "Mi ma muze fietian waun",
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/one")
             )
         )
@@ -289,6 +318,7 @@ class DefaultDataSource {
             TravelWordsModel(
                 " Shortly we'll be back on our journey",
                 "Mi ma gbe gbe bee vbi o shaan",
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/one")
             )
         )
@@ -297,6 +327,7 @@ class DefaultDataSource {
             TravelWordsModel(
                 "The light says stop ",
                 "Uru okpa owee nu muze",
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/one")
             )
         )
@@ -305,6 +336,7 @@ class DefaultDataSource {
             TravelWordsModel(
                 "Here are my papers ",
                 "Ka ough kpebe men",
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/one")
             )
         )
@@ -313,6 +345,7 @@ class DefaultDataSource {
             TravelWordsModel(
                 "You can go",
                 "Kha Shaan",
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/one")
             )
         )
@@ -321,6 +354,7 @@ class DefaultDataSource {
             TravelWordsModel(
                 "We've on the road for some time",
                 "Or khuiee nii mai da rii vbi ukpodee",
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/one")
             )
         )
@@ -329,6 +363,7 @@ class DefaultDataSource {
             TravelWordsModel(
                 "Sit in the front seat",
                 "Dey gha vbi odaoo",
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/one")
             )
         )
@@ -337,6 +372,7 @@ class DefaultDataSource {
             TravelWordsModel(
                 "Sit in the back seat",
                 "Dey gha vbi Ehimin",
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/one")
             )
         )
@@ -345,6 +381,7 @@ class DefaultDataSource {
             TravelWordsModel(
                 "Stop here",
                 "Muze ma ann",
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/one")
             )
         )
@@ -353,6 +390,7 @@ class DefaultDataSource {
             TravelWordsModel(
                 "We will get down here",
                 "Mi ma do otoi maan",
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/one")
             )
         )
@@ -361,6 +399,7 @@ class DefaultDataSource {
             TravelWordsModel(
                 "Thanks for taking me",
                 "Uzor kah nu dah mu mee",
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/one")
             )
         )
@@ -375,17 +414,17 @@ class DefaultDataSource {
 
         val houseList: ArrayList<HouseWordsModel> = ArrayList()
 
-        houseList.add(0, HouseWordsModel("Welcome", "O bo khian", Uri.parse("android.resource://"+app?.packageName  +"/raw/one")))
-        houseList.add(1, HouseWordsModel("Switch it on", "Ror ee ruu", Uri.parse("android.resource://"+app?.packageName  +"/raw/one")))
-        houseList.add(2, HouseWordsModel("Put it down", "Muii khi vbo otoee", Uri.parse("android.resource://"+app?.packageName  +"/raw/one")))
-        houseList.add(3, HouseWordsModel("Open the door", "Thu khu khe dee aah", Uri.parse("android.resource://"+app?.packageName  +"/raw/one")))
-        houseList.add(4, HouseWordsModel("Close the door", "Ghu khu khe dee aah", Uri.parse("android.resource://"+app?.packageName  +"/raw/one")))
-        houseList.add(5, HouseWordsModel("Go do the dishes", "Oho doh kpee ta saa", Uri.parse("android.resource://"+app?.packageName  +"/raw/one")))
-        houseList.add(6, HouseWordsModel("Sit Down", "Dee gha vbo toie", Uri.parse("android.resource://"+app?.packageName  +"/raw/one")))
-        houseList.add(7, HouseWordsModel("Stand up", "Kparhe muze", Uri.parse("android.resource://"+app?.packageName  +"/raw/one")))
-        houseList.add(8, HouseWordsModel("Come and eat", " Vie  ebaee", Uri.parse("android.resource://"+app?.packageName  +"/raw/one")))
-        houseList.add(9, HouseWordsModel("Be carefull", "Fuen gbee rhe", Uri.parse("android.resource://"+app?.packageName  +"/raw/one")))
-        houseList.add(10, HouseWordsModel("Go buy a loaf of bread", "Olo odor doo okoh oibo", Uri.parse("android.resource://"+app?.packageName  +"/raw/one")))
+        houseList.add(0, HouseWordsModel("Welcome", "O bo khian", 0, Uri.parse("android.resource://"+app?.packageName  +"/raw/one")))
+        houseList.add(1, HouseWordsModel("Switch it on", "Ror ee ruu", 0, Uri.parse("android.resource://"+app?.packageName  +"/raw/one")))
+        houseList.add(2, HouseWordsModel("Put it down", "Muii khi vbo otoee", 0, Uri.parse("android.resource://"+app?.packageName  +"/raw/one")))
+        houseList.add(3, HouseWordsModel("Open the door", "Thu khu khe dee aah", 0, Uri.parse("android.resource://"+app?.packageName  +"/raw/one")))
+        houseList.add(4, HouseWordsModel("Close the door", "Ghu khu khe dee aah", 0, Uri.parse("android.resource://"+app?.packageName  +"/raw/one")))
+        houseList.add(5, HouseWordsModel("Go do the dishes", "Oho doh kpee ta saa", 0, Uri.parse("android.resource://"+app?.packageName  +"/raw/one")))
+        houseList.add(6, HouseWordsModel("Sit Down", "Dee gha vbo toie", 0, Uri.parse("android.resource://"+app?.packageName  +"/raw/one")))
+        houseList.add(7, HouseWordsModel("Stand up", "Kparhe muze",0, Uri.parse("android.resource://"+app?.packageName  +"/raw/one")))
+        houseList.add(8, HouseWordsModel("Come and eat", " Vie  ebaee", 0, Uri.parse("android.resource://"+app?.packageName  +"/raw/one")))
+        houseList.add(9, HouseWordsModel("Be carefull", "Fuen gbee rhe", 0, Uri.parse("android.resource://"+app?.packageName  +"/raw/one")))
+        houseList.add(10, HouseWordsModel("Go buy a loaf of bread", "Olo odor doo okoh oibo", 0, Uri.parse("android.resource://"+app?.packageName  +"/raw/one")))
 
         return houseList
     }
@@ -399,6 +438,7 @@ class DefaultDataSource {
             OutdoorWordsModel(
                 "I am going to the market",
                 "Ilo deh vbee kin",
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/one")
             )
         )
@@ -407,6 +447,7 @@ class DefaultDataSource {
             OutdoorWordsModel(
                 "How much is this item",
                 "Ekah ighor na",
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/one")
             )
         )
@@ -415,6 +456,7 @@ class DefaultDataSource {
             OutdoorWordsModel(
                 "I will pay for this",
                 "Mio hoosa ghor ona",
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/one")
             )
         )
@@ -423,6 +465,7 @@ class DefaultDataSource {
             OutdoorWordsModel(
                 "I am going out",
                 "Ilo deh vbooee",
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/one")
             )
         )
@@ -431,6 +474,7 @@ class DefaultDataSource {
             OutdoorWordsModel(
                 "walk fast",
                 "Tuah shaan",
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/one")
             )
         )
@@ -439,6 +483,7 @@ class DefaultDataSource {
             OutdoorWordsModel(
                 "put the item down",
                 "Meo onee mi eeh wo otoi",
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/one")
             )
         )
@@ -447,6 +492,7 @@ class DefaultDataSource {
             OutdoorWordsModel(
                 "Put on your shoes",
                 "Whei ebata weh",
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/one")
             )
         )
@@ -455,6 +501,7 @@ class DefaultDataSource {
             OutdoorWordsModel(
                 "You can play here",
                 "Khi een maan",
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/one")
             )
         )
@@ -463,6 +510,7 @@ class DefaultDataSource {
             OutdoorWordsModel(
                 "I'll wait for you here",
                 " Meo muze khe maan",
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/one")
             )
         )
@@ -471,6 +519,7 @@ class DefaultDataSource {
             OutdoorWordsModel(
                 "How are you",
                 "Or nhe gbe",
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/one")
             )
         )
@@ -479,6 +528,7 @@ class DefaultDataSource {
             OutdoorWordsModel(
                 "I am fine",
                 "Orfure",
+                0,
                 Uri.parse("android.resource://" + context?.packageName + "/raw/one")
             )
         )

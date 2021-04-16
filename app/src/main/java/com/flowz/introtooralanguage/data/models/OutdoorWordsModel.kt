@@ -15,6 +15,8 @@ data class OutdoorWordsModel (
     val engNum : String,
     @ColumnInfo(name ="oraNum")
     val oraNum : String,
+    @ColumnInfo(name ="creator")
+    var creator : Int?= 0,
     @ColumnInfo(name ="recordedAudio")
     val recordedAudio: Uri? = null): Parcelable {
     @PrimaryKey(autoGenerate = true)

@@ -171,7 +171,7 @@ class EditOraWordFragment : ScopedFragment() {
                     if (wordFromNumbersFragment == true){
                         launch {
 
-                            val updatedOutdoorWord = NumbersModel(engWordEntered, oraWordEntered, null, chosenAudio)
+                            val updatedOutdoorWord = NumbersModel(engWordEntered, oraWordEntered, null, 1, chosenAudio)
 
                             updatedOutdoorWord.oraid = number!!.oraid
 
@@ -183,7 +183,7 @@ class EditOraWordFragment : ScopedFragment() {
                     }else if (wordFromHouseFragment == true){
                         launch {
 
-                            val updatedOutdoorWord = HouseWordsModel(engWordEntered, oraWordEntered,  chosenAudio)
+                            val updatedOutdoorWord = HouseWordsModel(engWordEntered, oraWordEntered,  1, chosenAudio)
 
                             updatedOutdoorWord.oraid = houseWord!!.oraid
 
@@ -195,7 +195,7 @@ class EditOraWordFragment : ScopedFragment() {
                     }else if(wordFromOutDoorFragment == true){
                         launch {
 
-                            val updatedOutdoorWord = OutdoorWordsModel(engWordEntered, oraWordEntered,  chosenAudio)
+                            val updatedOutdoorWord = OutdoorWordsModel(engWordEntered, oraWordEntered, 1, chosenAudio)
 
                             updatedOutdoorWord.oraid = outdoorWord!!.oraid
 
@@ -207,7 +207,7 @@ class EditOraWordFragment : ScopedFragment() {
                     }else if(wordFromTravelFragment == true){
                         launch {
 
-                            val updatedOutdoorWord = TravelWordsModel(engWordEntered, oraWordEntered,  chosenAudio)
+                            val updatedOutdoorWord = TravelWordsModel(engWordEntered, oraWordEntered, 1, chosenAudio)
 
                             updatedOutdoorWord.oraid = travelWord!!.oraid
 
@@ -230,7 +230,7 @@ class EditOraWordFragment : ScopedFragment() {
                     if (wordFromNumbersFragment== true){
                         launch {
 
-                            val updatedOutdoorWord = NumbersModel(engWordEntered, oraWordEntered, null, audioUri)
+                            val updatedOutdoorWord = NumbersModel(engWordEntered, oraWordEntered, null, 1, audioUri)
 
                             updatedOutdoorWord.oraid = number!!.oraid
 
@@ -242,7 +242,7 @@ class EditOraWordFragment : ScopedFragment() {
                     }else if (wordFromTravelFragment == true){
                         launch {
 
-                            val updatedOutdoorWord = TravelWordsModel(engWordEntered, oraWordEntered, audioUri)
+                            val updatedOutdoorWord = TravelWordsModel(engWordEntered, oraWordEntered, 1, audioUri)
 
                             updatedOutdoorWord.oraid = travelWord!!.oraid
 
@@ -254,7 +254,7 @@ class EditOraWordFragment : ScopedFragment() {
                     }else if (wordFromOutDoorFragment == true){
                         launch {
 
-                            val updatedOutdoorWord = OutdoorWordsModel(engWordEntered, oraWordEntered, audioUri)
+                            val updatedOutdoorWord = OutdoorWordsModel(engWordEntered, oraWordEntered, 1, audioUri)
 
                             updatedOutdoorWord.oraid = outdoorWord!!.oraid
 
@@ -266,7 +266,7 @@ class EditOraWordFragment : ScopedFragment() {
                     }else if (wordFromHouseFragment == true){
                         launch {
 
-                            val updatedOutdoorWord = HouseWordsModel(engWordEntered, oraWordEntered, audioUri)
+                            val updatedOutdoorWord = HouseWordsModel(engWordEntered, oraWordEntered, 1, audioUri)
 
                             updatedOutdoorWord.oraid = houseWord!!.oraid
 

@@ -17,6 +17,9 @@ data class NumbersModel (
     @ColumnInfo(name ="numIcon")
     val numIcon : Int?= null,
 
+    @ColumnInfo(name ="creator")
+    var creator : Int?= 0,
+
     @ColumnInfo(name ="recordedAudio")
     val recordedAudio: Uri? = null):Parcelable {
     @PrimaryKey(autoGenerate = true)

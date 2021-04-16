@@ -45,6 +45,7 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_ora_lang_outdoor.*
 import kotlinx.android.synthetic.main.fragment_ora_lang_travel.*
+import kotlinx.android.synthetic.main.ora_lang_numbers.*
 import java.io.IOException
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -453,13 +454,13 @@ class OraLangOutdoorFragment : Fragment(), OutdoorWordsAdapter.RowClickListener{
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val outdoorWord = outdoorAdapter.currentList[viewHolder.adapterPosition]
 
-                if(outdoorWord.oraid <= 10){
+                if(outdoorWord.creator == 1){
                     outdoorWordViewModel.deleteOutdoorWord(outdoorWord)
                     Snackbar.make(ora_outdoor_recycler, "Word ${outdoorWord.engNum} Deleted", Snackbar.LENGTH_LONG)
                         .setAction("UNDO"){
                             outdoorWordViewModel.insertOutdoorWord(outdoorWord)
                         }.show()
-                }else{
+                }else if (outdoorWord.creator==0){
                     showSnackbar(ora_outdoor_recycler, "You can't delete pre-installed Ora Words")
                 }
 
@@ -594,6 +595,7 @@ class OraLangOutdoorFragment : Fragment(), OutdoorWordsAdapter.RowClickListener{
                 OutdoorWordsModel(
                     engWord,
                     oraWord,
+                    1,
                     enteredAudio
                 )
             )
@@ -604,12 +606,17 @@ class OraLangOutdoorFragment : Fragment(), OutdoorWordsAdapter.RowClickListener{
     }
 
     override fun onEditOraWordClickListener(outdoorWord: OutdoorWordsModel) {
-        val action =
-            OraLangOutdoorFragmentDirections.actionOraLangOutdoorFragmentToEditOraWordFragment()
-        action.arguments.putInt("type", 4)
+
+        if (outdoorWord.creator == 1) {
+            val action =
+                OraLangOutdoorFragmentDirections.actionOraLangOutdoorFragmentToEditOraWordFragment()
+            action.arguments.putInt("type", 4)
 //                                action.oraLangNums = oraLangNumList[position]
-        action.outdoorWord = outdoorWord
-        Navigation.findNavController(requireView()).navigate(action)
+            action.outdoorWord = outdoorWord
+            Navigation.findNavController(requireView()).navigate(action)
+        }else if (outdoorWord.creator==0){
+            showSnackbar(ora_outdoor_recycler, "You can't edit pre-installed Ora Words")
+        }
 
 }
 

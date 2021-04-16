@@ -439,13 +439,13 @@ class OraLangHouseFragment : Fragment(), HouseWordsAdapter.RowClickListener {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val houseWord = houseAdapter.currentList[viewHolder.adapterPosition]
 
-                if(houseWord.oraid <= 10){
+                if(houseWord.creator == 1){
                     houseViewModel.deleteHouseWord(houseWord)
                     Snackbar.make(ora_house_recycler, "Word ${houseWord.engNum} Deleted", Snackbar.LENGTH_LONG)
                         .setAction("UNDO"){
                             houseViewModel.insertHouseWord(houseWord)
                         }.show()
-                }else{
+                }else if(houseWord.creator == 0){
                     showSnackbar(ora_house_recycler, "You can't delete pre-installed Ora Words")
                 }
 
@@ -580,7 +580,7 @@ class OraLangHouseFragment : Fragment(), HouseWordsAdapter.RowClickListener {
 
     }
     fun SaveOraElement(engWord: String, oraWord: String, enteredAudio: Uri) =
-       houseViewModel.insertHouseWord(HouseWordsModel(engWord, oraWord, enteredAudio))
+       houseViewModel.insertHouseWord(HouseWordsModel(engWord, oraWord, 1, enteredAudio))
 
     override fun onPlayOraWordClickListener(houseWord: HouseWordsModel) {
         houseWord.recordedAudio?.let { playContentUri(it, requireContext()) }
@@ -588,9 +588,9 @@ class OraLangHouseFragment : Fragment(), HouseWordsAdapter.RowClickListener {
 
     override fun onEditOraWordClickListener(houseWord: HouseWordsModel) {
 
-        if (houseWord.oraid<10){
+        if (houseWord.creator==0){
             showSnackbar(fab3, "You Cant't edit pre-installed OraWords")
-        }else if (houseWord.oraid>10){
+        }else if (houseWord.creator==1){
             val action = OraLangHouseFragmentDirections.actionOraLangHouseFragmentToEditOraWordFragment()
 //                                action.oraLangNums = oraLangNumList[position]
             action.arguments.putInt("type", 2)

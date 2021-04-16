@@ -387,13 +387,7 @@ class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
 
                             showToast("strings gotten $engWordEntered $oraWordEntered",  requireContext())
 
-
-//                            SaveOraElement(engWordEntered, oraWordEntered, null, chosenAudio)
                             saveOraElement(engWordEntered, oraWordEntered, null, audioUri)
-
-//                           launch {
-//                                oraAdapter.addOraNumber(OraLangNums(engWordEntered, oraWordEntered, null, audioUri))
-//                           }
 
                             showToast("New details saved", requireContext())
                             dialog.dismiss()
@@ -445,13 +439,13 @@ class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val number = oraAdapter.currentList[viewHolder.adapterPosition]
 
-                if(number.oraid <= 20){
+                if(number.creator == 1){
                     numbersViewModel.deleteNumber(number)
                     Snackbar.make(ora_num_recycler, "Word ${number.engNum} Deleted", Snackbar.LENGTH_LONG)
                         .setAction("UNDO"){
                             numbersViewModel.insertNumber(number)
                         }.show()
-                }else{
+                }else if (number.creator == 0){
                     showSnackbar(ora_num_recycler, "You can't delete pre-installed Ora Words")
                 }
 
@@ -580,7 +574,7 @@ class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
     }
     fun saveOraElement(engWord: String, oraWord: String, numIcon: Int?, enteredAudio: Uri) =
 
-        numbersViewModel.insertNumber(NumbersModel(engWord, oraWord, numIcon, enteredAudio))
+        numbersViewModel.insertNumber(NumbersModel(engWord, oraWord, numIcon,1, enteredAudio))
 
 
     override fun onPlayOraWordClickListener(number: NumbersModel) {
@@ -590,7 +584,7 @@ class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
 
     override fun onEditOraWordClickListener(number: NumbersModel) {
 
-        if (number.oraid >27){
+        if (number.creator ==1){
             val action = OraLangNumbersFragmentDirections.actionOraLangNumbersFragmentToEditOraWordFragment()
 //                                action.oraLangNums = oraLangNumList[position]
             action.arguments.putInt("type", 1)
@@ -598,7 +592,7 @@ class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
             Navigation.findNavController(requireView()).navigate(action)
 //
         }
-        else{
+        else if (number.creator==0){
             showSnackbar(fab1, "You can't edit pre-installed Ora Words")
         }
     }

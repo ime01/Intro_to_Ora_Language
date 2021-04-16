@@ -66,10 +66,11 @@ class UserProfileFragment : Fragment() {
             saveImagetoFirebaseStorage(currentUser!!)
 //            pickImage()
 //            uploadOraUserImage()
+            showSnackbar(user_profile_picture, "Profile Image Updated")
         }
         add_image_icon.setOnClickListener {
-            pickImage()
-            uploadOraUserImage()
+//            pickImage()
+//            uploadOraUserImage()
         }
 
         update_ora_profile.setOnClickListener {
@@ -177,6 +178,7 @@ class UserProfileFragment : Fragment() {
         }?.addOnSuccessListener {taskSnapshot ->
             var downloadUrl = storageRef.downloadUrl.addOnSuccessListener {
                 showToast(it.toString(), this.requireContext())
+                user_profile_picture.setImageURI(it)
             }
 
         }

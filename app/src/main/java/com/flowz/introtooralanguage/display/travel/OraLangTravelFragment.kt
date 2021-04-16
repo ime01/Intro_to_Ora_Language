@@ -48,6 +48,7 @@ import com.flowz.introtooralanguage.workmanager.ReminderWorker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_ora_lang_outdoor.*
 import kotlinx.android.synthetic.main.fragment_ora_lang_travel.*
 import kotlinx.android.synthetic.main.fragment_ora_lang_travel.fab2
 import kotlinx.android.synthetic.main.ora_lang_numbers.*
@@ -433,13 +434,13 @@ class OraLangTravelFragment : Fragment(), TravelWordsAdapter.RowClickListener {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val travelWord = travelAdapter.currentList[viewHolder.adapterPosition]
 
-                if(travelWord.oraid <= 10){
+                if(travelWord.creator == 1){
                     travelWordViewModel.deleteTravelWord(travelWord)
                     Snackbar.make(ora_travel_recycler, "Word ${travelWord.engNum} Deleted", Snackbar.LENGTH_LONG)
                         .setAction("UNDO"){
                             travelWordViewModel.insertTravelWord(travelWord)
                         }.show()
-                }else{
+                }else if (travelWord.creator ==0){
                     showSnackbar(ora_travel_recycler, "You can't delete pre-installed Ora Words")
                 }
 
@@ -574,7 +575,7 @@ class OraLangTravelFragment : Fragment(), TravelWordsAdapter.RowClickListener {
     }
 
     fun SaveOraElement(engWord: String, oraWord: String,  enteredAudio: Uri) =
-        travelWordViewModel.insertTravelWord(TravelWordsModel(engWord, oraWord, enteredAudio))
+        travelWordViewModel.insertTravelWord(TravelWordsModel(engWord, oraWord, 1, enteredAudio))
 
 
     override fun onPlayOraWordClickListener(travelWord: TravelWordsModel) {
@@ -583,11 +584,16 @@ class OraLangTravelFragment : Fragment(), TravelWordsAdapter.RowClickListener {
     }
 
     override fun onEditOraWordClickListener(travelWord: TravelWordsModel) {
+        if (travelWord.creator ==1){
         val action = OraLangTravelFragmentDirections.actionOraLangTravelFragmentToEditOraWordFragment()
 //                                action.oraLangNums = oraLangNumList[position]
         action.arguments.putInt("type", 3)
         action.travelWord = travelWord
         Navigation.findNavController(requireView()).navigate(action)
+        }else if (travelWord.creator==0){
+            showSnackbar(ora_travel_recycler, "You can't edit pre-installed Ora Words")
+        }
+
 
     }
 
