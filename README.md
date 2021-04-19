@@ -51,6 +51,8 @@ app will soon be completed and made available on google playstore
 ![Screenshot_2021-04-12-14-43-06](https://user-images.githubusercontent.com/44091450/114459672-affda480-9b95-11eb-96e2-3cd4e4964fa9.png)
 ![Screenshot_2021-04-12-13-23-11](https://user-images.githubusercontent.com/44091450/114459680-b1c76800-9b95-11eb-886f-605c4e9e0b7e.png)
 ![Screenshot_2021-04-12-13-25-08](https://user-images.githubusercontent.com/44091450/114459709-bb50d000-9b95-11eb-829d-40201963c495.png)
+![Screenshot_2021-04-12-14-47-23](https://user-images.githubusercontent.com/44091450/115241397-9d272a80-a0d5-11eb-8aa5-40c67ae89475.png)
+
 ![Screenshot_2021-04-12-13-23-01](https://user-images.githubusercontent.com/44091450/114459716-bee45700-9b95-11eb-86c4-2d906dccc787.png)
 ![Screenshot_2021-04-12-13-22-41](https://user-images.githubusercontent.com/44091450/114459725-c0ae1a80-9b95-11eb-82ca-03fa0a14601f.png)
 ![Screenshot_2021-04-12-13-22-06](https://user-images.githubusercontent.com/44091450/114459742-c7d52880-9b95-11eb-8ced-e085819333ee.png)
