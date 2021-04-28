@@ -1,0 +1,12 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/night_mode"
+        app:icon="@drawable/ic_baseline_brightness_2_24">
+
+        <SwitchPreferenceCompat
+            app:key="nightorday"
+            app:title="@string/night_mode_on" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

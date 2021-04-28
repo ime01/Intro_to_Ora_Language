@@ -5,11 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.navigation.ActivityNavigator
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.preference.PreferenceManager
 //import androidx.navigation.fragment.findNavController
 
 import com.flowz.introtooralanguage.R
@@ -23,6 +26,8 @@ import kotlinx.android.synthetic.main.fragment_ora_lang_home.*
 
 //@AndroidEntryPoint
 class OraLangHomeFragment : Fragment() {
+
+    lateinit var navController :NavController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -39,7 +44,9 @@ class OraLangHomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        val navController :NavController = Navigation.findNavController(view)
+        navController = Navigation.findNavController(view)
+
+        loadSettings()
 
         parentNum.setOnClickListener {
           navController.navigate(R.id.action_oraLangHomeFragment_to_oraLangNumbersFragment)
@@ -58,6 +65,19 @@ class OraLangHomeFragment : Fragment() {
         }
     }
 
+    private fun loadSettings() {
+        val sp = PreferenceManager.getDefaultSharedPreferences(requireContext())
+
+        val nightMode = sp.getBoolean("nightorday", false)
+
+        if (nightMode){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        }
+
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 
         inflater.inflate(R.menu.profile_menu, menu)
@@ -67,7 +87,7 @@ class OraLangHomeFragment : Fragment() {
       when(item.itemId){
 
             R.id.ora_user_profile -> {
-                val navController :NavController = Navigation.findNavController(requireView())
+//                val navController :NavController = Navigation.findNavController(requireView())
                 navController.navigate(R.id.action_oraLangHomeFragment_to_userProfileFragment)
             }
        }

@@ -63,9 +63,9 @@ class UserProfileFragment : Fragment() {
 
         user_profile_picture.setOnClickListener {
             checkPermssion()
-            saveImagetoFirebaseStorage(currentUser!!)
+//            saveImagetoFirebaseStorage(currentUser!!)
 //            pickImage()
-//            uploadOraUserImage()
+            uploadOraUserImage()
             showSnackbar(user_profile_picture, "Profile Image Updated")
         }
         add_image_icon.setOnClickListener {

@@ -39,6 +39,9 @@
         <action
             android:id="@+id/action_oraLangHomeFragment_to_userProfileFragment"
             app:destination="@id/userProfileFragment" />
+        <action
+            android:id="@+id/action_oraLangHomeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/oraLangNumbersFragment"
@@ -162,4 +165,12 @@
         android:id="@+id/signupActivity"
         android:name="com.flowz.introtooralanguage.firebase.SignupActivity"
         android:label="SignupActivity" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.flowz.introtooralanguage.display.settings.SettingsFragment"
+        android:label="SettingsFragment" >
+        <action
+            android:id="@+id/action_settingsFragment_to_oraLangHomeFragment"
+            app:destination="@id/oraLangHomeFragment" />
+    </fragment>
 </navigation>
