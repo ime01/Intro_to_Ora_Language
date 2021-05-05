@@ -148,7 +148,7 @@
     <fragment
         android:id="@+id/aboutTheAppFragment"
         android:name="com.flowz.introtooralanguage.display.AboutTheAppFragment"
-        android:label="fragment_about_the_app"
+        android:label="About The App"
         tools:layout="@layout/fragment_about_the_app" />
     <fragment
         android:id="@+id/inviteFriendsToAddOraWordFragment"

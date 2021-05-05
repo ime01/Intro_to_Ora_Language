@@ -86,9 +86,8 @@ class OraLangHomeFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
       when(item.itemId){
 
-            R.id.ora_user_profile -> {
-//                val navController :NavController = Navigation.findNavController(requireView())
-                navController.navigate(R.id.action_oraLangHomeFragment_to_userProfileFragment)
+            R.id.settings -> {
+                navController.navigate(R.id.action_oraLangHomeFragment_to_settingsFragment)
             }
        }
         return super.onOptionsItemSelected(item)

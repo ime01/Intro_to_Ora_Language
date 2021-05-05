@@ -95,4 +95,6 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="night_mode">Night Mode</string>
     <string name="night_mode_on">Night Mode on</string>
+    <string name="about_the_app">Intro to Ora Language, is an app made for the capture, digitalization and preservation of the language of the Ora\'s, a small group of communities in Edo State, Nigeria. Developed by AndroidPhrophet, Ora words voiced by my younger brother, my sister, and my dad.</string>
+    <string name="_2021">© 2021</string>
 </resources>
