@@ -13,13 +13,18 @@
         android:title="User Profile"
         android:icon="@drawable/ic_person_black_24dp"/>
 
-    <item android:id="@+id/inviteFriendsToAddOraWordFragment"
-        android:title="Invite Friend to add Ora Word"
-        android:icon="@drawable/ic_baseline_mobile_friendly_24"/>
 
-    <item android:id="@+id/shareThisAppFragment"
-        android:title="Share This app"
-        android:icon="@drawable/ic_baseline_share_24"/>
+        <item android:id="@+id/settingsFragment"
+            android:title="Settings"
+            android:icon="@drawable/ic_baseline_settings_24"/>
+
+<!--    <item android:id="@+id/inviteFriendsToAddOraWordFragment"-->
+<!--        android:title="Invite Friend to add Ora Word"-->
+<!--        android:icon="@drawable/ic_baseline_mobile_friendly_24"/>-->
+
+<!--    <item android:id="@+id/shareThisAppFragment"-->
+<!--        android:title="Share This app"-->
+<!--        android:icon="@drawable/ic_baseline_share_24"/>-->
 
     </group>
 

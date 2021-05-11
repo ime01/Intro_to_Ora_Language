@@ -86,10 +86,20 @@ class OraLangHomeFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
       when(item.itemId){
 
-            R.id.settings -> {
-                navController.navigate(R.id.action_oraLangHomeFragment_to_settingsFragment)
-            }
+          R.id.invite -> {
+            inviteFriend()
+          }
+
        }
         return super.onOptionsItemSelected(item)
+    }
+
+
+    fun inviteFriend(){
+        val intent= Intent()
+        intent.action=Intent.ACTION_SEND
+        intent.putExtra(Intent.EXTRA_TEXT,"Hey there Ora son/daughter, Come help add new words to this Ora Language App:")
+        intent.type="text/plain"
+        startActivity(Intent.createChooser(intent,"Share To:"))
     }
 }

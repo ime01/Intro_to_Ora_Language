@@ -168,7 +168,7 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.flowz.introtooralanguage.display.settings.SettingsFragment"
-        android:label="SettingsFragment" >
+        android:label="Settings" >
         <action
             android:id="@+id/action_settingsFragment_to_oraLangHomeFragment"
             app:destination="@id/oraLangHomeFragment" />
