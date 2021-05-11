@@ -1,4 +1,4 @@
-package com.flowz.introtooralanguage.display
+package com.flowz.introtooralanguage.display.home
 
 
 import android.content.Intent
@@ -100,6 +100,6 @@ class OraLangHomeFragment : Fragment() {
         intent.action=Intent.ACTION_SEND
         intent.putExtra(Intent.EXTRA_TEXT,"Hey there Ora son/daughter, Come help add new words to this Ora Language App:")
         intent.type="text/plain"
-        startActivity(Intent.createChooser(intent,"Share To:"))
+        startActivity(Intent.createChooser(intent,"Invite Friend Via:"))
     }
 }

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/oraLangHomeFragment"
-        android:name="com.flowz.introtooralanguage.display.OraLangHomeFragment"
+        android:name="com.flowz.introtooralanguage.display.home.OraLangHomeFragment"
         android:label="OraHome"
         tools:layout="@layout/fragment_ora_lang_home" >
         <action
@@ -147,19 +147,9 @@
     </fragment>
     <fragment
         android:id="@+id/aboutTheAppFragment"
-        android:name="com.flowz.introtooralanguage.display.AboutTheAppFragment"
+        android:name="com.flowz.introtooralanguage.display.about.AboutTheAppFragment"
         android:label="About The App"
         tools:layout="@layout/fragment_about_the_app" />
-    <fragment
-        android:id="@+id/inviteFriendsToAddOraWordFragment"
-        android:name="com.flowz.introtooralanguage.display.InviteFriendsToAddOraWordFragment"
-        android:label="fragment_invite_friends_to_add_ora_word"
-        tools:layout="@layout/fragment_invite_friends_to_add_ora_word" />
-    <fragment
-        android:id="@+id/shareThisAppFragment"
-        android:name="com.flowz.introtooralanguage.display.ShareThisAppFragment"
-        android:label="fragment_share_this_app"
-        tools:layout="@layout/fragment_share_this_app" />
 
     <activity
         android:id="@+id/signupActivity"

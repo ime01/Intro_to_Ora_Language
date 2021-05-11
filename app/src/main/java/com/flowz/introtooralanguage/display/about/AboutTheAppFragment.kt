@@ -1,4 +1,4 @@
-package com.flowz.introtooralanguage.display
+package com.flowz.introtooralanguage.display.about
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
