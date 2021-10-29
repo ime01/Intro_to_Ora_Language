@@ -117,18 +117,18 @@ class UserProfileFragment : Fragment() {
 
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == REQUESTCODE && resultCode == Activity.RESULT_OK && data!!.data != null ){
-
-            imageUri = data.data
-            showSnackbar(user_profile_picture, "Profile picture chosen....")
-
-            saveImagetoFirebaseStorage(currentUser!!)
-
-        }
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//
+//        if (requestCode == REQUESTCODE && resultCode == Activity.RESULT_OK && data!!.data != null ){
+//
+//            imageUri = data.data
+//            showSnackbar(user_profile_picture, "Profile picture chosen....")
+//
+//            saveImagetoFirebaseStorage(currentUser!!)
+//
+//        }
+//    }
 
     fun checkPermssion(){
         if(Build.VERSION.SDK_INT>=23){
@@ -142,12 +142,12 @@ class UserProfileFragment : Fragment() {
         }
     }
 
-    private fun pickImage() {
-        val intent = Intent()
-        intent.type = "image/*"
-        intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(intent, REQUESTCODE )
-    }
+//    private fun pickImage() {
+//        val intent = Intent()
+//        intent.type = "image/*"
+//        intent.action = Intent.ACTION_GET_CONTENT
+//        startActivityForResult(intent, REQUESTCODE )
+//    }
 
 
     fun saveImagetoFirebaseStorage( currentUser: FirebaseUser) {
