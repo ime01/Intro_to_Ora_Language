@@ -2,31 +2,29 @@ package com.flowz.introtooralanguage.display.profile
 
 
 import android.app.Activity
-import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-
 import com.flowz.introtooralanguage.R
 import com.flowz.introtooralanguage.extensions.showSnackbar
 import com.flowz.introtooralanguage.extensions.showToast
 import com.google.android.gms.tasks.Continuation
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.auth.*
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
@@ -37,8 +35,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.text.SimpleDateFormat
 import java.util.*
+
 
 /**
  * A simple [Fragment] subclass.
@@ -72,20 +70,36 @@ class UserProfileFragment : Fragment() {
         loadUserProfile()
         getProfilePicture()
 
+        val getUserImageFromGallery = registerForActivityResult(
+            ActivityResultContracts.GetContent(),
+            ActivityResultCallback {
+                imageUri = it
+                showSnackbar(user_profile_picture, "Profile picture chosen....")
+
+                saveImagetoFirebaseStorage(currentUser!!)
+            }
+        )
+
         user_profile_picture.setOnClickListener{
 
             checkPermssion()
-            pickImage()
+//            pickImage()
+            getUserImageFromGallery.launch("image/*")
+
+
         }
         add_image_icon.setOnClickListener {
             checkPermssion()
-            pickImage()
+            getUserImageFromGallery.launch("image/*")
+//
         }
 
         update_ora_profile.setOnClickListener {
-            loadUserProfile()
+            updateUserInformation()
 
         }
+
+
     }
 
 
@@ -93,7 +107,7 @@ class UserProfileFragment : Fragment() {
        when(requestCode){
            READIMAGE->{
                if (grantResults[0]==PackageManager.PERMISSION_GRANTED){
-                   pickImage()
+//                   pickImage()
                }else{
                    showToast("Cannnot access your images", requireContext() )
                }
@@ -205,6 +219,49 @@ class UserProfileFragment : Fragment() {
             showToast("Failed to get Profile Image", requireContext())
         }
 
+    }
+
+    private fun updateUserInformation() {
+
+        auth.currentUser?.let {user->
+            val photoURI = imageUri
+            val userName = user_profile_name.text.toString()
+            val userEmail = user_profile_email.text.toString()
+            val userPhoneNo = user_profile_phone_number.text.toString()
+
+            val profileUpdates = UserProfileChangeRequest.Builder()
+                .setDisplayName(userName)
+                .build()
+
+            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main){
+                try {
+
+                    val phoneAuthCredential = PhoneAuthProvider.getCredential(userPhoneNo, "OTP_CODE")
+                    auth.getCurrentUser()?.updatePhoneNumber(phoneAuthCredential)
+                        ?.addOnCompleteListener(OnCompleteListener<Void?> { task ->
+                            if (task.isSuccessful) {
+                                // Update Successfully
+                            } else {
+                                // Failed
+                            }
+                        }
+                        )
+                    user.updatePhoneNumber(phoneAuthCredential)
+                    user.updateEmail(userEmail)
+                    user.updateProfile(profileUpdates).isSuccessful
+
+                    withContext(Dispatchers.Main){
+                        loadUserProfile()
+                        showSnackbar(user_profile_picture, "Successfully updated user profile information")
+                    }
+                }catch (e:Exception){
+                    withContext(Dispatchers.Main){
+                        e.message?.let { it1 -> showSnackbar(user_profile_picture, it1) }
+                    }
+                }
+            }
+
+        }
     }
 
     private fun loadUserProfile(){
