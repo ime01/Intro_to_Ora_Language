@@ -62,7 +62,7 @@ class ReminderWorker(context:Context, params:WorkerParameters): Worker(context, 
 
         val builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notifications_none_black_24dp)
-            .setLargeIcon(bitmap).setSmallIcon(R.drawable.ic_mic_black_24dp)
+            .setLargeIcon(bitmap).setSmallIcon(R.drawable.ic_baseline_notifications_active_24)
             .setDefaults(Notification.DEFAULT_SOUND)
             .setContentTitle(applicationContext.getString(R.string.notification_title))
             .setContentText(applicationContext.getString(R.string.notification_text))

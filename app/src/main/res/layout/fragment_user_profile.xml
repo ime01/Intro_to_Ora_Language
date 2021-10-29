@@ -72,18 +72,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/update_ora_profile" />
 
-    <com.makeramen.roundedimageview.RoundedImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/user_profile_picture"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="8dp"
-        android:src="@drawable/ic_person_black_24dp"
+        app:srcCompat="@drawable/ic_baseline_person_24"
+        app:shapeAppearanceOverlay="@style/Circular"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_welcome"
-        app:riv_border_color="#333333"
-        app:riv_border_width="2dip"
-        app:riv_corner_radius="30dip" />
+        app:layout_constraintTop_toBottomOf="@+id/user_welcome" />
 
     <Button
         android:id="@+id/update_ora_profile"
@@ -100,11 +98,22 @@
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/ic_add_circle_outline_black_24dp"
+        android:src="@drawable/ic_baseline_add_24"
         app:layout_constraintBottom_toTopOf="@+id/user_profile_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.652"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/user_profile_progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/user_profile_picture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/user_profile_picture" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

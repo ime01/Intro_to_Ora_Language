@@ -9,7 +9,7 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text3"
         style="@style/SplashScreen"
         android:layout_width="wrap_content"
@@ -17,6 +17,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
+        android:fontFamily="@font/almendra"
         android:text="@string/theoraslanguage"
         android:textAlignment="center"
         android:textColor="@color/design_default_color_on_secondary"
@@ -40,7 +41,7 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/numbersc"
+        android:src="@drawable/numbers"
         app:layout_constraintBottom_toTopOf="@+id/finish"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

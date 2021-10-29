@@ -31,7 +31,6 @@ class OraLangHomeFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_ora_lang_home, container, false)
 
     }
@@ -63,6 +62,9 @@ class OraLangHomeFragment : Fragment() {
         parentTravel.setOnClickListener {
             navController.navigate(R.id.action_oraLangHomeFragment_to_oraLangTravelFragment)
         }
+
+
+
     }
 
     private fun loadSettings() {
@@ -102,4 +104,6 @@ class OraLangHomeFragment : Fragment() {
         intent.type="text/plain"
         startActivity(Intent.createChooser(intent,"Invite Friend Via:"))
     }
+
+
 }

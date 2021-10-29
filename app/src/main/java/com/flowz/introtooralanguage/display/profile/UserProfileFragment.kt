@@ -5,30 +5,38 @@ import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 
 import com.flowz.introtooralanguage.R
 import com.flowz.introtooralanguage.extensions.showSnackbar
 import com.flowz.introtooralanguage.extensions.showToast
+import com.google.android.gms.tasks.Continuation
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_user_profile.*
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.android.synthetic.main.ora_num.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,58 +48,46 @@ class UserProfileFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private var databaseReference: DatabaseReference? = null
     private var database: FirebaseDatabase? = null
-    private val RequestCode = 101
     private var imageUri : Uri? = null
-//    private var storageRef: DatabaseReference?  = null
+    private var currentUser : FirebaseUser? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_user_profile, container, false)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
 
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance()
         databaseReference = database?.reference!!.child("profile")
 
-        val currentUser = auth.currentUser
+        currentUser = auth.currentUser
 
-           loadUserProfile()
+        loadUserProfile()
+        getProfilePicture()
 
-        user_profile_picture.setOnClickListener {
+        user_profile_picture.setOnClickListener{
+
             checkPermssion()
-//            saveImagetoFirebaseStorage(currentUser!!)
-//            pickImage()
-            uploadOraUserImage()
-            showSnackbar(user_profile_picture, "Profile Image Updated")
+            pickImage()
         }
         add_image_icon.setOnClickListener {
-//            pickImage()
-//            uploadOraUserImage()
+            checkPermssion()
+            pickImage()
         }
 
         update_ora_profile.setOnClickListener {
-            uploadOraUserImage()
+            loadUserProfile()
+
         }
     }
 
-
-    fun checkPermssion(){
-        if(Build.VERSION.SDK_INT>=23){
-            if (ActivityCompat.checkSelfPermission(this.requireActivity()
-                ,android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-
-                requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), READIMAGE)
-
-                return
-
-                }
-        }
-        pickImage()
-    }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
        when(requestCode){
@@ -99,7 +95,7 @@ class UserProfileFragment : Fragment() {
                if (grantResults[0]==PackageManager.PERMISSION_GRANTED){
                    pickImage()
                }else{
-                   showToast("Cannnot access your images",this.requireContext() )
+                   showToast("Cannnot access your images", requireContext() )
                }
            }else-> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
        }
@@ -107,40 +103,28 @@ class UserProfileFragment : Fragment() {
 
     }
 
-//    private fun loadImage() {
-//
-//    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
-    companion object{
-        val READIMAGE = 253
+        if (requestCode == REQUESTCODE && resultCode == Activity.RESULT_OK && data!!.data != null ){
+
+            imageUri = data.data
+            showSnackbar(user_profile_picture, "Profile picture chosen....")
+
+            saveImagetoFirebaseStorage(currentUser!!)
+
+        }
     }
 
+    fun checkPermssion(){
+        if(Build.VERSION.SDK_INT>=23){
+            if (ActivityCompat.checkSelfPermission(this.requireActivity()
+                    ,android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
 
-    private fun uploadOraUserImage() {
-        auth.currentUser?.let {user->
-            val photoURI = imageUri
-            val userName = user_profile_name.text.toString()
-            val userEmail = user_profile_email.text.toString()
-            val userPhoneNo = user_profile_phone_number.text.toString()
-            val profileUpdates = UserProfileChangeRequest.Builder()
-                .setDisplayName(userName)
-                .setPhotoUri(photoURI)
-                .build()
-
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    user.updateProfile(profileUpdates).isSuccessful
-                    withContext(Dispatchers.Main){
-                        loadUserProfile()
-                        showSnackbar(user_profile_picture, "Successfully updated user profile")
-                    }
-                }catch (e:Exception){
-                    withContext(Dispatchers.Main){
-                        e.message?.let { it1 -> showSnackbar(user_profile_picture, it1) }
-                    }
-                }
+                requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), READIMAGE)
+                showToast("Check Permission clicked", requireContext() )
+                return
             }
-
         }
     }
 
@@ -148,41 +132,54 @@ class UserProfileFragment : Fragment() {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
-
-        startActivityForResult(intent, RequestCode )
+        startActivityForResult(intent, REQUESTCODE )
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == RequestCode && resultCode == Activity.RESULT_OK && data!!.data != null ){
+    fun saveImagetoFirebaseStorage( currentUser: FirebaseUser) {
 
-            imageUri = data.data
-            showSnackbar(user_profile_picture, "Profile picture selected for upload....")
+        user_profile_progressBar.visibility = View.VISIBLE
 
-        }
-    }
-
-    fun saveImagetoFirebaseStorage( currentUser: FirebaseUser){
         val storage = FirebaseStorage.getInstance()
         val email = currentUser.email
-        val storageRef = storage.getReferenceFromUrl("gs://introtooralanguage.appspot.com")
-        val df = SimpleDateFormat("ddMMyyHHmmss")
-        val dataobj = Date()
-        val imagePath = SplitString(email!!) + "," + df.format(dataobj) + ".jpg"
-        val imageRef = storageRef.child("images/" + imagePath)
+        val storageRef = storage.getReference("images/"+auth.currentUser?.uid+".jpg")
+//        val df = SimpleDateFormat("ddMMyyHHmmss")
+//        val dataobj = Date()
+//        val imagePath = SplitString(email!!) + "," + df.format(dataobj) + ".jpg"
+//        val imageRef = storageRef.child("images/"+auth.currentUser?.uid+".jpg")
 
-        val uploadTask = imageUri?.let { imageRef.putFile(it) }
-        uploadTask?.addOnFailureListener{
-           showSnackbar(user_profile_picture, "Failed to upload profile pic")
-        }?.addOnSuccessListener {taskSnapshot ->
-            var downloadUrl = storageRef.downloadUrl.addOnSuccessListener {
-                showToast(it.toString(), this.requireContext())
-                user_profile_picture.setImageURI(it)
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+
+
+            val uploadTask = imageUri?.let {
+                storageRef.putFile(it)
+            }
+
+            val urlTask = uploadTask?.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let {
+                        throw it
+                    }
+                }
+                return@Continuation storageRef.downloadUrl
+            })?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val downloadUri = task.result
+                    user_profile_progressBar.visibility = View.INVISIBLE
+                    showToast("Image Uploaded Successfully ", requireContext())
+//
+                        Picasso.get().load(downloadUri).placeholder(R.drawable.ic_baseline_person_24).error(R.drawable.ic_baseline_person_24).into(user_profile_picture)
+
+                } else {
+                    showToast("Image Uploaded Failed ", requireContext())
+                }
+            }?.addOnFailureListener{
+                user_profile_progressBar.visibility = View.INVISIBLE
+                showToast("Image Uploaded Failed ", requireContext())
+
             }
 
         }
-
 
     }
 
@@ -190,10 +187,29 @@ class UserProfileFragment : Fragment() {
         val split = email.split("@")
         return split[0]
     }
+
+    private fun getProfilePicture(){
+        user_profile_progressBar.visibility = View.VISIBLE
+        val storage = FirebaseStorage.getInstance()
+        val storageRef = storage.reference.child("images/${auth.currentUser?.uid}.jpg")
+        val localFile = File.createTempFile("tempImage", "jpg")
+
+        storageRef.getFile(localFile).addOnSuccessListener {
+
+            val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
+            user_profile_picture.setImageBitmap(bitmap)
+            user_profile_progressBar.visibility = View.INVISIBLE
+
+        }.addOnFailureListener{
+            user_profile_progressBar.visibility = View.INVISIBLE
+            showToast("Failed to get Profile Image", requireContext())
+        }
+
+    }
+
     private fun loadUserProfile(){
 
-        val user = auth.currentUser
-        val userReference =  databaseReference?.child(user?.uid!!)
+        val userReference =  databaseReference?.child(currentUser?.uid!!)
 
 
         userReference?.addValueEventListener(object : ValueEventListener{
@@ -202,11 +218,11 @@ class UserProfileFragment : Fragment() {
 
                 user_profile_name.setText(snapshot.child("name").value.toString())
                 user_profile_phone_number.setText(snapshot.child("phonenumber").value.toString())
-                user_profile_email.setText(user?.email)
-                user_profile_picture.setImageURI(user?.photoUrl)
+                user_profile_email.setText(currentUser?.email)
             }
 
             override fun onCancelled(error: DatabaseError) {
+                showToast("Failed to Load User Profile Data", requireContext())
 
             }
 
@@ -217,5 +233,10 @@ class UserProfileFragment : Fragment() {
             val navController : NavController = Navigation.findNavController(requireView())
             navController.navigate(R.id.action_userProfileFragment_to_loginActivity)
         }
+    }
+
+    companion object{
+        val READIMAGE = 253
+        val REQUESTCODE = 101
     }
 }

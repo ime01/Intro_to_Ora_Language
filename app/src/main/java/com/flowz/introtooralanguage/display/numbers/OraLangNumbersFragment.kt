@@ -28,7 +28,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.work.*
 import com.flowz.introtooralanguage.R
 import com.flowz.introtooralanguage.adapters.NumbersAdapter
+import com.flowz.introtooralanguage.data.models.FbNumbersModel
 import com.flowz.introtooralanguage.data.models.NumbersModel
+import com.flowz.introtooralanguage.extensions.getConnectionType
 import com.flowz.introtooralanguage.extensions.playContentUri
 import com.flowz.introtooralanguage.extensions.showSnackbar
 import com.flowz.introtooralanguage.extensions.showToast
@@ -36,8 +38,9 @@ import com.flowz.introtooralanguage.utils.onQueryTextChanged
 import com.flowz.introtooralanguage.workmanager.ReminderWorker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_ora_lang_travel.*
 import kotlinx.android.synthetic.main.ora_lang_numbers.*
 import java.io.IOException
 import java.lang.System.currentTimeMillis
@@ -53,6 +56,9 @@ import kotlin.collections.ArrayList
 class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
 
     private val numbersViewModel by viewModels<NumbersViewModel>()
+    private lateinit  var fbdb: FirebaseFirestore
+    private lateinit var numbersSnapshotListener : ListenerRegistration
+    private var allFbNumbers : List<NumbersModel> = mutableListOf()
 
     var isRecording = false
     private val RECORD_REQUEST_CODE = 101
@@ -62,13 +68,11 @@ class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
     lateinit var audioFilePath: String
 //    lateinit var numList: ArrayList<NumbersModel>
     var searchViewList: ArrayList<NumbersModel> = ArrayList()
-//    lateinit var oraAdapter: OraNumbersAdapter
     lateinit var oraAdapter: NumbersAdapter
     lateinit var uri: Uri
     lateinit var selectedPath: Uri
     var recordButtonClicked: Boolean = false
     val addOraWordTag = "addOraWordTag"
-
 
     companion object {
         const val AUDIO_REQUEST_CODE = 1
@@ -76,18 +80,14 @@ class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
         const val TAG = "NumbersFragment"
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
         val view = inflater.inflate(R.layout.ora_lang_numbers, container, false)
-
         return view
-
     }
 
     fun initialiseMediaRecorder() {
@@ -243,37 +243,24 @@ class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
         if (!(resultCode == Activity.RESULT_OK || data != null || data?.data != null)) {
             showToast("Error in getting music file", requireContext())
         }
-
         if (requestCode == AUDIO_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-
             if (data != null) {
-
                 val muri = data.data
-
                 if (data != null) {
-
                     val muri = data.data
-
                     audioFilePath = muri.toString()
-
                     playContentUri(muri!!)
-
                     super.onActivityResult(requestCode, resultCode, data)
-
                 }
             }
         }
     }
 
-
      fun initializeList() {
-
         ora_num_recycler.layoutManager = LinearLayoutManager(this.context)
-
         oraAdapter = NumbersAdapter(this)
 
 //        val alphaAdapter = AlphaInAnimationAdapter(oraAdapter)
@@ -297,12 +284,14 @@ class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        fbdb = FirebaseFirestore.getInstance()
 
         initializeList()
         swipeToDeleteNumber()
-
         showSnackbar(ora_num_recycler, getString(R.string.delete_info))
+        fetchOraWordsFromFireStore()
         val animation: Animation = AnimationUtils.loadAnimation(context, R.anim.recorder_icon_blink)
+
 
         fab1.setOnClickListener {
 
@@ -387,7 +376,13 @@ class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
 
                             showToast("strings gotten $engWordEntered $oraWordEntered",  requireContext())
 
-                            saveOraElement(engWordEntered, oraWordEntered, null, audioUri)
+//                            saveOraElement(engWordEntered, oraWordEntered, null, audioUri)
+                            if (getConnectionType(requireContext())){
+                                saveToFireStore(engWordEntered,oraWordEntered, 200, 1, "music goes here")
+                            }else{
+                                showToast("No network to upload, try again later",  requireContext())
+                            }
+
 
                             showToast("New details saved", requireContext())
                             dialog.dismiss()
@@ -465,7 +460,6 @@ class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
             searchDatabase(it)
             Log.d(TAG, "Search Successful")
         }
-
     }
 
     private fun searchDatabase(query:String){
@@ -477,10 +471,6 @@ class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
 
         })
     }
-
-
-
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
@@ -579,6 +569,107 @@ class OraLangNumbersFragment : Fragment(), NumbersAdapter.RowClickListener {
     fun saveOraElement(engWord: String, oraWord: String, numIcon: Int?, enteredAudio: Uri) =
 
         numbersViewModel.insertNumber(NumbersModel(engWord, oraWord, numIcon,1, enteredAudio))
+
+    fun saveToFireStore(engWord: String, oraWord: String, numIcon: Int?, creator: Int, enteredAudio: String ){
+
+//       val fbOraNum = FbNumbersModel(engWord, oraWord, numIcon, creator, enteredAudio)
+//
+       val fbOraNum1 = NumbersModel(engWord, oraWord, numIcon, creator, null)
+
+        fbdb.collection("oranumbers")
+            .add(fbOraNum1)
+            .addOnSuccessListener {
+                showToast("OraNumber $engWord, Uploaded Successfully!", requireContext())
+                Log.e("FIREBASE", "UPLOAD SUCCESS")
+            }
+            .addOnFailureListener {
+                showToast("OraNumber $engWord, Upload Failed!", requireContext())
+                Log.e("FIREBASE", "UPLOAD FAILED")
+            }
+
+        fetchOraWordsFromFireStore()
+    }
+
+    fun fetchOraWordsFromFireStore(){
+
+        fbdb.collection("oranumbers").get()
+            .addOnSuccessListener {fbOraNumbers->
+
+                for (document in fbOraNumbers){
+
+                    val number = document.toObject(FbNumbersModel::class.java)
+
+                   val  fbnumber = NumbersModel(number.engNum, number.oraNum, number.numIcon, number.creator, null)
+
+                    val fbList: ArrayList<NumbersModel> = ArrayList()
+                        fbList.add(fbnumber)
+                    numbersViewModel.insertListOfNumbers(fbList)
+//                        oraAdapter.submitList(fbList)
+                    Log.e("FETCHING SUCCESS!", fbList.toString())
+                }
+
+            }.addOnFailureListener {
+                    Log.e("FIREBASE FETCHING", it.toString())
+            }.addOnCompleteListener {
+                Log.e("FETCHING COMPLETE", it.toString())
+            }
+
+
+
+
+
+//        numbersSnapshotListener = fbdb.collection("oranumbers").addSnapshotListener { value, error ->
+
+//            if (error!= null){
+//                error.message?.let {
+//                    showToast(it, requireContext())
+//                    Log.e("FIREBASE FETCHING", "$value")
+//                    return@addSnapshotListener
+//                }
+//                if (value!=null){
+//
+//                    val number = value.toObjects(FbNumbersModel::class.java)
+//
+//                    number.forEach {
+//                        val  fbnumber = NumbersModel(it.engNum, it.oraNum, it.numIcon, it.creator, null)
+//
+//                        val fbList: ArrayList<NumbersModel> = ArrayList()
+//                        fbList.add(fbnumber)
+//                        oraAdapter.submitList(fbList)
+//
+//                        Log.e("FETCHING SUCCESS!", fbList.toString())
+//                        showToast("$value", requireContext())
+//
+////                        numbersViewModel.insertListOfNumbers(fbList)
+//                    }
+//
+////                    val  fbnumber = NumbersModel(number.engNum, number.oraNum, number.numIcon, number.creator, null)
+//
+////                        oraAdapter.submitList(fbList)
+//
+//
+//                }
+//            }
+//        }
+//
+//        ora_num_recycler.scrollToPosition(oraAdapter.itemCount - 1)
+
+
+//        fbdb.collection("oranumbers")
+//            .get()
+//            .addOnCompleteListener {
+//                if (it.isSuccessful){
+//                    for (document in it.result!!){
+//                        showToast("$document", requireContext())
+//                        Log.e("FIREBASE", "$document")
+//
+//                        val fbList: ArrayList<NumbersModel> = ArrayList()
+//                        fbList.add(document.data.values)
+//                        oraAdapter.submitList(fbList)
+//                    }
+//                    }
+//                }
+    }
 
 
     override fun onPlayOraWordClickListener(number: NumbersModel) {

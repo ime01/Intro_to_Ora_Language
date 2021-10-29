@@ -24,22 +24,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.makeramen.roundedimageview.RoundedImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/oraOutdoorIcon"
                 android:layout_width="@dimen/image_size"
                 android:layout_height="@dimen/image_size"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="@dimen/margin_title"
                 android:layout_marginEnd="8dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/backgrounda"
+                app:shapeAppearanceOverlay="@style/RoundedSquare"
+                android:src="@drawable/statue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:riv_border_color="#333333"
-                app:riv_border_width="2dip"
-                app:riv_corner_radius="30dip"
-                app:riv_oval="true" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/oraOutdoorText"
@@ -72,22 +68,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.makeramen.roundedimageview.RoundedImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/OraTravelIcon"
                 android:layout_width="@dimen/image_size"
                 android:layout_height="@dimen/image_size"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="@dimen/margin_title"
                 android:layout_marginEnd="8dp"
-                android:scaleType="fitCenter"
                 android:src="@drawable/icon"
+                app:shapeAppearanceOverlay="@style/RoundedSquare"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:riv_border_color="#333333"
-                app:riv_border_width="2dip"
-                app:riv_corner_radius="30dip"
-                app:riv_oval="true" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/oraTravelText"
@@ -119,21 +111,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.makeramen.roundedimageview.RoundedImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/oraNumsIcon"
                 android:layout_width="@dimen/image_size"
                 android:layout_height="@dimen/image_size"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="@dimen/margin_title"
                 android:layout_marginEnd="8dp"
-                android:src="@drawable/numbersc"
+                android:src="@drawable/numbers"
+                app:shapeAppearanceOverlay="@style/RoundedSquare"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:riv_border_color="#333333"
-                app:riv_border_width="2dip"
-                app:riv_corner_radius="30dip"
-                app:riv_oval="true" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/oraNumsText"
@@ -164,22 +153,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.makeramen.roundedimageview.RoundedImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/oraHouseIcon"
                 android:layout_width="@dimen/image_size"
                 android:layout_height="@dimen/image_size"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="@dimen/margin_title"
                 android:layout_marginEnd="8dp"
-                android:scaleType="fitCenter"
                 android:src="@drawable/image"
+                app:shapeAppearanceOverlay="@style/RoundedSquare"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:riv_border_color="#333333"
-                app:riv_border_width="2dip"
-                app:riv_corner_radius="30dip"
-                app:riv_oval="true" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/oraHouseText"
