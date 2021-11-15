@@ -27,15 +27,15 @@ class SplashFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
 
-        activityScope.launch {
-            delay(3000)
-
-            if (onBoardingFinished()){
-                findNavController(requireParentFragment()).navigate(R.id.action_splashFragment_to_loginActivity)
-            }else{
-                findNavController(requireParentFragment()).navigate(R.id.action_splashFragment_to_viewPagerFragment)
-            }
-        }
+//        activityScope.launch {
+//            delay(3000)
+//
+//            if (onBoardingFinished()){
+//                findNavController(requireParentFragment()).navigate(R.id.action_splashFragment_to_loginActivity)
+//            }else{
+//                findNavController(requireParentFragment()).navigate(R.id.action_splashFragment_to_viewPagerFragment)
+//            }
+//        }
 
         return inflater.inflate(R.layout.fragment_splash, container, false)
     }

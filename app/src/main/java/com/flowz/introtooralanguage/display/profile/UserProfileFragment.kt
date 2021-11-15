@@ -1,16 +1,16 @@
 package com.flowz.introtooralanguage.display.profile
 
 
-import android.app.Activity
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -21,8 +21,8 @@ import androidx.navigation.Navigation
 import com.flowz.introtooralanguage.R
 import com.flowz.introtooralanguage.extensions.showSnackbar
 import com.flowz.introtooralanguage.extensions.showToast
+import com.flowz.introtooralanguage.utils.takeWords
 import com.google.android.gms.tasks.Continuation
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
 import com.google.firebase.database.*
@@ -33,7 +33,6 @@ import kotlinx.android.synthetic.main.fragment_user_profile.*
 import kotlinx.android.synthetic.main.ora_num.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.*
 
@@ -69,6 +68,7 @@ class UserProfileFragment : Fragment() {
 
         loadUserProfile()
         getProfilePicture()
+        loadUserProfile()
 
         val getUserImageFromGallery = registerForActivityResult(
             ActivityResultContracts.GetContent(),
@@ -83,9 +83,7 @@ class UserProfileFragment : Fragment() {
         user_profile_picture.setOnClickListener{
 
             checkPermssion()
-//            pickImage()
             getUserImageFromGallery.launch("image/*")
-
 
         }
         add_image_icon.setOnClickListener {
@@ -95,10 +93,14 @@ class UserProfileFragment : Fragment() {
         }
 
         update_ora_profile.setOnClickListener {
-            updateUserInformation()
 
+            val userName = user_profile_name.takeWords()
+            val userEmail = user_profile_email.takeWords()
+            val userPhoneNo = user_profile_phone_number.takeWords()
+
+            updateData(userName, userPhoneNo)
+            loadUserProfile()
         }
-
 
     }
 
@@ -221,48 +223,27 @@ class UserProfileFragment : Fragment() {
 
     }
 
-    private fun updateUserInformation() {
+    private fun updateData(username: String, phone: String) {
 
-        auth.currentUser?.let {user->
-            val photoURI = imageUri
-            val userName = user_profile_name.text.toString()
-            val userEmail = user_profile_email.text.toString()
-            val userPhoneNo = user_profile_phone_number.text.toString()
+        databaseReference?.child(currentUser?.uid!!)
 
-            val profileUpdates = UserProfileChangeRequest.Builder()
-                .setDisplayName(userName)
-                .build()
+        val user = mapOf<String,String>(
+            "name" to username,
+            "phonenumber" to phone
+        )
 
-            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main){
-                try {
 
-                    val phoneAuthCredential = PhoneAuthProvider.getCredential(userPhoneNo, "OTP_CODE")
-                    auth.getCurrentUser()?.updatePhoneNumber(phoneAuthCredential)
-                        ?.addOnCompleteListener(OnCompleteListener<Void?> { task ->
-                            if (task.isSuccessful) {
-                                // Update Successfully
-                            } else {
-                                // Failed
-                            }
-                        }
-                        )
-                    user.updatePhoneNumber(phoneAuthCredential)
-                    user.updateEmail(userEmail)
-                    user.updateProfile(profileUpdates).isSuccessful
+        databaseReference?.child(currentUser?.uid!!)?.updateChildren(user)?.addOnSuccessListener {
 
-                    withContext(Dispatchers.Main){
-                        loadUserProfile()
-                        showSnackbar(user_profile_picture, "Successfully updated user profile information")
-                    }
-                }catch (e:Exception){
-                    withContext(Dispatchers.Main){
-                        e.message?.let { it1 -> showSnackbar(user_profile_picture, it1) }
-                    }
-                }
-            }
+            showSnackbar(update_ora_profile, "User profile Information Updated Successfully")
+
+        }?.addOnFailureListener{
+
+            showSnackbar(update_ora_profile, "Failed to Update User profile Information ")
 
         }
     }
+
 
     private fun loadUserProfile(){
 
@@ -291,6 +272,8 @@ class UserProfileFragment : Fragment() {
             navController.navigate(R.id.action_userProfileFragment_to_loginActivity)
         }
     }
+
+
 
     companion object{
         val READIMAGE = 253

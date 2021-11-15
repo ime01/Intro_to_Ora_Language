@@ -1,6 +1,8 @@
 package com.flowz.introtooralanguage.utils
 
+import android.text.Editable
 import androidx.appcompat.widget.SearchView
+import com.google.android.material.textfield.TextInputEditText
 
 
 inline fun SearchView.onQueryTextChanged(crossinline listener:(String)-> Unit){
@@ -14,4 +16,8 @@ inline fun SearchView.onQueryTextChanged(crossinline listener:(String)-> Unit){
             return true
         }
     })
+}
+
+fun TextInputEditText.takeWords() : String{
+    return this.text.toString().trim()
 }
